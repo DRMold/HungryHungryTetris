@@ -19,3 +19,6 @@
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
+
+# HFS+ is a dumb filesystem
+.DS_Store
