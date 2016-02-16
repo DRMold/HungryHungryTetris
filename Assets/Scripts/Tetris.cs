@@ -122,24 +122,25 @@ public class Tetris : MonoBehaviour {
 		}
 	}
 	
-//	// Update is called once per frame
-//	void Update () {
-//		// If nothing spawned and game isn't over, then spawn
-//		if (!spawn && !gameOver) {
-//			StartCoroutine("Wait");
-//			spawn = true;
-//			//Reset rotation 
-//			currentRot = 0;
-//		}
-//
-//		//////////////////////////////////////////////////////
-//		// Begin Player Input Checks
-//		/////////////////////////////////////////////////////
-//
-//		//TODO: Modify below to accept input from two players 
-//		//          -> P1 Controls: <-, ->, space
-//		//          -> P2 Controls:  A,  D,  S or something, idk
-//
+	// Update is called once per frame
+	void Update () {
+		// If nothing spawned and game isn't over, then spawn
+		// This will spawn for both players at the same time - not desirable will work out logi later
+		if (!spawn && !gameOver) {
+			StartCoroutine("Wait");
+			spawn = true;
+			//Reset rotation 
+			currentRot = 0;
+		}
+
+		//////////////////////////////////////////////////////
+		// Begin Player Input Checks
+		/////////////////////////////////////////////////////
+
+		//TODO: Modify below to accept input from two players 
+		//          -> P1 Controls: <-, ->, space
+		//          -> P2 Controls:  A,  D,  S or something, idk
+
 //		//If there is a block
 //		if (spawn && shapes.Count == 4) {
 //			//Get spawned block pos
@@ -189,82 +190,86 @@ public class Tetris : MonoBehaviour {
 //				Rotate(shapes[0].transform,shapes[1].transform,shapes[2].transform,shapes[3].transform);	
 //			}
 //		}
-//	}
-//
-//	void SpawnShape() {
-//		int shape = Random.Range (0, 6); //Rand shape
-//		int height = board.GetLength (1) - 4;
-//		int xPos = board.GetLength (0) / 2 - 1;
-//		//Create pivot
-//		pivot = new GameObject ("RotateAround"); //Pivot of shape
-//
-//		if (shape == 0) { //S Shape
-//			pivot.transform.position = new Vector3(xPos, height+1, 0);
-//			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos-1, height, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos+1, height+1, 0)));
-//
-//			Debug.Log ("Spawned S Shape");
-//		} else if (shape == 1) { //I Shape
-//			pivot.transform.position = new Vector3(xPos+ 0.5f, height+1.5f, 0);
-//			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos, height+2, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos, height+3, 0)));
-//			
-//			Debug.Log ("Spawned I Shape");
-//		} else if (shape == 2) { //O Shape
-//			pivot.transform.position = new Vector3(xPos+0.5f, height+0.5f, 0);
-//			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos+1, height, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos+1, height+1, 0)));
-//			
-//			Debug.Log ("Spawned O Shape");
-//		} else if (shape == 3) { //J Shape
-//			pivot.transform.position = new Vector3(xPos, height+2, 0);
-//			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos+1, height, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos, height+2, 0)));
-//			
-//			Debug.Log ("Spawned J Shape");
-//		} else if (shape == 4) { //T Shape
-//			pivot.transform.position = new Vector3(xPos, height, 0);
-//			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos-1, height, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos+1, height, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
-//			
-//			Debug.Log ("Spawned T Shape");
-//		} else if (shape == 5) { //L Shape
-//			pivot.transform.position = new Vector3(xPos, height+1, 0);
-//			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos-1, height, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos, height+2, 0)));
-//			
-//			Debug.Log ("Spawned L Shape");
-//		} else { //Z Shape
-//			pivot.transform.position = new Vector3(xPos, height+1, 0);
-//			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos+1, height, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
-//			shapes.Add (GenBlock(new Vector3(xPos-1, height+1, 0)));
-//			
-//			Debug.Log ("Spawned Z Shape");
-//		} 
-//	}
-//
-//	//Create block at position
-//	Transform GenBlock(Vector3 pos) {
-//		Transform obj = (Transform)Instantiate (block.transform, pos, Quaternion.identity) as Transform;
-//		obj.tag = "Block";
-//
-//		return obj;
-//	}
-//
+	}
+
+	void SpawnShape(bool isBoard2) {
+		int shape = Random.Range (0, 6); //Rand shape
+		int height = board1.GetLength (1) - 4;
+		int xPos = board1.GetLength (0) / 2 - 1;
+
+		if (isBoard2) {
+			xPos += 20;
+		}
+		//Create pivot
+		pivot = new GameObject ("RotateAround"); //Pivot of shape
+
+		if (shape == 0) { //S Shape
+			pivot.transform.position = new Vector3(xPos, height+1, 0);
+			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos-1, height, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos+1, height+1, 0)));
+
+			Debug.Log ("Spawned S Shape");
+		} else if (shape == 1) { //I Shape
+			pivot.transform.position = new Vector3(xPos+ 0.5f, height+1.5f, 0);
+			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos, height+2, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos, height+3, 0)));
+			
+			Debug.Log ("Spawned I Shape");
+		} else if (shape == 2) { //O Shape
+			pivot.transform.position = new Vector3(xPos+0.5f, height+0.5f, 0);
+			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos+1, height, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos+1, height+1, 0)));
+			
+			Debug.Log ("Spawned O Shape");
+		} else if (shape == 3) { //J Shape
+			pivot.transform.position = new Vector3(xPos, height+2, 0);
+			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos+1, height, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos, height+2, 0)));
+			
+			Debug.Log ("Spawned J Shape");
+		} else if (shape == 4) { //T Shape
+			pivot.transform.position = new Vector3(xPos, height, 0);
+			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos-1, height, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos+1, height, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
+			
+			Debug.Log ("Spawned T Shape");
+		} else if (shape == 5) { //L Shape
+			pivot.transform.position = new Vector3(xPos, height+1, 0);
+			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos-1, height, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos, height+2, 0)));
+			
+			Debug.Log ("Spawned L Shape");
+		} else { //Z Shape
+			pivot.transform.position = new Vector3(xPos, height+1, 0);
+			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos+1, height, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
+			shapes.Add (GenBlock(new Vector3(xPos-1, height+1, 0)));
+			
+			Debug.Log ("Spawned Z Shape");
+		} 
+	}
+
+	//Create block at position
+	Transform GenBlock(Vector3 pos) {
+		Transform obj = (Transform)Instantiate (block.transform, pos, Quaternion.identity) as Transform;
+		obj.tag = "Block";
+
+		return obj;
+	}
+
 //	bool CheckMove(Vector3 a, Vector3 b, Vector3 c, Vector3 d) {
 //		//Check if we move a block will it hit something
 //		if (board [Mathf.RoundToInt (a.x), Mathf.RoundToInt (a.y - 1)] == 1) {
@@ -369,12 +374,13 @@ public class Tetris : MonoBehaviour {
 //			checkRow(y+1); //Check row above this
 //		}
 //	}
-//
-//	IEnumerator Wait() {
-//		yield return new WaitForSeconds(nxtBlkSpawnTime);
-//		SpawnShape ();
-//	}
-//	
+
+	IEnumerator Wait() {
+		yield return new WaitForSeconds(nxtBlkSpawnTime);
+		SpawnShape (true);
+		SpawnShape (false);
+	}
+
 //	///////////////////////////////////////
 //	/// Player Control Functions
 //	///////////////////////////////////////
@@ -428,7 +434,7 @@ public class Tetris : MonoBehaviour {
 //		return true;
 //	}
 //	
-//	bool CheckRotate(Vector3 a, Vector3 b, Vector3 c, Vector3 d){
+//	bool CheckRotate(Vector3 a, Vector3 b, Vector3 c, Vector3 d, int[,] board){
 //		if(Mathf.RoundToInt(a.x)<board.GetLength(0)-1){//Check if block is in board
 //			if(board[Mathf.RoundToInt(a.x),Mathf.RoundToInt(a.y)]==1){
 //				//If rotated block hit any other block or edge, after rotation
