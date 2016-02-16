@@ -27,12 +27,15 @@ public class Tetris : MonoBehaviour {
 	//Game Over Level
 	public int gameOverHeight = 22; // 20 board + 2 edge
 	//Current Shape
-	private List<Transform> shapes = new List<Transform>();
+	private List<Transform> shapes1 = new List<Transform>();
+	private List<Transform> shapes2 = new List<Transform>();
+	// Is the game over?
 	private bool gameOver;
 	//Current shape rotation
 	private int currentRot = 0;
 	//Current pivot of shape
-	private GameObject pivot;
+	private GameObject pivot1;
+	private GameObject pivot2;
 	
 	void Start () {
 		//Default board is 10x16
@@ -46,7 +49,7 @@ public class Tetris : MonoBehaviour {
 		board2 = new int[12,24];
 		GenBoards ();
 
-		//InvokeRepeating ("moveDown", blkFallSpeed, blkFallSpeed); //move blk down
+		InvokeRepeating ("moveDown", blkFallSpeed, blkFallSpeed); //move blk down
 	}
 
 	//Create Game Boards
@@ -198,68 +201,127 @@ public class Tetris : MonoBehaviour {
 		int xPos = board1.GetLength (0) / 2 - 1;
 
 		if (isBoard2) {
+			//Create pivot
+			pivot2 = new GameObject ("RotateAround"); //Pivot of shape
 			xPos += 20;
+			if (shape == 0) { //S Shape
+				pivot2.transform.position = new Vector3 (xPos, height + 1, 0);
+				shapes2.Add (GenBlock (new Vector3 (xPos, height, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos - 1, height, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos, height + 1, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos + 1, height + 1, 0)));
+				
+				Debug.Log ("Spawned S Shape");
+			} else if (shape == 1) { //I Shape
+				pivot2.transform.position = new Vector3 (xPos + 0.5f, height + 1.5f, 0);
+				shapes2.Add (GenBlock (new Vector3 (xPos, height, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos, height + 1, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos, height + 2, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos, height + 3, 0)));
+				
+				Debug.Log ("Spawned I Shape");
+			} else if (shape == 2) { //O Shape
+				pivot2.transform.position = new Vector3 (xPos + 0.5f, height + 0.5f, 0);
+				shapes2.Add (GenBlock (new Vector3 (xPos, height, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos + 1, height, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos, height + 1, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos + 1, height + 1, 0)));
+				
+				Debug.Log ("Spawned O Shape");
+			} else if (shape == 3) { //J Shape
+				pivot2.transform.position = new Vector3 (xPos, height + 2, 0);
+				shapes2.Add (GenBlock (new Vector3 (xPos, height, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos + 1, height, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos, height + 1, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos, height + 2, 0)));
+				
+				Debug.Log ("Spawned J Shape");
+			} else if (shape == 4) { //T Shape
+				pivot2.transform.position = new Vector3 (xPos, height, 0);
+				shapes2.Add (GenBlock (new Vector3 (xPos, height, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos - 1, height, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos + 1, height, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos, height + 1, 0)));
+				
+				Debug.Log ("Spawned T Shape");
+			} else if (shape == 5) { //L Shape
+				pivot2.transform.position = new Vector3 (xPos, height + 1, 0);
+				shapes2.Add (GenBlock (new Vector3 (xPos, height, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos - 1, height, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos, height + 1, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos, height + 2, 0)));
+				
+				Debug.Log ("Spawned L Shape");
+			} else { //Z Shape
+				pivot2.transform.position = new Vector3 (xPos, height + 1, 0);
+				shapes2.Add (GenBlock (new Vector3 (xPos, height, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos + 1, height, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos, height + 1, 0)));
+				shapes2.Add (GenBlock (new Vector3 (xPos - 1, height + 1, 0)));
+				
+				Debug.Log ("Spawned Z Shape");
+			} 
+		} else {
+			//Pivot of shape
+			pivot1 = new GameObject ("RotateAround"); 
+			if (shape == 0) { //S Shape
+				pivot1.transform.position = new Vector3 (xPos, height + 1, 0);
+				shapes1.Add (GenBlock (new Vector3 (xPos, height, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos - 1, height, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos, height + 1, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos + 1, height + 1, 0)));
+
+				Debug.Log ("Spawned S Shape");
+			} else if (shape == 1) { //I Shape
+				pivot1.transform.position = new Vector3 (xPos + 0.5f, height + 1.5f, 0);
+				shapes1.Add (GenBlock (new Vector3 (xPos, height, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos, height + 1, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos, height + 2, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos, height + 3, 0)));
+			
+				Debug.Log ("Spawned I Shape");
+			} else if (shape == 2) { //O Shape
+				pivot1.transform.position = new Vector3 (xPos + 0.5f, height + 0.5f, 0);
+				shapes1.Add (GenBlock (new Vector3 (xPos, height, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos + 1, height, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos, height + 1, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos + 1, height + 1, 0)));
+			
+				Debug.Log ("Spawned O Shape");
+			} else if (shape == 3) { //J Shape
+				pivot1.transform.position = new Vector3 (xPos, height + 2, 0);
+				shapes1.Add (GenBlock (new Vector3 (xPos, height, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos + 1, height, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos, height + 1, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos, height + 2, 0)));
+			
+				Debug.Log ("Spawned J Shape");
+			} else if (shape == 4) { //T Shape
+				pivot1.transform.position = new Vector3 (xPos, height, 0);
+				shapes1.Add (GenBlock (new Vector3 (xPos, height, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos - 1, height, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos + 1, height, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos, height + 1, 0)));
+			
+				Debug.Log ("Spawned T Shape");
+			} else if (shape == 5) { //L Shape
+				pivot1.transform.position = new Vector3 (xPos, height + 1, 0);
+				shapes1.Add (GenBlock (new Vector3 (xPos, height, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos - 1, height, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos, height + 1, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos, height + 2, 0)));
+			
+				Debug.Log ("Spawned L Shape");
+			} else { //Z Shape
+				pivot1.transform.position = new Vector3 (xPos, height + 1, 0);
+				shapes1.Add (GenBlock (new Vector3 (xPos, height, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos + 1, height, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos, height + 1, 0)));
+				shapes1.Add (GenBlock (new Vector3 (xPos - 1, height + 1, 0)));
+			
+				Debug.Log ("Spawned Z Shape");
+			} 
 		}
-		//Create pivot
-		pivot = new GameObject ("RotateAround"); //Pivot of shape
-
-		if (shape == 0) { //S Shape
-			pivot.transform.position = new Vector3(xPos, height+1, 0);
-			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos-1, height, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos+1, height+1, 0)));
-
-			Debug.Log ("Spawned S Shape");
-		} else if (shape == 1) { //I Shape
-			pivot.transform.position = new Vector3(xPos+ 0.5f, height+1.5f, 0);
-			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos, height+2, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos, height+3, 0)));
-			
-			Debug.Log ("Spawned I Shape");
-		} else if (shape == 2) { //O Shape
-			pivot.transform.position = new Vector3(xPos+0.5f, height+0.5f, 0);
-			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos+1, height, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos+1, height+1, 0)));
-			
-			Debug.Log ("Spawned O Shape");
-		} else if (shape == 3) { //J Shape
-			pivot.transform.position = new Vector3(xPos, height+2, 0);
-			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos+1, height, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos, height+2, 0)));
-			
-			Debug.Log ("Spawned J Shape");
-		} else if (shape == 4) { //T Shape
-			pivot.transform.position = new Vector3(xPos, height, 0);
-			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos-1, height, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos+1, height, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
-			
-			Debug.Log ("Spawned T Shape");
-		} else if (shape == 5) { //L Shape
-			pivot.transform.position = new Vector3(xPos, height+1, 0);
-			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos-1, height, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos, height+2, 0)));
-			
-			Debug.Log ("Spawned L Shape");
-		} else { //Z Shape
-			pivot.transform.position = new Vector3(xPos, height+1, 0);
-			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos+1, height, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
-			shapes.Add (GenBlock(new Vector3(xPos-1, height+1, 0)));
-			
-			Debug.Log ("Spawned Z Shape");
-		} 
 	}
 
 	//Create block at position
@@ -270,110 +332,206 @@ public class Tetris : MonoBehaviour {
 		return obj;
 	}
 
-//	bool CheckMove(Vector3 a, Vector3 b, Vector3 c, Vector3 d) {
-//		//Check if we move a block will it hit something
-//		if (board [Mathf.RoundToInt (a.x), Mathf.RoundToInt (a.y - 1)] == 1) {
-//			return false;
-//		}
-//		if (board [Mathf.RoundToInt (b.x), Mathf.RoundToInt (b.y - 1)] == 1) {
-//			return false;
-//		}
-//		if (board [Mathf.RoundToInt (c.x), Mathf.RoundToInt (c.y - 1)] == 1) {
-//			return false;
-//		}
-//		if (board [Mathf.RoundToInt (d.x), Mathf.RoundToInt (d.y - 1)] == 1) {
-//			return false;
-//		}
-//		
-//		return true;
-//	}
-//
-//	void moveDown(){
-//		//Spawned blocks position 
-//		if (shapes.Count != 4)
-//			return;
-//		Vector3 a = shapes [0].transform.position;
-//		Vector3 b = shapes [1].transform.position;
-//		Vector3 c = shapes [2].transform.position;
-//		Vector3 d = shapes [3].transform.position;
-//
-//		//Will we hit anything if we move blck
-//		if (CheckMove (a, b, c, d) == true) {
-//			//Move block down 1
-//			a = new Vector3 (Mathf.RoundToInt (a.x), Mathf.RoundToInt (a.y - 1.0f), a.z);
-//			b = new Vector3 (Mathf.RoundToInt (b.x), Mathf.RoundToInt (b.y - 1.0f), b.z);
-//			c = new Vector3 (Mathf.RoundToInt (c.x), Mathf.RoundToInt (c.y - 1.0f), c.z);
-//			d = new Vector3 (Mathf.RoundToInt (d.x), Mathf.RoundToInt (d.y - 1.0f), d.z);
-//
-//			pivot.transform.position = new Vector3 (pivot.transform.position.x, pivot.transform.position.y - 1, pivot.transform.position.z);
-//			
-//			shapes [0].transform.position = a;
-//			shapes [1].transform.position = b; 
-//			shapes [2].transform.position = c; 
-//			shapes [3].transform.position = d; 
-//		} else {
-//			// We hit something, stop and mark loc and Destroy pivot
-//			Destroy(pivot.gameObject); //Destroy pivot
-//			
-//			//Set ID in board
-//			board[Mathf.RoundToInt(a.x),Mathf.RoundToInt(a.y)]=1;
-//			board[Mathf.RoundToInt(b.x),Mathf.RoundToInt(b.y)]=1;
-//			board[Mathf.RoundToInt(c.x),Mathf.RoundToInt(c.y)]=1;
-//			board[Mathf.RoundToInt(d.x),Mathf.RoundToInt(d.y)]=1;
-//
-//			//****************************************************
-//			checkRow(1); //Check for any match
-//			checkRow(gameOverHeight); //Check for game over
-//			//****************************************************
-//
-//			shapes.Clear(); //Clear spawned blocks from array
-//			spawn = false; //Spawn a new block
-//		}
-//	}
-//
-//	//Check specific row for match
-//	void checkRow(int y){
-//		GameObject[] blocks = GameObject.FindGameObjectsWithTag("Block"); //All blocks in the scene
-//		int count = 0; //Blocks found in a row
-//		
-//		for(int x=1; x<board.GetLength(0)-1; x++){//Go through each block on this height
-//			if(board[x,y]==1){//If there is any block at this position
-//				count++;//We found +1 block
-//			}
-//		}
-//
-//		if(y==gameOverHeight && count>0){//If the current height is game over height, and there is more than 0 block, then game over
-//			Debug.LogWarning("Game over");
-//			gameOver = true;
-//		}
-//		if(count==10){//The row is full
-//			//Start from bottom of the board(withouth edge and block spawn space)
-//			for(int cy=y; cy<board.GetLength(1)-3; cy++){
-//				for(int cx=1; cx<board.GetLength(0)-1; cx++){
-//					foreach(GameObject go in blocks){
-//						int height = Mathf.RoundToInt(go.transform.position.y);
-//						int xPos = Mathf.RoundToInt(go.transform.position.x);
-//						
-//						if(xPos == cx && height == cy){
-//							if(height == y){//The row we need to destroy
-//								board[xPos,height] = 0;//Set empty space
-//								Destroy(go.gameObject);
-//							}
-//							else if(height > y){
-//								board[xPos,height] = 0;//Set old position to empty
-//								board[xPos,height-1] = 1;//Set new position 
-//								go.transform.position = new Vector3(xPos, height-1, go.transform.position.z);//Move block down
-//							}
-//						}
-//					}
-//				}
-//			}
-//			checkRow(y); //We moved blocks down, check again this row
-//		}
-//		else if(y+1<board.GetLength(1)-3){
-//			checkRow(y+1); //Check row above this
-//		}
-//	}
+	bool CheckMove(Vector3 a, Vector3 b, Vector3 c, Vector3 d, bool isBoard2) {
+		//Check if we move a block will it hit something
+		if (isBoard2) {
+			if (board2 [Mathf.RoundToInt (a.x-20), Mathf.RoundToInt (a.y - 1)] == 1) 
+				return false;
+			if (board2 [Mathf.RoundToInt (b.x-20), Mathf.RoundToInt (b.y - 1)] == 1) 
+				return false;
+			if (board2 [Mathf.RoundToInt (c.x-20), Mathf.RoundToInt (c.y - 1)] == 1) 
+				return false;
+			if (board2 [Mathf.RoundToInt (d.x-20), Mathf.RoundToInt (d.y - 1)] == 1) 
+				return false;
+		} else {
+			if (board1 [Mathf.RoundToInt (a.x), Mathf.RoundToInt (a.y - 1)] == 1) 
+				return false;
+			if (board1 [Mathf.RoundToInt (b.x), Mathf.RoundToInt (b.y - 1)] == 1) 
+				return false;
+			if (board1 [Mathf.RoundToInt (c.x), Mathf.RoundToInt (c.y - 1)] == 1) 
+				return false;
+			if (board1 [Mathf.RoundToInt (d.x), Mathf.RoundToInt (d.y - 1)] == 1) 
+				return false;
+		}
+		return true;
+	}
+
+	void moveDown(){
+		//Spawned blocks position 
+		if (shapes1.Count != 4 && shapes2.Count != 4)
+			return;
+
+		Vector3 a = shapes1 [0].transform.position;
+		Vector3 b = shapes1 [1].transform.position;
+		Vector3 c = shapes1 [2].transform.position;
+		Vector3 d = shapes1 [3].transform.position;
+
+		Vector3 e = shapes2 [0].transform.position;
+		Vector3 f = shapes2 [1].transform.position;
+		Vector3 g = shapes2 [2].transform.position;
+		Vector3 h = shapes2 [3].transform.position;
+
+		//Will we hit anything if we move blck
+		if (CheckMove (a, b, c, d, false) == true) {
+			//Move block down 1
+			a = new Vector3 (Mathf.RoundToInt (a.x), Mathf.RoundToInt (a.y - 1.0f), a.z);
+			b = new Vector3 (Mathf.RoundToInt (b.x), Mathf.RoundToInt (b.y - 1.0f), b.z);
+			c = new Vector3 (Mathf.RoundToInt (c.x), Mathf.RoundToInt (c.y - 1.0f), c.z);
+			d = new Vector3 (Mathf.RoundToInt (d.x), Mathf.RoundToInt (d.y - 1.0f), d.z);
+
+			pivot1.transform.position = new Vector3 (pivot1.transform.position.x, pivot1.transform.position.y - 1, pivot1.transform.position.z);
+
+			shapes1 [0].transform.position = a;
+			shapes1 [1].transform.position = b; 
+			shapes1 [2].transform.position = c; 
+			shapes1 [3].transform.position = d; 
+		} else {
+			Destroy (pivot1.gameObject);
+
+			board1[Mathf.RoundToInt(a.x),Mathf.RoundToInt(a.y)]=1;
+			board1[Mathf.RoundToInt(b.x),Mathf.RoundToInt(b.y)]=1;
+			board1[Mathf.RoundToInt(c.x),Mathf.RoundToInt(c.y)]=1;
+			board1[Mathf.RoundToInt(d.x),Mathf.RoundToInt(d.y)]=1;
+			
+			//****************************************************
+			checkRow(1, false); //Check for any match
+			checkRow(gameOverHeight, false); //Check for game over
+			//****************************************************
+		}
+
+		if (CheckMove (e, f, g, h, true) == true) {
+			e = new Vector3 (Mathf.RoundToInt (e.x), Mathf.RoundToInt (e.y - 1.0f), e.z);
+			f = new Vector3 (Mathf.RoundToInt (f.x), Mathf.RoundToInt (f.y - 1.0f), f.z);
+			g = new Vector3 (Mathf.RoundToInt (g.x), Mathf.RoundToInt (g.y - 1.0f), g.z);
+			h = new Vector3 (Mathf.RoundToInt (h.x), Mathf.RoundToInt (h.y - 1.0f), h.z);
+
+			pivot2.transform.position = new Vector3 (pivot2.transform.position.x, pivot2.transform.position.y - 1, pivot2.transform.position.z);
+			
+			shapes2 [0].transform.position = e;
+			shapes2 [1].transform.position = f; 
+			shapes2 [2].transform.position = g; 
+			shapes2 [3].transform.position = h; 
+		} else {
+			// We hit something, stop and mark loc and Destroy pivot
+			Destroy(pivot2.gameObject); //Destroy pivot
+			
+			//Set ID in board
+			board2[Mathf.RoundToInt(e.x-20),Mathf.RoundToInt(e.y)]=1;
+			board2[Mathf.RoundToInt(f.x-20),Mathf.RoundToInt(f.y)]=1;
+			board2[Mathf.RoundToInt(g.x-20),Mathf.RoundToInt(g.y)]=1;
+			board2[Mathf.RoundToInt(h.x-20),Mathf.RoundToInt(h.y)]=1;
+
+			//****************************************************
+			checkRow(1, true); //Check for any match
+			checkRow(gameOverHeight, true); //Check for game over
+			//****************************************************
+		}
+
+		//Are we ready to spawn a new block yet?
+		if (pivot1.gameObject == null && pivot2.gameObject == null) { 
+			//Clear spawned blocks from array
+			shapes1.Clear ();
+			shapes2.Clear ();
+			//Spawn a new block
+			spawn = false; 
+		}
+	}
+
+	//Check specific row for match
+	void checkRow(int y, bool isBoard2){
+		//All blocks in the scene
+		GameObject[] blocks = GameObject.FindGameObjectsWithTag("Block");
+		//Blocks found in a row
+		int count = 0; 
+
+		if (isBoard2) {
+			//Go through each block on this height
+			for (int x=1; x<board2.GetLength(0)-1; x++) {
+				//If there is any block at this position
+				if (board2 [x, y] == 1) {
+					//We found +1 block
+					count++;
+				}
+			}
+			//If the current height is game over height, and there is more than 0 block, then game over
+			if (y == gameOverHeight && count > 0) {
+				Debug.LogWarning ("Game over");
+				gameOver = true;
+			}
+			//The row is full
+			if (count == 10) {
+				//Start from bottom of the board(withouth edge and block spawn space)
+				for (int cy=y; cy<board2.GetLength(1)-3; cy++) {
+					for (int cx=1; cx<board2.GetLength(0)-1; cx++) {
+						foreach (GameObject go in blocks) {
+							int height = Mathf.RoundToInt (go.transform.position.y);
+							int xPos = Mathf.RoundToInt (go.transform.position.x);
+							
+							if (xPos == cx && height == cy) {
+								//The row we need to destroy
+								if (height == y) {
+									//Set empty space
+									board2 [xPos, height] = 0;
+									Destroy (go.gameObject);
+								} else if (height > y) {
+									board2 [xPos, height] = 0;   //Set old position to empty
+									board2 [xPos, height - 1] = 1; //Set new position 
+									go.transform.position = new Vector3 (xPos, height - 1, go.transform.position.z);//Move block down
+								}
+							}
+						}
+					}
+				}
+				checkRow (y, true); //We moved blocks down, check again this row
+			} else if (y + 1 < board2.GetLength (1) - 3) {
+				//Check row above this
+				checkRow (y + 1, true); 
+			}
+		} else {
+			//Go through each block on this height
+			for (int x=1; x<board1.GetLength(0)-1; x++) {
+				//If there is any block at this position
+				if (board1 [x, y] == 1) {
+					//We found +1 block
+					count++;
+				}
+			}
+			//If the current height is game over height, and there is more than 0 block, then game over
+			if (y == gameOverHeight && count > 0) {
+				Debug.LogWarning ("Game over");
+				gameOver = true;
+			}
+			//The row is full
+			if (count == 10) {
+				//Start from bottom of the board(withouth edge and block spawn space)
+				for (int cy=y; cy<board1.GetLength(1)-3; cy++) {
+					for (int cx=1; cx<board1.GetLength(0)-1; cx++) {
+						foreach (GameObject go in blocks) {
+							int height = Mathf.RoundToInt (go.transform.position.y);
+							int xPos = Mathf.RoundToInt (go.transform.position.x);
+						
+							if (xPos == cx && height == cy) {
+								//The row we need to destroy
+								if (height == y) {
+									//Set empty space
+									board1 [xPos, height] = 0;
+									Destroy (go.gameObject);
+								} else if (height > y) {
+									board1 [xPos, height] = 0;   //Set old position to empty
+									board1 [xPos, height - 1] = 1; //Set new position 
+									go.transform.position = new Vector3 (xPos, height - 1, go.transform.position.z);//Move block down
+								}
+							}
+						}
+					}
+				}
+				checkRow (y, false); //We moved blocks down, check again this row
+			} else if (y + 1 < board1.GetLength (1) - 3) {
+				//Check row above this
+				checkRow (y + 1, false); 
+			}
+		}
+	}
 
 	IEnumerator Wait() {
 		yield return new WaitForSeconds(nxtBlkSpawnTime);
