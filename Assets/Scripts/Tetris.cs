@@ -2,6 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/**
+ * This Script proc gens a tetris board for 1P
+ * TODO:
+ * We need to modify this script to generate two boards and accept input from 2P 
+ * We will also need to attach two cameras to each board.
+ * The main methods that need to be modified are GenBoard() and Update()
+ * The rest 'should' be ok for now.
+ * 
+ * Eventually we will change the random shape selection to be a queue but that's down the line
+ * */
 public class Tetris : MonoBehaviour {
 	//Board
 	public int[,] board;
@@ -36,6 +46,45 @@ public class Tetris : MonoBehaviour {
 
 		InvokeRepeating ("moveDown", blkFallSpeed, blkFallSpeed); //move blk down
 	}
+
+	//Create Game Boards
+	//TODO:Modify this function so that two play areas are generated instead of one
+	void GenBoard() {
+		for (int x=0; x<board.GetLength(0); x++) {
+			for (int y=0; y<board.GetLength(1);y++) {
+				if (x<11 && x>0) {
+					if (y>0 && y<board.GetLength(1)-2) {
+						//Board
+						board[x,y] = 0;
+						GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+						cube.transform.position = new Vector3 (x,y,1);
+						Material material = new Material(Shader.Find("Diffuse"));
+						material.color = Color.grey;
+						cube.GetComponent<Renderer>().material = material;
+						cube.transform.parent = transform;
+					} else if (y<board.GetLength(1)-2) {
+						board[x,y]=1;
+						GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+						cube.transform.position = new Vector3(x, y, 0);
+						Material material = new Material(Shader.Find ("Diffuse"));
+						material.color = Color.black;
+						cube.GetComponent<Renderer>().material = material;
+						cube.transform.parent = transform;
+						cube.GetComponent<Collider>().isTrigger = true;
+					}
+				} else if ((y<board.GetLength(1)-2)) {
+					// Left and Right edge
+					board[x,y] = 1;
+					GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+					cube.transform.position = new Vector3(x, y, 0);
+					Material material = new Material(Shader.Find ("Diffuse"));
+					material.color = Color.black;
+					cube.GetComponent<Renderer>().material = material;
+					cube.transform.parent = transform;
+				}
+			}
+		}
+	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -50,6 +99,10 @@ public class Tetris : MonoBehaviour {
 		//////////////////////////////////////////////////////
 		// Begin Player Input Checks
 		/////////////////////////////////////////////////////
+
+		//TODO: Modify below to accept input from two players 
+		//          -> P1 Controls: <-, ->, space
+		//          -> P2 Controls:  A,  D,  S or something, idk
 
 		//If there is a block
 		if (spawn && shapes.Count == 4) {
@@ -98,43 +151,6 @@ public class Tetris : MonoBehaviour {
 			//Roatate Piece
 			if(Input.GetKeyDown(KeyCode.Space)){
 				Rotate(shapes[0].transform,shapes[1].transform,shapes[2].transform,shapes[3].transform);	
-			}
-		}
-	}
-
-	void GenBoard() {
-		for (int x=0; x<board.GetLength(0); x++) {
-			for (int y=0; y<board.GetLength(1);y++) {
-				if (x<11 && x>0) {
-					if (y>0 && y<board.GetLength(1)-2) {
-						//Board
-						board[x,y] = 0;
-						GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-						cube.transform.position = new Vector3 (x,y,1);
-						Material material = new Material(Shader.Find("Diffuse"));
-						material.color = Color.grey;
-						cube.GetComponent<Renderer>().material = material;
-						cube.transform.parent = transform;
-					} else if (y<board.GetLength(1)-2) {
-						board[x,y]=1;
-						GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-						cube.transform.position = new Vector3(x, y, 0);
-						Material material = new Material(Shader.Find ("Diffuse"));
-						material.color = Color.black;
-						cube.GetComponent<Renderer>().material = material;
-						cube.transform.parent = transform;
-						cube.GetComponent<Collider>().isTrigger = true;
-					}
-				} else if ((y<board.GetLength(1)-2)) {
-					// Left and Right edge
-					board[x,y] = 1;
-					GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-					cube.transform.position = new Vector3(x, y, 0);
-					Material material = new Material(Shader.Find ("Diffuse"));
-					material.color = Color.black;
-					cube.GetComponent<Renderer>().material = material;
-					cube.transform.parent = transform;
-				}
 			}
 		}
 	}
@@ -213,6 +229,24 @@ public class Tetris : MonoBehaviour {
 		return obj;
 	}
 
+	bool CheckMove(Vector3 a, Vector3 b, Vector3 c, Vector3 d) {
+		//Check if we move a block will it hit something
+		if (board [Mathf.RoundToInt (a.x), Mathf.RoundToInt (a.y - 1)] == 1) {
+			return false;
+		}
+		if (board [Mathf.RoundToInt (b.x), Mathf.RoundToInt (b.y - 1)] == 1) {
+			return false;
+		}
+		if (board [Mathf.RoundToInt (c.x), Mathf.RoundToInt (c.y - 1)] == 1) {
+			return false;
+		}
+		if (board [Mathf.RoundToInt (d.x), Mathf.RoundToInt (d.y - 1)] == 1) {
+			return false;
+		}
+		
+		return true;
+	}
+
 	void moveDown(){
 		//Spawned blocks position 
 		if (shapes.Count != 4)
@@ -254,24 +288,6 @@ public class Tetris : MonoBehaviour {
 			shapes.Clear(); //Clear spawned blocks from array
 			spawn = false; //Spawn a new block
 		}
-	}
-
-	bool CheckMove(Vector3 a, Vector3 b, Vector3 c, Vector3 d) {
-		//Check if we move a block will it hit something
-		if (board [Mathf.RoundToInt (a.x), Mathf.RoundToInt (a.y - 1)] == 1) {
-			return false;
-		}
-		if (board [Mathf.RoundToInt (b.x), Mathf.RoundToInt (b.y - 1)] == 1) {
-			return false;
-		}
-		if (board [Mathf.RoundToInt (c.x), Mathf.RoundToInt (c.y - 1)] == 1) {
-			return false;
-		}
-		if (board [Mathf.RoundToInt (d.x), Mathf.RoundToInt (d.y - 1)] == 1) {
-			return false;
-		}
-
-		return true;
 	}
 
 	//Check specific row for match
@@ -334,10 +350,9 @@ public class Tetris : MonoBehaviour {
 		c.parent = pivot.transform;
 		d.parent = pivot.transform;
 		
-		currentRot +=90;//Add rotation
-		if(currentRot==360){ //Reset rotation
+		currentRot +=90;    //Add rotation
+		if(currentRot==360) //Reset rotation
 			currentRot = 0;
-		}
 		
 		pivot.transform.localEulerAngles = new Vector3(0,0,currentRot);
 		
@@ -383,37 +398,26 @@ public class Tetris : MonoBehaviour {
 				//If rotated block hit any other block or edge, after rotation
 				return false; //Rotate in default position - previous
 			}
-		}
-		else{//If the block is not in the board
+		} else {//If the block is not in the board
 			return false;//Do not rotate
 		}
+
 		if(Mathf.RoundToInt(b.x)<board.GetLength(0)-1){
-			if(board[Mathf.RoundToInt(b.x),Mathf.RoundToInt(b.y)]==1){
+			if(board[Mathf.RoundToInt(b.x),Mathf.RoundToInt(b.y)]==1)
 				return false; 
-			}
-		}
-		else{
-			return false;
-		}
+		} else { return false; }
+
 		if(Mathf.RoundToInt(c.x)<board.GetLength(0)-1){
-			if(board[Mathf.RoundToInt(c.x),Mathf.RoundToInt(c.y)]==1){
-				
+			if(board[Mathf.RoundToInt(c.x),Mathf.RoundToInt(c.y)]==1)
 				return false; 
-			}
-		}
-		else{
-			return false;
-		}
+		} else { return false; }
+
 		if(Mathf.RoundToInt(d.x)<board.GetLength(0)-1){
-			if(board[Mathf.RoundToInt(d.x),Mathf.RoundToInt(d.y)]==1){
-				
+			if(board[Mathf.RoundToInt(d.x),Mathf.RoundToInt(d.y)]==1)
 				return false;
-			}
-		}
-		else{
-			return false;
-		}
-		
-		return true; //We can rotate
+		} else { return false; }
+
+		//We can rotate
+		return true; 
 	}
 }
