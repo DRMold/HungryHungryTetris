@@ -32,7 +32,8 @@ public class Tetris : MonoBehaviour {
 	// Is the game over?
 	private bool gameOver;
 	//Current shape rotation
-	private int currentRot = 0;
+	private int currentRot1 = 0;
+	private int currentRot2 = 0;
 	//Current pivot of shape
 	private GameObject pivot1;
 	private GameObject pivot2;
@@ -53,7 +54,6 @@ public class Tetris : MonoBehaviour {
 	}
 
 	//Create Game Boards
-	//TODO:Modify this function so that two play areas are generated instead of one
 	void GenBoards() {
 		for (int x=0; x<board1.GetLength(0); x++) {
 			for (int y=0; y<board1.GetLength(1);y++) {
@@ -133,7 +133,8 @@ public class Tetris : MonoBehaviour {
 			StartCoroutine("Wait");
 			spawn = true;
 			//Reset rotation 
-			currentRot = 0;
+			currentRot1 = 0;
+			currentRot2 = 0;
 		}
 
 		//////////////////////////////////////////////////////
@@ -144,55 +145,105 @@ public class Tetris : MonoBehaviour {
 		//          -> P1 Controls: <-, ->, space
 		//          -> P2 Controls:  A,  D,  S or something, idk
 
-//		//If there is a block
-//		if (spawn && shapes.Count == 4) {
-//			//Get spawned block pos
-//			Vector3 a = shapes[0].transform.position;
-//			Vector3 b = shapes[1].transform.position;
-//			Vector3 c = shapes[2].transform.position;
-//			Vector3 d = shapes[3].transform.position;
-//
-//			//Move Left
-//			if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-//				//Can we even move left?
-//				if (CheckUserMove(a,b,c,d,true)) {
-//					a.x-=1;
-//					b.x-=1;
-//					c.x-=1;
-//					d.x-=1;
-//
-//					pivot.transform.position = new Vector3(pivot.transform.position.x-1, pivot.transform.position.y, pivot.transform.position.z);
-//					
-//					shapes[0].transform.position = a;
-//					shapes[1].transform.position = b; 
-//					shapes[2].transform.position = c; 
-//					shapes[3].transform.position = d; 
-//				}
-//			}
-//			//Move Right
-//			if (Input.GetKeyDown(KeyCode.RightArrow)) {
-//				//Can we even move right?
-//				if (CheckUserMove(a,b,c,d,false)) {
-//					a.x+=1;
-//					b.x+=1;
-//					c.x+=1;
-//					d.x+=1;
-//					
-//					pivot.transform.position = new Vector3(pivot.transform.position.x+1, pivot.transform.position.y, pivot.transform.position.z);
-//
-//					shapes[0].transform.position = a;
-//					shapes[1].transform.position = b; 
-//					shapes[2].transform.position = c; 
-//					shapes[3].transform.position = d; 
-//				}
-//			}
-//			//Drop Piece
-//			if (Input.GetKey (KeyCode.DownArrow)) { moveDown(); }
-//			//Roatate Piece
-//			if(Input.GetKeyDown(KeyCode.Space)){
-//				Rotate(shapes[0].transform,shapes[1].transform,shapes[2].transform,shapes[3].transform);	
-//			}
-//		}
+		//P1 Controls
+		if (spawn && shapes1.Count == 4) {
+			//Get spawned block pos
+			Vector3 a = shapes1[0].transform.position;
+			Vector3 b = shapes1[1].transform.position;
+			Vector3 c = shapes1[2].transform.position;
+			Vector3 d = shapes1[3].transform.position;
+
+			//Move Left
+			if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+				//Can we even move left?
+				if (CheckUserMove(a,b,c,d,true, false)) {
+					a.x-=1;
+					b.x-=1;
+					c.x-=1;
+					d.x-=1;
+
+					pivot1.transform.position = new Vector3(pivot1.transform.position.x-1, pivot1.transform.position.y, pivot1.transform.position.z);
+					
+					shapes1[0].transform.position = a;
+					shapes1[1].transform.position = b; 
+					shapes1[2].transform.position = c; 
+					shapes1[3].transform.position = d; 
+				}
+			}
+			//Move Right
+			if (Input.GetKeyDown(KeyCode.RightArrow)) {
+				//Can we even move right?
+				if (CheckUserMove(a,b,c,d,false, false)) {
+					a.x+=1;
+					b.x+=1;
+					c.x+=1;
+					d.x+=1;
+					
+					pivot1.transform.position = new Vector3(pivot1.transform.position.x+1, pivot1.transform.position.y, pivot1.transform.position.z);
+
+					shapes1[0].transform.position = a;
+					shapes1[1].transform.position = b; 
+					shapes1[2].transform.position = c; 
+					shapes1[3].transform.position = d; 
+				}
+			}
+			//Drop Piece
+			if (Input.GetKey (KeyCode.DownArrow)) { moveDown(); }
+			//Roatate Piece
+			if(Input.GetKey(KeyCode.UpArrow)){
+				Rotate(shapes1[0].transform,shapes1[1].transform,shapes1[2].transform,shapes1[3].transform, false);	
+			}
+		}
+
+		//P2 Controls
+		if (spawn && shapes2.Count == 4) {
+			//Get spawned block pos
+			Vector3 a = shapes2[0].transform.position;
+			Vector3 b = shapes2[1].transform.position;
+			Vector3 c = shapes2[2].transform.position;
+			Vector3 d = shapes2[3].transform.position;
+			
+			//Move Left
+			if (Input.GetKeyDown(KeyCode.D)) {
+				//Can we even move left?
+				if (CheckUserMove(a,b,c,d,true, true)) {
+					a.x-=1;
+					b.x-=1;
+					c.x-=1;
+					d.x-=1;
+					
+					pivot2.transform.position = new Vector3(pivot2.transform.position.x-1, pivot2.transform.position.y, pivot2.transform.position.z);
+					
+					shapes2[0].transform.position = a;
+					shapes2[1].transform.position = b; 
+					shapes2[2].transform.position = c; 
+					shapes2[3].transform.position = d; 
+				}
+			}
+			//Move Right
+			if (Input.GetKeyDown(KeyCode.A)) {
+				//Can we even move right?
+				if (CheckUserMove(a,b,c,d,false, true)) {
+					a.x+=1;
+					b.x+=1;
+					c.x+=1;
+					d.x+=1;
+					
+					pivot2.transform.position = new Vector3(pivot2.transform.position.x+1, pivot2.transform.position.y, pivot2.transform.position.z);
+					
+					shapes2[0].transform.position = a;
+					shapes2[1].transform.position = b; 
+					shapes2[2].transform.position = c; 
+					shapes2[3].transform.position = d; 
+				}
+			}
+			//Drop Piece
+			if (Input.GetKey (KeyCode.S)) { moveDown(); }
+			//Roatate Piece
+			if(Input.GetKey(KeyCode.W)){
+				Rotate(shapes2[0].transform,shapes2[1].transform,shapes2[2].transform,shapes2[3].transform, true);	
+			}
+		}
 	}
 
 	void SpawnShape(bool isBoard2) {
@@ -539,85 +590,185 @@ public class Tetris : MonoBehaviour {
 		SpawnShape (false);
 	}
 
-//	///////////////////////////////////////
-//	/// Player Control Functions
-//	///////////////////////////////////////
-//
-//	void Rotate(Transform a, Transform b, Transform c, Transform d){
-//		//Set parent to pivot so we can rotate
-//		a.parent = pivot.transform;
-//		b.parent = pivot.transform;
-//		c.parent = pivot.transform;
-//		d.parent = pivot.transform;
-//		
-//		currentRot +=90;    //Add rotation
-//		if(currentRot==360) //Reset rotation
-//			currentRot = 0;
-//		
-//		pivot.transform.localEulerAngles = new Vector3(0,0,currentRot);
-//		
-//		a.parent = null;
-//		b.parent = null;
-//		c.parent = null;
-//		d.parent = null;
-//		
-//		if(CheckRotate(a.position,b.position,c.position,d.position) == false){
-//			//Set parent to pivot so we can rotate
-//			a.parent = pivot.transform;
-//			b.parent = pivot.transform;
-//			c.parent = pivot.transform;
-//			d.parent = pivot.transform;
-//			
-//			currentRot-=90;
-//			pivot.transform.localEulerAngles = new Vector3(0,0,currentRot);
-//			
-//			a.parent = null;
-//			b.parent = null;
-//			c.parent = null;
-//			d.parent = null;
-//		}
-//	} 
-//
-//	bool CheckUserMove(Vector3 a, Vector3 b, Vector3 c, Vector3 d, bool dir) {
-//		//Will Player movement cause collision?
-//		if (dir) { //Left
-//			if (board[Mathf.RoundToInt(a.x-1),Mathf.RoundToInt(a.y)]==1 || board[Mathf.RoundToInt(b.x-1),Mathf.RoundToInt(b.y)]==1 || board[Mathf.RoundToInt(c.x-1),Mathf.RoundToInt(c.y)]==1 || board[Mathf.RoundToInt(d.x-1),Mathf.RoundToInt(d.y)]==1){
-//				return false;
-//			}
-//		} else { //Right
-//			if(board[Mathf.RoundToInt(a.x+1),Mathf.RoundToInt(a.y)]==1 || board[Mathf.RoundToInt(b.x+1),Mathf.RoundToInt(b.y)]==1 || board[Mathf.RoundToInt(c.x+1),Mathf.RoundToInt(c.y)]==1 || board[Mathf.RoundToInt(d.x+1),Mathf.RoundToInt(d.y)]==1){
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
-//	
-//	bool CheckRotate(Vector3 a, Vector3 b, Vector3 c, Vector3 d, int[,] board){
-//		if(Mathf.RoundToInt(a.x)<board.GetLength(0)-1){//Check if block is in board
-//			if(board[Mathf.RoundToInt(a.x),Mathf.RoundToInt(a.y)]==1){
-//				//If rotated block hit any other block or edge, after rotation
-//				return false; //Rotate in default position - previous
-//			}
-//		} else {//If the block is not in the board
-//			return false;//Do not rotate
-//		}
-//
-//		if(Mathf.RoundToInt(b.x)<board.GetLength(0)-1){
-//			if(board[Mathf.RoundToInt(b.x),Mathf.RoundToInt(b.y)]==1)
-//				return false; 
-//		} else { return false; }
-//
-//		if(Mathf.RoundToInt(c.x)<board.GetLength(0)-1){
-//			if(board[Mathf.RoundToInt(c.x),Mathf.RoundToInt(c.y)]==1)
-//				return false; 
-//		} else { return false; }
-//
-//		if(Mathf.RoundToInt(d.x)<board.GetLength(0)-1){
-//			if(board[Mathf.RoundToInt(d.x),Mathf.RoundToInt(d.y)]==1)
-//				return false;
-//		} else { return false; }
-//
-//		//We can rotate
-//		return true; 
-//	}
+	///////////////////////////////////////
+	/// Player Control Functions
+	///////////////////////////////////////
+
+	void Rotate(Transform a, Transform b, Transform c, Transform d, bool isBoard2){
+		if (isBoard2) {
+			a.parent = pivot2.transform;
+			b.parent = pivot2.transform;
+			c.parent = pivot2.transform;
+			d.parent = pivot2.transform;
+			
+			currentRot2 +=90;    //Add rotation
+			if(currentRot2==360) //Reset rotation
+				currentRot2 = 0;
+			
+			pivot2.transform.localEulerAngles = new Vector3(0,0,currentRot2);
+			
+			a.parent = null;
+			b.parent = null;
+			c.parent = null;
+			d.parent = null;
+			
+			if(CheckRotate(a.position,b.position,c.position,d.position, true) == false){
+				//Set parent to pivot so we can rotate
+				a.parent = pivot2.transform;
+				b.parent = pivot2.transform;
+				c.parent = pivot2.transform;
+				d.parent = pivot2.transform;
+				
+				currentRot2-=90;
+				pivot2.transform.localEulerAngles = new Vector3(0,0,currentRot2);
+				
+				a.parent = null;
+				b.parent = null;
+				c.parent = null;
+				d.parent = null;
+			}
+		} else {
+			//Set parent to pivot so we can rotate
+			a.parent = pivot1.transform;
+			b.parent = pivot1.transform;
+			c.parent = pivot1.transform;
+			d.parent = pivot1.transform;
+		
+			currentRot1 += 90;    //Add rotation
+			if (currentRot1 == 360) //Reset rotation
+				currentRot1 = 0;
+		
+			pivot1.transform.localEulerAngles = new Vector3 (0, 0, currentRot1);
+		
+			a.parent = null;
+			b.parent = null;
+			c.parent = null;
+			d.parent = null;
+		
+			if (CheckRotate (a.position, b.position, c.position, d.position, false) == false) {
+				//Set parent to pivot so we can rotate
+				a.parent = pivot1.transform;
+				b.parent = pivot1.transform;
+				c.parent = pivot1.transform;
+				d.parent = pivot1.transform;
+			
+				currentRot1 -= 90;
+				pivot1.transform.localEulerAngles = new Vector3 (0, 0, currentRot1);
+			
+				a.parent = null;
+				b.parent = null;
+				c.parent = null;
+				d.parent = null;
+			}
+		}
+	} 
+
+	bool CheckUserMove(Vector3 a, Vector3 b, Vector3 c, Vector3 d, bool dir, bool isBoard2) {
+		//Will Player movement cause collision?
+		if (isBoard2) {
+			if (dir) { //Left
+				if (board2 [Mathf.RoundToInt (a.x - 21), Mathf.RoundToInt (a.y)] == 1 
+				    || board2 [Mathf.RoundToInt (b.x - 21), Mathf.RoundToInt (b.y)] == 1 
+				    || board2 [Mathf.RoundToInt (c.x - 21), Mathf.RoundToInt (c.y)] == 1 
+				    || board2 [Mathf.RoundToInt (d.x - 21), Mathf.RoundToInt (d.y)] == 1) {
+					return false;
+				}
+			} else { //Right
+				if (board2 [Mathf.RoundToInt (a.x - 19), Mathf.RoundToInt (a.y)] == 1 
+				    || board2 [Mathf.RoundToInt (b.x - 19), Mathf.RoundToInt (b.y)] == 1 
+				    || board2 [Mathf.RoundToInt (c.x - 19), Mathf.RoundToInt (c.y)] == 1 
+				    || board2 [Mathf.RoundToInt (d.x - 19), Mathf.RoundToInt (d.y)] == 1) {
+					return false;
+				}
+			}
+			return true;
+		} else {
+			if (dir) { //Left
+				if (board1 [Mathf.RoundToInt (a.x - 1), Mathf.RoundToInt (a.y)] == 1 
+				    || board1 [Mathf.RoundToInt (b.x - 1), Mathf.RoundToInt (b.y)] == 1 
+				    || board1 [Mathf.RoundToInt (c.x - 1), Mathf.RoundToInt (c.y)] == 1 
+				    || board1 [Mathf.RoundToInt (d.x - 1), Mathf.RoundToInt (d.y)] == 1) {
+					return false;
+				}
+			} else { //Right
+				if (board1 [Mathf.RoundToInt (a.x + 1), Mathf.RoundToInt (a.y)] == 1 
+				    || board1 [Mathf.RoundToInt (b.x + 1), Mathf.RoundToInt (b.y)] == 1 
+				    || board1 [Mathf.RoundToInt (c.x + 1), Mathf.RoundToInt (c.y)] == 1 
+				    || board1 [Mathf.RoundToInt (d.x + 1), Mathf.RoundToInt (d.y)] == 1) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+	
+	bool CheckRotate(Vector3 a, Vector3 b, Vector3 c, Vector3 d, bool isBoard2){
+		if (isBoard2) {
+			if (Mathf.RoundToInt (a.x-20) < board2.GetLength (0) - 1) {//Check if block is in board
+				if (board2 [Mathf.RoundToInt (a.x-20), Mathf.RoundToInt (a.y)] == 1) {
+					//If rotated block hit any other block or edge, after rotation
+					return false; //Rotate in default position - previous
+				}
+			} else {//If the block is not in the board
+				return false;//Do not rotate
+			}
+			
+			if (Mathf.RoundToInt (b.x-20) < board2.GetLength (0) - 1) {
+				if (board2 [Mathf.RoundToInt (b.x-20), Mathf.RoundToInt (b.y)] == 1)
+					return false; 
+			} else {
+				return false;
+			}
+			
+			if (Mathf.RoundToInt (c.x-20) < board2.GetLength (0) - 1) {
+				if (board2 [Mathf.RoundToInt (c.x-20), Mathf.RoundToInt (c.y)] == 1)
+					return false; 
+			} else {
+				return false;
+			}
+			
+			if (Mathf.RoundToInt (d.x-20) < board2.GetLength (0) - 1) {
+				if (board2 [Mathf.RoundToInt (d.x-20), Mathf.RoundToInt (d.y)] == 1)
+					return false;
+			} else {
+				return false;
+			}
+			
+			//We can rotate
+			return true; 
+		} else {
+			if (Mathf.RoundToInt (a.x) < board1.GetLength (0) - 1) {//Check if block is in board
+				if (board1 [Mathf.RoundToInt (a.x), Mathf.RoundToInt (a.y)] == 1) {
+					//If rotated block hit any other block or edge, after rotation
+					return false; //Rotate in default position - previous
+				}
+			} else {//If the block is not in the board
+				return false;//Do not rotate
+			}
+
+			if (Mathf.RoundToInt (b.x) < board1.GetLength (0) - 1) {
+				if (board1 [Mathf.RoundToInt (b.x), Mathf.RoundToInt (b.y)] == 1)
+					return false; 
+			} else {
+				return false;
+			}
+
+			if (Mathf.RoundToInt (c.x) < board1.GetLength (0) - 1) {
+				if (board1 [Mathf.RoundToInt (c.x), Mathf.RoundToInt (c.y)] == 1)
+					return false; 
+			} else {
+				return false;
+			}
+
+			if (Mathf.RoundToInt (d.x) < board1.GetLength (0) - 1) {
+				if (board1 [Mathf.RoundToInt (d.x), Mathf.RoundToInt (d.y)] == 1)
+					return false;
+			} else {
+				return false;
+			}
+
+			//We can rotate
+			return true; 
+		}
+	}
 }
