@@ -6,7 +6,7 @@ public class PrevTetris : MonoBehaviour {
 	//Board
 	public int[,] board;
 	//Block
-	public Transform block;
+	public Transform block = Transform.;
 	//Spawn Bool
 	public bool spawn;
 	//Sec before nxt blk spawn
@@ -15,6 +15,8 @@ public class PrevTetris : MonoBehaviour {
 	public float blkFallSpeed = 0.5f;
 	//Game Over Level
 	public int gameOverHeight = 22; // 20 board + 2 edge
+	//Queue
+	public Queue<int> shapeQueue = new Queue<int>();
 	//Current Shape
 	private List<Transform> shapes = new List<Transform>();
 	private bool gameOver;
@@ -37,6 +39,8 @@ public class PrevTetris : MonoBehaviour {
 		board = new int[12,24]; // Set board width and height
 		GenBoard ();
 
+		shapeQueue.Enqueue(Random.Range(0, 6));
+
 		InvokeRepeating ("moveDown", blkFallSpeed, blkFallSpeed); //move blk down
 	}
 
@@ -50,7 +54,10 @@ public class PrevTetris : MonoBehaviour {
 			//Reset rotation 
 			currentRot = 0;
 		}
-
+		if (gameOver)
+		{
+			Time.timeScale = 0;
+		}
 		//////////////////////////////////////////////////////
 		// Begin Player Input Checks
 		/////////////////////////////////////////////////////
@@ -144,7 +151,9 @@ public class PrevTetris : MonoBehaviour {
 	}
 
 	void SpawnShape() {
-		int shape = Random.Range(0, 6); //Rand shape
+//		int shape = Random.Range(0, 6); //Rand shape
+		int shape = shapeQueue.Dequeue();
+		shapeQueue.Enqueue(Random.Range(0, 6));
 		int height = (int)transform.position.y + board.GetLength(1) - 4;
 		int xPos = (int)transform.position.x + board.GetLength(0) / 2 - 1;
 		//Create pivot
@@ -159,7 +168,7 @@ public class PrevTetris : MonoBehaviour {
 
 			Debug.Log ("Spawned S Shape");
 		} else if (shape == 1) { //I Shape
-			pivot.transform.position = new Vector3(xPos+ 0.5f, height+1.5f, 0);
+			pivot.transform.position = new Vector3(xPos+0.5f, height+1.5f, 0);
 			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
 			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
 			shapes.Add (GenBlock(new Vector3(xPos, height+2, 0)));
@@ -175,7 +184,7 @@ public class PrevTetris : MonoBehaviour {
 
 			Debug.Log ("Spawned O Shape");
 		} else if (shape == 3) { //J Shape
-			pivot.transform.position = new Vector3(xPos, height+2, 0);
+			pivot.transform.position = new Vector3(xPos, height+1, 0);
 			shapes.Add (GenBlock(new Vector3(xPos, height, 0)));
 			shapes.Add (GenBlock(new Vector3(xPos+1, height, 0)));
 			shapes.Add (GenBlock(new Vector3(xPos, height+1, 0)));
