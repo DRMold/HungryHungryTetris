@@ -6,7 +6,7 @@ public class PrevTetris : MonoBehaviour {
 	//Board
 	public int[,] board;
 	//Block
-	public Transform block = Transform.;
+	public Transform block;
 	//Spawn Bool
 	public bool spawn;
 	//Sec before nxt blk spawn
