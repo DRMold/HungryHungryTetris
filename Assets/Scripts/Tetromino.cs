@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Hockey : MonoBehaviour {
+public class Tetromino : MonoBehaviour {
+	public int shape;
 
 	// Use this for initialization
 	void Start () {
