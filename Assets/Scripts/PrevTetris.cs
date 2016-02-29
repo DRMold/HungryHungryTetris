@@ -27,6 +27,12 @@ public class PrevTetris : MonoBehaviour
     //Current pivot of shape
     private GameObject pivot;
 
+    // Previous mouse position
+    private Vector3 previousPosition;
+
+    // Current block positions
+    private Vector3 curA, curB, curC, curD;
+
     // Controls
     public KeyCode rot, down, left, right;
 
@@ -76,6 +82,10 @@ public class PrevTetris : MonoBehaviour
             Vector3 d = shapes[3].transform.position;
 
             //Move Left
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("WORKING");
+            }
             if (Input.GetKeyDown(left))
             {
                 //Can we even move left?
@@ -505,5 +515,71 @@ public class PrevTetris : MonoBehaviour
         }
         Debug.Log("Can Rotate");
         return true; //We can rotate
+    }
+
+    ///////////////////////////////////////
+    /// Mouse Test Functions
+    ///////////////////////////////////////
+
+    void OnMouseDown()
+    {
+        Debug.Log("Mouse is DOWN");
+        previousPosition = Input.mousePosition;
+
+        //Get spawned block pos
+        curA = shapes[0].transform.position;
+        curB = shapes[1].transform.position;
+        curC = shapes[2].transform.position;
+        curD = shapes[3].transform.position;
+    }
+
+    void OnMouseDrag()
+    {
+        Debug.Log("Mouse is DRAGGING");
+        Vector3 cursorPos = Input.mousePosition;
+        if (board[Mathf.RoundToInt(cursorPos.x), Mathf.RoundToInt(cursorPos.y)] == 1)
+        {
+            if (Mathf.Abs(cursorPos.x - previousPosition.x) > 1)
+            {
+                if (cursorPos.x - previousPosition.x < 0)
+                {
+                    //Can we even move left?
+                    if (CheckUserMove(curA, curB, curC, curD, true))
+                    {
+                        curA.x -= 1;
+                        curB.x -= 1;
+                        curC.x -= 1;
+                        curD.x -= 1;
+
+                        pivot.transform.position = new Vector3(pivot.transform.position.x - 1, pivot.transform.position.y, pivot.transform.position.z);
+
+                        shapes[0].transform.position = curA;
+                        shapes[1].transform.position = curB; 
+                        shapes[2].transform.position = curC; 
+                        shapes[3].transform.position = curD; 
+                    }
+                }
+                //Move Right
+                if (cursorPos.x - previousPosition.x > 0)
+                {
+                    //Can we even move right?
+                    if (CheckUserMove(curA, curB, curC, curD, false))
+                    {
+                        curA.x += 1;
+                        curB.x += 1;
+                        curC.x += 1;
+                        curD.x += 1;
+
+                        pivot.transform.position = new Vector3(pivot.transform.position.x + 1, pivot.transform.position.y, pivot.transform.position.z);
+
+                        shapes[0].transform.position = curA;
+                        shapes[1].transform.position = curB;
+                        shapes[2].transform.position = curC;
+                        shapes[3].transform.position = curD;
+                    }
+                }
+                previousPosition = cursorPos;
+            }
+        }
     }
 }
