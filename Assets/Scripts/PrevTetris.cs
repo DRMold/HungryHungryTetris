@@ -21,6 +21,11 @@ public class PrevTetris : MonoBehaviour
     public Queue<int> shapeQueue = new Queue<int>();
     //Current Shape
     private List<Transform> shapes = new List<Transform>();
+
+    // Camera attached to this board
+    private Camera myCam;
+    private bool notDragged;
+
     private bool gameOver;
     //Current shape rotation
     private int currentRot = 0;
@@ -29,9 +34,6 @@ public class PrevTetris : MonoBehaviour
 
     // Previous mouse position
     private Vector3 previousPosition;
-
-    // Current block positions
-    private Vector3 curA, curB, curC, curD;
 
     // Controls
     public KeyCode rot, down, left, right;
@@ -44,13 +46,13 @@ public class PrevTetris : MonoBehaviour
         //+1 - Top Edge
         //20 - Height
         //+1 - Down Edge
-
+        myCam = transform.GetChild(0).gameObject.GetComponent<Camera>();
         board = new int[12, 24]; // Set board width and height
         GenBoard();
 
         shapeQueue.Enqueue(Random.Range(0, 6));
 
-        InvokeRepeating("moveDown", blkFallSpeed, blkFallSpeed); //move blk down
+        InvokeRepeating("MoveDown", blkFallSpeed, blkFallSpeed); //move blk down
     }
 
     // Update is called once per frame
@@ -82,10 +84,6 @@ public class PrevTetris : MonoBehaviour
             Vector3 d = shapes[3].transform.position;
 
             //Move Left
-            if (Input.GetMouseButtonDown(0))
-            {
-                Debug.Log("WORKING");
-            }
             if (Input.GetKeyDown(left))
             {
                 //Can we even move left?
@@ -126,7 +124,7 @@ public class PrevTetris : MonoBehaviour
             //Drop Piece
             if (Input.GetKey(down))
             {
-                moveDown();
+                MoveDown();
             }
             //Roatate Piece
             if (Input.GetKeyDown(rot))
@@ -272,7 +270,7 @@ public class PrevTetris : MonoBehaviour
         return obj;
     }
 
-    void moveDown()
+    void MoveDown()
     {
         //Spawned blocks position 
         if (shapes.Count != 4)
@@ -310,8 +308,8 @@ public class PrevTetris : MonoBehaviour
             board[Mathf.RoundToInt(d.x - transform.position.x), Mathf.RoundToInt(d.y - transform.position.y)] = 1;
 
             //****************************************************
-            checkRow(1); //Check for any match
-            checkRow(gameOverHeight); //Check for game over
+            CheckRow(1); //Check for any match
+            CheckRow(gameOverHeight); //Check for game over
             //****************************************************
 
             shapes.Clear(); //Clear spawned blocks from array
@@ -334,7 +332,7 @@ public class PrevTetris : MonoBehaviour
     }
 
     //Check specific row for match
-    void checkRow(int y)
+    void CheckRow(int y)
     {
         GameObject[] blocks = GameObject.FindGameObjectsWithTag("Block"); //All blocks in the scene
         int count = 0; //Blocks found in a row
@@ -381,11 +379,11 @@ public class PrevTetris : MonoBehaviour
                     }
                 }
             }
-            checkRow(y); //We moved blocks down, check again this row
+            CheckRow(y); //We moved blocks down, check again this row
         }
         else if (y + 1 < board.GetLength(1) - 3)
             {
-                checkRow(y + 1); //Check row above this
+                CheckRow(y + 1); //Check row above this
             }
     }
 
@@ -523,62 +521,73 @@ public class PrevTetris : MonoBehaviour
 
     void OnMouseDown()
     {
-        Debug.Log("Mouse is DOWN");
-        previousPosition = Input.mousePosition;
+        previousPosition = myCam.ScreenToWorldPoint(Input.mousePosition);
+        notDragged = true;
+    }
 
-        //Get spawned block pos
-        curA = shapes[0].transform.position;
-        curB = shapes[1].transform.position;
-        curC = shapes[2].transform.position;
-        curD = shapes[3].transform.position;
+    void OnMouseUp()
+    {
+        if (notDragged)
+            Rotate(shapes[0].transform, shapes[1].transform, shapes[2].transform, shapes[3].transform); 
+        notDragged = false;
     }
 
     void OnMouseDrag()
     {
-        Debug.Log("Mouse is DRAGGING");
-        Vector3 cursorPos = Input.mousePosition;
-        if (board[Mathf.RoundToInt(cursorPos.x), Mathf.RoundToInt(cursorPos.y)] == 1)
+        notDragged = false;
+        Vector3 cursorPos = myCam.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 boardPos  = new Vector2(Mathf.RoundToInt(cursorPos.x - transform.position.x), Mathf.RoundToInt(cursorPos.y - transform.position.y));
+        if (boardPos.x >= 0 && boardPos.x < 12 &&
+            boardPos.y >= 0 && boardPos.y < 24)
         {
             if (Mathf.Abs(cursorPos.x - previousPosition.x) > 1)
             {
-                if (cursorPos.x - previousPosition.x < 0)
+                //Get spawned block pos
+                Vector3 a = shapes[0].transform.position;
+                Vector3 b = shapes[1].transform.position;
+                Vector3 c = shapes[2].transform.position;
+                Vector3 d = shapes[3].transform.position;
+
+                // Move left
+                if (cursorPos.x < previousPosition.x)
                 {
                     //Can we even move left?
-                    if (CheckUserMove(curA, curB, curC, curD, true))
+                    if (CheckUserMove(a, b, c, d, true))
                     {
-                        curA.x -= 1;
-                        curB.x -= 1;
-                        curC.x -= 1;
-                        curD.x -= 1;
+                        a.x -= 1;
+                        b.x -= 1;
+                        c.x -= 1;
+                        d.x -= 1;
 
                         pivot.transform.position = new Vector3(pivot.transform.position.x - 1, pivot.transform.position.y, pivot.transform.position.z);
-
-                        shapes[0].transform.position = curA;
-                        shapes[1].transform.position = curB; 
-                        shapes[2].transform.position = curC; 
-                        shapes[3].transform.position = curD; 
                     }
                 }
                 //Move Right
-                if (cursorPos.x - previousPosition.x > 0)
+                else
                 {
                     //Can we even move right?
-                    if (CheckUserMove(curA, curB, curC, curD, false))
+                    if (CheckUserMove(a, b, c, d, false))
                     {
-                        curA.x += 1;
-                        curB.x += 1;
-                        curC.x += 1;
-                        curD.x += 1;
+                        a.x += 1;
+                        b.x += 1;
+                        c.x += 1;
+                        d.x += 1;
 
                         pivot.transform.position = new Vector3(pivot.transform.position.x + 1, pivot.transform.position.y, pivot.transform.position.z);
-
-                        shapes[0].transform.position = curA;
-                        shapes[1].transform.position = curB;
-                        shapes[2].transform.position = curC;
-                        shapes[3].transform.position = curD;
                     }
                 }
-                previousPosition = cursorPos;
+
+                shapes[0].transform.position = a;
+                shapes[1].transform.position = b;
+                shapes[2].transform.position = c;
+                shapes[3].transform.position = d;
+
+                previousPosition.x = cursorPos.x;
+            }
+            else if (previousPosition.y - cursorPos.y > 1)
+            {
+                MoveDown();
+                previousPosition.y = cursorPos.y;
             }
         }
     }
