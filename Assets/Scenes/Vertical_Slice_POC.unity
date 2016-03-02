@@ -373,6 +373,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1141336502}
   - 114: {fileID: 1141336503}
+  - 65: {fileID: 1141336504}
   m_Layer: 0
   m_Name: P3/4
   m_TagString: Untagged
@@ -407,6 +408,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cbcf9ad451e44846ba91bc363c3a10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nxtBlckSpawnTime: 1
+--- !u!65 &1141336504
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1141336501}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 17.0103436, y: 23.3973389, z: -4.12136841}
+  m_Center: {x: .204620361, y: -.0518836975, z: -2.5606842}
 --- !u!1 &1609835555
 GameObject:
   m_ObjectHideFlags: 0
