@@ -51,7 +51,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 166476}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -45.76889, y: 28.110725, z: 0}
+  m_LocalPosition: {x: 119.3936, y: 27.7092705, z: -14.7766113}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 415898}
@@ -67,7 +67,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 7d2399b6491774c48aeba0f8ae720104, type: 2}
+  - {fileID: 2100000, guid: db57393de4e0b214abf52859bf2f916a, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -75,10 +75,8 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -89,7 +87,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158952}
-  m_Mesh: {fileID: 4300000, guid: 30e4692fad1594cb89b0f05c3d4b3eba, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 77b238adb29b6e44daa50fe2f2165a0d, type: 3}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
