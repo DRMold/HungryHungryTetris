@@ -26,7 +26,7 @@ public class PrevTetris : MonoBehaviour
     private Camera myCam;
     private bool notDragged;
 
-    private bool gameOver;
+    private static bool gameOver;
     //Current shape rotation
     private int currentRot = 0;
     //Current pivot of shape
@@ -75,7 +75,7 @@ public class PrevTetris : MonoBehaviour
         /////////////////////////////////////////////////////
 
         //If there is a block
-        if (spawn && shapes.Count == 4)
+        if (spawn && shapes.Count > 0 && !gameOver)
         {
             //Get spawned block pos
             Vector3 a = shapes[0].transform.position;
@@ -87,14 +87,16 @@ public class PrevTetris : MonoBehaviour
             if (Input.GetKeyDown(left))
             {
                 //Can we even move left?
-                if (CheckUserMove(a, b, c, d, true))
+                if (CheckUserMove(a, b, c, d, -1f))
                 {
                     a.x -= 1;
                     b.x -= 1;
                     c.x -= 1;
                     d.x -= 1;
 
-                    pivot.transform.position = new Vector3(pivot.transform.position.x - 1, pivot.transform.position.y, pivot.transform.position.z);
+                    pivot.transform.position = new Vector3(pivot.transform.position.x - 1, 
+                                                           pivot.transform.position.y, 
+                                                           pivot.transform.position.z);
 
                     shapes[0].transform.position = a;
                     shapes[1].transform.position = b; 
@@ -106,14 +108,16 @@ public class PrevTetris : MonoBehaviour
             if (Input.GetKeyDown(right))
             {
                 //Can we even move right?
-                if (CheckUserMove(a, b, c, d, false))
+                if (CheckUserMove(a, b, c, d, 1f))
                 {
                     a.x += 1;
                     b.x += 1;
                     c.x += 1;
                     d.x += 1;
 
-                    pivot.transform.position = new Vector3(pivot.transform.position.x + 1, pivot.transform.position.y, pivot.transform.position.z);
+                    pivot.transform.position = new Vector3(pivot.transform.position.x + 1, 
+                                                           pivot.transform.position.y, 
+                                                           pivot.transform.position.z);
 
                     shapes[0].transform.position = a;
                     shapes[1].transform.position = b; 
@@ -189,62 +193,69 @@ public class PrevTetris : MonoBehaviour
         int xPos = (int)transform.position.x + board.GetLength(0) / 2 - 1;
         //Create pivot
         pivot = new GameObject("RotateAround"); //Pivot of shape
-
+        List<Vector3> cubePosList = new List<Vector3>();
         if (shape == 0)
         { //S Shape
-            SetCubePositions(new Vector3(xPos, height + 1, 0),
-                             new Vector3(xPos, height, 0),
-                             new Vector3(xPos - 1, height, 0),
-                             new Vector3(xPos, height + 1, 0),
-                             new Vector3(xPos + 1, height + 1, 0));
+            cubePosList.Add(new Vector3(xPos, height, 0));
+            cubePosList.Add(new Vector3(xPos - 1, height, 0));
+            cubePosList.Add(new Vector3(xPos, height + 1, 0));
+            cubePosList.Add(new Vector3(xPos + 1, height + 1, 0));
+
+            SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
         }
         else if (shape == 1)
         { //I Shape
-            SetCubePositions(new Vector3(xPos + 0.5f, height + 1.5f, 0),
-                             new Vector3(xPos, height, 0),
-                             new Vector3(xPos, height + 1, 0),
-                             new Vector3(xPos, height + 2, 0),
-                             new Vector3(xPos, height + 3, 0));
+            cubePosList.Add(new Vector3(xPos, height, 0));
+            cubePosList.Add(new Vector3(xPos, height + 1, 0));
+            cubePosList.Add(new Vector3(xPos, height + 2, 0));
+            cubePosList.Add(new Vector3(xPos, height + 3, 0));
+
+            SetCubePositions(new Vector3(xPos + 0.5f, height + 1.5f, 0), cubePosList);
         }
         else if (shape == 2)
         { //O Shape
-            SetCubePositions(new Vector3(xPos + 0.5f, height + 0.5f, 0),
-                             new Vector3(xPos, height, 0),
-                             new Vector3(xPos + 1, height, 0),
-                             new Vector3(xPos, height + 1, 0),
-                             new Vector3(xPos + 1, height + 1, 0));
+            cubePosList.Add(new Vector3(xPos, height, 0));
+            cubePosList.Add(new Vector3(xPos + 1, height, 0));
+            cubePosList.Add(new Vector3(xPos, height + 1, 0));
+            cubePosList.Add(new Vector3(xPos + 1, height + 1, 0));
+
+            SetCubePositions(new Vector3(xPos + 0.5f, height + 0.5f, 0), cubePosList);
         }
         else if (shape == 3)
         { //J Shape
-            SetCubePositions(new Vector3(xPos, height + 1, 0),
-                             new Vector3(xPos, height, 0),
-                             new Vector3(xPos + 1, height, 0),
-                             new Vector3(xPos, height + 1, 0),
-                             new Vector3(xPos, height + 2, 0));
+            cubePosList.Add(new Vector3(xPos, height, 0));
+            cubePosList.Add(new Vector3(xPos + 1, height, 0));
+            cubePosList.Add(new Vector3(xPos, height + 1, 0));
+            cubePosList.Add(new Vector3(xPos, height + 2, 0));
+
+            SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
         }
         else if (shape == 4)
         { //T Shape
-            SetCubePositions(new Vector3(xPos, height, 0),
-                             new Vector3(xPos, height, 0),
-                             new Vector3(xPos - 1, height, 0),
-                             new Vector3(xPos + 1, height, 0),
-                             new Vector3(xPos, height + 1, 0));
+            cubePosList.Add(new Vector3(xPos, height, 0));
+            cubePosList.Add(new Vector3(xPos - 1, height, 0));
+            cubePosList.Add(new Vector3(xPos + 1, height, 0));
+            cubePosList.Add(new Vector3(xPos, height + 1, 0));
+
+            SetCubePositions(new Vector3(xPos, height, 0), cubePosList);
         }
         else if (shape == 5)
         { //L Shape
-            SetCubePositions(new Vector3(xPos, height + 1, 0),
-                             new Vector3(xPos, height, 0),
-                             new Vector3(xPos - 1, height, 0),
-                             new Vector3(xPos, height + 1, 0),
-                             new Vector3(xPos, height + 2, 0));
+            cubePosList.Add(new Vector3(xPos, height, 0));
+            cubePosList.Add(new Vector3(xPos - 1, height, 0));
+            cubePosList.Add(new Vector3(xPos, height + 1, 0));
+            cubePosList.Add(new Vector3(xPos, height + 2, 0));
+
+            SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
         }
         else if (shape == 6)
         { //Z Shape
-            SetCubePositions(new Vector3(xPos, height + 1, 0),
-                             new Vector3(xPos, height, 0),
-                             new Vector3(xPos + 1, height, 0),
-                             new Vector3(xPos, height + 1, 0),
-                             new Vector3(xPos - 1, height + 1, 0));
+            cubePosList.Add(new Vector3(xPos, height, 0));
+            cubePosList.Add(new Vector3(xPos + 1, height, 0));
+            cubePosList.Add(new Vector3(xPos, height + 1, 0));
+            cubePosList.Add(new Vector3(xPos - 1, height + 1, 0));
+
+            SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
         }
         else
         {
@@ -252,13 +263,13 @@ public class PrevTetris : MonoBehaviour
         }
     }
 
-    void SetCubePositions(Vector3 piv, Vector3 b1, Vector3 b2, Vector3 b3, Vector3 b4)
+    // Creates a pivot and individual blocks to form a tetris shape
+    // List format allows for any number of blocks to be spawned
+    void SetCubePositions(Vector3 piv, List<Vector3> cubePosList)
     {
         pivot.transform.position = piv;
-        shapes.Add(GenBlock(b1));
-        shapes.Add(GenBlock(b2));
-        shapes.Add(GenBlock(b3));
-        shapes.Add(GenBlock(b4));
+        for (int i = 0; i < cubePosList.Count; i++)
+            shapes.Add(GenBlock(cubePosList[i]));
     }
 
     //Create block at position
@@ -284,12 +295,14 @@ public class PrevTetris : MonoBehaviour
         if (CheckMove(a, b, c, d) == true)
         {
             //Move block down 1
-            a = new Vector3(Mathf.RoundToInt(a.x), Mathf.RoundToInt(a.y - 1.0f), a.z);
-            b = new Vector3(Mathf.RoundToInt(b.x), Mathf.RoundToInt(b.y - 1.0f), b.z);
-            c = new Vector3(Mathf.RoundToInt(c.x), Mathf.RoundToInt(c.y - 1.0f), c.z);
-            d = new Vector3(Mathf.RoundToInt(d.x), Mathf.RoundToInt(d.y - 1.0f), d.z);
+            a = new Vector3(a.x, Mathf.RoundToInt(a.y - 1.0f), a.z);
+            b = new Vector3(b.x, Mathf.RoundToInt(b.y - 1.0f), b.z);
+            c = new Vector3(c.x, Mathf.RoundToInt(c.y - 1.0f), c.z);
+            d = new Vector3(d.x, Mathf.RoundToInt(d.y - 1.0f), d.z);
 
-            pivot.transform.position = new Vector3(pivot.transform.position.x, pivot.transform.position.y - 1, pivot.transform.position.z);
+            pivot.transform.position = new Vector3(pivot.transform.position.x, 
+                                                   pivot.transform.position.y - 1, 
+                                                   pivot.transform.position.z);
 
             shapes[0].transform.position = a;
             shapes[1].transform.position = b; 
@@ -325,6 +338,12 @@ public class PrevTetris : MonoBehaviour
             board[Mathf.RoundToInt(c.x - transform.position.x), Mathf.RoundToInt(c.y - 1 - transform.position.y)] == 1 ||
             board[Mathf.RoundToInt(d.x - transform.position.x), Mathf.RoundToInt(d.y - 1 - transform.position.y)] == 1)
         {
+            // Snap to grid on contact
+            shapes[0].position = new Vector3(Mathf.Round(a.x), a.y, a.z);
+            shapes[1].position = new Vector3(Mathf.Round(b.x), b.y, b.z);
+            shapes[2].position = new Vector3(Mathf.Round(c.x), c.y, c.z);
+            shapes[3].position = new Vector3(Mathf.Round(d.x), d.y, d.z);
+
             return false;
         }
 
@@ -373,7 +392,10 @@ public class PrevTetris : MonoBehaviour
                             {
                                 board[xPos, height] = 0;//Set old position to empty
                                 board[xPos, height - 1] = 1;//Set new position 
-                                go.transform.position = new Vector3(xPos + transform.position.x, height - 1 + transform.position.y, go.transform.position.z);//Move block down
+                                //Move block down
+                                go.transform.position = new Vector3(xPos + transform.position.x, 
+                                                                    height - 1 + transform.position.y, 
+                                                                    go.transform.position.z);
                             }
                         }
                     }
@@ -436,28 +458,21 @@ public class PrevTetris : MonoBehaviour
         }
     }
 
-    bool CheckUserMove(Vector3 a, Vector3 b, Vector3 c, Vector3 d, bool dir)
+    bool CheckUserMove(Vector3 a, Vector3 b, Vector3 c, Vector3 d, float moveAmount)
     {
-        //Will Player movement cause collision?
-        if (dir)
-        { //Left
-            if (board[Mathf.RoundToInt(a.x - 1 - transform.position.x), Mathf.RoundToInt(a.y - transform.position.y)] == 1 ||
-                board[Mathf.RoundToInt(b.x - 1 - transform.position.x), Mathf.RoundToInt(b.y - transform.position.y)] == 1 ||
-                board[Mathf.RoundToInt(c.x - 1 - transform.position.x), Mathf.RoundToInt(c.y - transform.position.y)] == 1 ||
-                board[Mathf.RoundToInt(d.x - 1 - transform.position.x), Mathf.RoundToInt(d.y - transform.position.y)] == 1)
-            {
-                return false;
-            }
-        }
+        // Buffer to ensure better collision detection when shape is off x grid
+        if (moveAmount < 0)
+            moveAmount -= 0.49f;
         else
-        { //Right
-            if (board[Mathf.RoundToInt(a.x + 1 - transform.position.x), Mathf.RoundToInt(a.y - transform.position.y)] == 1 ||
-                board[Mathf.RoundToInt(b.x + 1 - transform.position.x), Mathf.RoundToInt(b.y - transform.position.y)] == 1 ||
-                board[Mathf.RoundToInt(c.x + 1 - transform.position.x), Mathf.RoundToInt(c.y - transform.position.y)] == 1 ||
-                board[Mathf.RoundToInt(d.x + 1 - transform.position.x), Mathf.RoundToInt(d.y - transform.position.y)] == 1)
-            {
-                return false;
-            }
+            moveAmount += 0.49f;
+        
+        //Will Player movement cause collision?
+        if (board[Mathf.RoundToInt(a.x + moveAmount - transform.position.x), Mathf.RoundToInt(a.y - transform.position.y)] == 1 ||
+            board[Mathf.RoundToInt(b.x + moveAmount - transform.position.x), Mathf.RoundToInt(b.y - transform.position.y)] == 1 ||
+            board[Mathf.RoundToInt(c.x + moveAmount - transform.position.x), Mathf.RoundToInt(c.y - transform.position.y)] == 1 ||
+            board[Mathf.RoundToInt(d.x + moveAmount - transform.position.x), Mathf.RoundToInt(d.y - transform.position.y)] == 1)
+        {
+            return false;
         }
         return true;
     }
@@ -516,31 +531,43 @@ public class PrevTetris : MonoBehaviour
     }
 
     ///////////////////////////////////////
-    /// Mouse Test Functions
+    /// Mouse/Touch Functions
     ///////////////////////////////////////
 
     void OnMouseDown()
     {
-        previousPosition = myCam.ScreenToWorldPoint(Input.mousePosition);
-        notDragged = true;
+        if (!gameOver)
+        {
+            previousPosition = myCam.ScreenToWorldPoint(Input.mousePosition);
+            notDragged = true;
+        }
     }
 
     void OnMouseUp()
     {
-        if (notDragged)
-            Rotate(shapes[0].transform, shapes[1].transform, shapes[2].transform, shapes[3].transform); 
-        notDragged = false;
+        if (!gameOver)
+        {
+            if (notDragged)
+                Rotate(shapes[0].transform, shapes[1].transform, shapes[2].transform, shapes[3].transform); 
+            notDragged = false;
+        }
     }
 
+    /*
+     * NOTE: Fine grain control over horizontal movement for better feel.
+     *       Coarse grain control over vertical movement to avoid accidental dropping.
+     */
     void OnMouseDrag()
     {
-        notDragged = false;
-        Vector3 cursorPos = myCam.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 boardPos  = new Vector2(Mathf.RoundToInt(cursorPos.x - transform.position.x), Mathf.RoundToInt(cursorPos.y - transform.position.y));
-        if (boardPos.x >= 0 && boardPos.x < 12 &&
-            boardPos.y >= 0 && boardPos.y < 24)
+        if (!gameOver)
         {
-            if (Mathf.Abs(cursorPos.x - previousPosition.x) > 1)
+            notDragged = false;
+            Vector3 cursorPos = myCam.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 boardPos = new Vector2(Mathf.RoundToInt(cursorPos.x - transform.position.x), 
+                                           Mathf.RoundToInt(cursorPos.y - transform.position.y));
+            // Check if input is on the board
+            if (boardPos.x >= 0 && boardPos.x < 12 &&
+                boardPos.y >= 0 && boardPos.y < 24)
             {
                 //Get spawned block pos
                 Vector3 a = shapes[0].transform.position;
@@ -548,33 +575,20 @@ public class PrevTetris : MonoBehaviour
                 Vector3 c = shapes[2].transform.position;
                 Vector3 d = shapes[3].transform.position;
 
-                // Move left
-                if (cursorPos.x < previousPosition.x)
-                {
-                    //Can we even move left?
-                    if (CheckUserMove(a, b, c, d, true))
-                    {
-                        a.x -= 1;
-                        b.x -= 1;
-                        c.x -= 1;
-                        d.x -= 1;
+                float moveAmount = cursorPos.x - previousPosition.x;
 
-                        pivot.transform.position = new Vector3(pivot.transform.position.x - 1, pivot.transform.position.y, pivot.transform.position.z);
-                    }
-                }
-                //Move Right
-                else
+                // Check direction and if we can move in that direction
+                if ((moveAmount < 0 && CheckUserMove(a, b, c, d, moveAmount)) ||
+                    (moveAmount > 0 && CheckUserMove(a, b, c, d, moveAmount)))
                 {
-                    //Can we even move right?
-                    if (CheckUserMove(a, b, c, d, false))
-                    {
-                        a.x += 1;
-                        b.x += 1;
-                        c.x += 1;
-                        d.x += 1;
+                    a.x += moveAmount;
+                    b.x += moveAmount;
+                    c.x += moveAmount;
+                    d.x += moveAmount;
 
-                        pivot.transform.position = new Vector3(pivot.transform.position.x + 1, pivot.transform.position.y, pivot.transform.position.z);
-                    }
+                    pivot.transform.position = new Vector3(pivot.transform.position.x + moveAmount,
+                                                           pivot.transform.position.y, 
+                                                           pivot.transform.position.z);
                 }
 
                 shapes[0].transform.position = a;
@@ -583,11 +597,13 @@ public class PrevTetris : MonoBehaviour
                 shapes[3].transform.position = d;
 
                 previousPosition.x = cursorPos.x;
-            }
-            else if (previousPosition.y - cursorPos.y > 1)
-            {
-                MoveDown();
-                previousPosition.y = cursorPos.y;
+
+                // Move down if deltaY > 0
+                if (previousPosition.y - cursorPos.y > 1)
+                {
+                    MoveDown();
+                    previousPosition.y = cursorPos.y;
+                }
             }
         }
     }
