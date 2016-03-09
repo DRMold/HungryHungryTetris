@@ -28,37 +28,41 @@ public class HockeyController : MonoBehaviour {
 		//   t                  4
 		//   l                  5
 		//   z                  6
-		int genShape = Random.Range (0, 7);
-		if (genShape == 0) {
-			spawnedShapes.Add(
-				(GameObject)GameObject.Instantiate(Resources.Load ("sBlockPrefab"),
-			                                   new Vector3(100.0f, 20.0f, 0.2f),
-			                                   Quaternion.identity));
-		} else if (genShape == 1) {
-			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("iBlockPrefab"),
-			                                                     new Vector3(100.0f, 20.0f, -0.2f),
-			                                                     Quaternion.identity));
-		} else if (genShape == 2) {
-			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("oBlockPrefab"),
-			                                                     new Vector3(100.0f, 20.0f, -0.2f),
-			                                                     Quaternion.identity));
-		} else if (genShape == 3) {
-			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("jBlockPrefab"),
-			                                                     new Vector3(100.0f, 20.0f, -0.2f),
-			                                                     Quaternion.identity));
-		} else if (genShape == 4) {
-			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("tBlockPrefab"),
-			                                                     new Vector3(100.0f, 20.0f, -0.2f),
-			                                                     Quaternion.identity));
-		} else if (genShape == 5) {
-			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("lBlockPrefab"),
-			                                                     new Vector3(100.0f, 20.0f, -0.2f),
-			                                                     Quaternion.identity));
-		} else if (genShape == 6) {
-			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("zBlockPrefab"),
-			                                                     new Vector3(100.0f, 20.0f, -0.2f),
-			                                                     Quaternion.identity));
-		}
+//		int genShape = Random.Range (0, 7);
+//		if (genShape == 0) {
+//			spawnedShapes.Add(
+//				(GameObject)GameObject.Instantiate(Resources.Load ("sBlockPrefab"),
+//			                                   new Vector3(100.0f, 20.0f, 0.2f),
+//			                                   Quaternion.identity));
+//		} else if (genShape == 1) {
+//			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("iBlockPrefab"),
+//			                                                     new Vector3(100.0f, 20.0f, -0.2f),
+//			                                                     Quaternion.identity));
+//		} else if (genShape == 2) {
+//			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("oBlockPrefab"),
+//			                                                     new Vector3(100.0f, 20.0f, -0.2f),
+//			                                                     Quaternion.identity));
+//		} else if (genShape == 3) {
+//			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("jBlockPrefab"),
+//			                                                     new Vector3(100.0f, 20.0f, -0.2f),
+//			                                                     Quaternion.identity));
+//		} else if (genShape == 4) {
+//			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("tBlockPrefab"),
+//			                                                     new Vector3(100.0f, 20.0f, -0.2f),
+//			                                                     Quaternion.identity));
+//		} else if (genShape == 5) {
+//			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("lBlockPrefab"),
+//			                                                     new Vector3(100.0f, 20.0f, -0.2f),
+//			                                                     Quaternion.identity));
+//		} else if (genShape == 6) {
+//			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("zBlockPrefab"),
+//			                                                     new Vector3(100.0f, 20.0f, -0.2f),
+//			                                                     Quaternion.identity));
+//		}	
+
+		spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("L"),
+		                                                     new Vector3(100.0f, 20.0f, -1.0f),
+	                                                         Quaternion.identity));
 	}
 
 	IEnumerator Wait()

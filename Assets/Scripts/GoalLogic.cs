@@ -7,6 +7,7 @@ public class GoalLogic : MonoBehaviour {
 	void OnTriggerEnter(Collider tetromino) {
 		//Have control flow based off type? Or shape will be property of tetromino?
 		//GameObject.FindGameObjectWithTag (playerQueue).GetComponent<PrevTetris>().shapeQueue.Enqueue (tetromino.gameObject/*.shape*/);
+		Debug.Log ("GameObject Destroyed");
 		Destroy (tetromino.gameObject);
 	}
 }

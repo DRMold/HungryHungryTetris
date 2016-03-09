@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 491862}
   - 212: {fileID: 21205026}
   - 65: {fileID: 6544438}
-  - 114: {fileID: 11463674}
+  - 114: {fileID: 11460896}
   m_Layer: 0
   m_Name: iBlockPrefab
   m_TagString: Untagged
@@ -42,7 +42,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5.34000015, y: 1.34000003, z: .200000003}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &11463674
+--- !u!114 &11460896
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -54,6 +54,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shape: 1
+  boundary:
+    xMin: 95
+    xMax: 105
+    yMin: 9
+    yMax: 30
 --- !u!212 &21205026
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -98,6 +103,26 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Constraints
       value: 56
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: shape
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: boundary.xMin
+      value: 95
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: boundary.xMax
+      value: 105
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: boundary.yMin
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: boundary.yMax
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
