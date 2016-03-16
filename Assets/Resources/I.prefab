@@ -28,6 +28,7 @@ GameObject:
   - 54: {fileID: 5483326}
   - 65: {fileID: 6532136}
   - 114: {fileID: 11421502}
+  - 114: {fileID: 11406300}
   m_Layer: 0
   m_Name: I
   m_TagString: Untagged
@@ -43,7 +44,7 @@ Transform:
   m_GameObject: {fileID: 157816}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .5, y: .5, z: .5}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 468378}
   m_Father: {fileID: 0}
@@ -78,8 +79,10 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -116,8 +119,33 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8.0699482, y: 2.06988931, z: 1.90058422}
-  m_Center: {x: -.0439605713, y: -.0144233704, z: .0673651695}
+  m_Size: {x: 8.069948, y: 2.0698893, z: 1.9005842}
+  m_Center: {x: -0.04396057, y: -0.01442337, z: 0.06736517}
+--- !u!114 &11406300
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 157816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ba67d04e07d3491989322c6414feaf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  advancedProps: 0
+  minTouches: 0
+  maxTouches: 0
+  combineTouches: 0
+  combineTouchesInterval: 0.3
+  useSendMessage: 0
+  sendStateChangeMessages: 0
+  sendMessageTarget: {fileID: 0}
+  requireGestureToFail: {fileID: 0}
+  friendlyGestures: []
+  flickTime: 0.1
+  minDistance: 1
+  movementThreshold: 0.5
+  direction: 0
 --- !u!114 &11421502
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -129,12 +157,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a2a2c47a0b6ba042ad1060067b36d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minSwipeDist: 0
+  maxSwipeTime: 2
   shape: 1
-  boundary:
-    xMin: 0
-    xMax: 0
-    yMin: 0
-    yMax: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -168,6 +193,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: shape
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_AllowActivationOnStandalone
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

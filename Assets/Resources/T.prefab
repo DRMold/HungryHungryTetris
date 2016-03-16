@@ -12,6 +12,7 @@ GameObject:
   - 65: {fileID: 6500816}
   - 65: {fileID: 6511576}
   - 114: {fileID: 11424472}
+  - 114: {fileID: 11487694}
   m_Layer: 0
   m_Name: T
   m_TagString: Untagged
@@ -56,7 +57,7 @@ Transform:
   m_GameObject: {fileID: 127094}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .5, y: .5, z: .5}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 457650}
   m_Father: {fileID: 0}
@@ -79,8 +80,10 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -101,7 +104,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: .0500000007
+  m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -117,8 +120,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6.06839991, y: 2.02438354, z: 2.13572359}
-  m_Center: {x: -.0472869873, y: .0199623108, z: -.041664362}
+  m_Size: {x: 6.0684, y: 2.0243835, z: 2.1357236}
+  m_Center: {x: -0.047286987, y: 0.01996231, z: -0.041664362}
 --- !u!65 &6511576
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -129,8 +132,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.11312866, y: 2.18041182, z: 2.00931525}
-  m_Center: {x: .0165405273, y: 1.97283173, z: -.00487780571}
+  m_Size: {x: 2.1131287, y: 2.1804118, z: 2.0093153}
+  m_Center: {x: 0.016540527, y: 1.9728317, z: -0.0048778057}
 --- !u!114 &11424472
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -142,12 +145,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a2a2c47a0b6ba042ad1060067b36d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minSwipeDist: 0
+  maxSwipeTime: 2
   shape: 4
-  boundary:
-    xMin: 0
-    xMax: 0
-    yMin: 0
-    yMax: 0
+--- !u!114 &11487694
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 127094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ba67d04e07d3491989322c6414feaf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  advancedProps: 0
+  minTouches: 0
+  maxTouches: 0
+  combineTouches: 0
+  combineTouchesInterval: 0.3
+  useSendMessage: 0
+  sendStateChangeMessages: 0
+  sendMessageTarget: {fileID: 0}
+  requireGestureToFail: {fileID: 0}
+  friendlyGestures: []
+  flickTime: 0.1
+  minDistance: 1
+  movementThreshold: 0.5
+  direction: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -166,6 +191,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_LocalPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_AllowActivationOnStandalone
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

@@ -1,7 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TouchScript.Gestures;
+
 
 public class Tetromino : MonoBehaviour {
+	//For handling touch
+	private float startTime;
+	private Vector2 startPos;
+	private bool couldBeSwiped;
+	private float comfortZone;
+	//Modify these two for fine tuning gameplay
+	public float minSwipeDist;
+	public float maxSwipeTime = 2.0f;
+
 	private Vector3 randomDirection;
 	private Rigidbody rb;
 	private float randomSpeed;
@@ -18,8 +29,17 @@ public class Tetromino : MonoBehaviour {
 		rb.AddForce (randomDirection * randomSpeed);
 	}
 
-	public void ReverseDirection() {
-		randomSpeed *= -1;
-		// rb.AddForce (randomDirection * randomSpeed * 100, ForceMode.Impulse);
+    private void OnEnable() {
+		// Subscribe to Flick Gesture
+		GetComponent<FlickGesture>().Flicked += flickedHandler;
+	}
+	
+	private void OnDisable() {
+		GetComponent<FlickGesture>().Flicked -= flickedHandler;
+	}
+	
+	private void flickedHandler(object sender, System.EventArgs e) {
+		// Add flick logic here
+		Destroy(this.gameObject);
 	}
 }

@@ -12,6 +12,7 @@ GameObject:
   - 65: {fileID: 6589162}
   - 54: {fileID: 5486908}
   - 114: {fileID: 11490658}
+  - 114: {fileID: 11442348}
   m_Layer: 0
   m_Name: L
   m_TagString: Untagged
@@ -56,7 +57,7 @@ Transform:
   m_GameObject: {fileID: 111460}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .5, y: .5, z: .5}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 408644}
   m_Father: {fileID: 0}
@@ -79,8 +80,10 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -117,8 +120,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.96520901, y: 5.63051414, z: 1.91299176}
-  m_Center: {x: -1.89974976, y: 2.02772522, z: -.029188633}
+  m_Size: {x: 1.965209, y: 5.630514, z: 1.9129918}
+  m_Center: {x: -1.8997498, y: 2.0277252, z: -0.029188633}
 --- !u!65 &6589162
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -129,8 +132,33 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.27563477, y: 1.86452103, z: 1.9809649}
-  m_Center: {x: 0, y: .0377159119, z: -.0142168999}
+  m_Size: {x: 2.2756348, y: 1.864521, z: 1.9809649}
+  m_Center: {x: 0, y: 0.037715912, z: -0.0142169}
+--- !u!114 &11442348
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 111460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ba67d04e07d3491989322c6414feaf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  advancedProps: 0
+  minTouches: 0
+  maxTouches: 0
+  combineTouches: 0
+  combineTouchesInterval: 0.3
+  useSendMessage: 0
+  sendStateChangeMessages: 0
+  sendMessageTarget: {fileID: 0}
+  requireGestureToFail: {fileID: 0}
+  friendlyGestures: []
+  flickTime: 0.1
+  minDistance: 1
+  movementThreshold: 0.5
+  direction: 0
 --- !u!114 &11490658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -142,12 +170,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a2a2c47a0b6ba042ad1060067b36d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minSwipeDist: 0
+  maxSwipeTime: 2
   shape: 5
-  boundary:
-    xMin: 95
-    xMax: 107
-    yMin: 9
-    yMax: 30
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -175,6 +200,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 2cf44ca31bc1f6a4ea40b25fb146fe54, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_AllowActivationOnStandalone
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 111460}
