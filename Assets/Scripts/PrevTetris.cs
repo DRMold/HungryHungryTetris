@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using TouchScript.Gestures;
 
 public class PrevTetris : MonoBehaviour
 {
@@ -494,6 +495,34 @@ public class PrevTetris : MonoBehaviour
     /// Mouse/Touch Functions
     ///////////////////////////////////////
 
+    private void OnEnable()
+    {
+        GetComponent<TransformGesture>().DeltaPosition -= transformHandler;
+        GetComponent<TapGesture>().Tapped += tappedHandler;
+    }
+
+    private void OnDisable()
+    {
+        GetComponent<TransformGesture>().Transformed -= transformHandler;
+        GetComponent<TapGesture>().Tapped += tappedHandler;
+    }
+
+    private void transformHandler(object sender, System.EventArgs e)
+    {
+        if (!gameOver && pivot != null)
+        {
+            TransformGesture message = (TransformGesture)sender;
+            Vector3 cursorPos = myCam.ScreenToWorldPoint(message.ScreenPosition);
+            CheckDrag(cursorPos);
+        }
+    }
+
+    private void tappedHandler(object sender, System.EventArgs e)
+    {
+        if (!gameOver && pivot != null)
+            Rotate();
+    }
+
     void OnMouseDown()
     {
         if (!gameOver)
@@ -513,48 +542,52 @@ public class PrevTetris : MonoBehaviour
         }
     }
 
-    /*
-     * NOTE: Fine grain control over horizontal movement for better feel.
-     *       Coarse grain control over vertical movement to avoid accidental dropping.
-     */
     void OnMouseDrag()
     {
-        Debug.Log("HELLO");
         if (!gameOver && pivot != null)
         {
             notDragged = false;
             Vector3 cursorPos = myCam.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 boardPos = new Vector2(Mathf.RoundToInt(cursorPos.x - transform.position.x), 
-                                           Mathf.RoundToInt(cursorPos.y - transform.position.y));
-            // Check if input is on the board
-            if (boardPos.x >= 0 && boardPos.x < 12 &&
-                boardPos.y >= 0 && boardPos.y < 24)
-            {
-                //Get spawned block pos
-                float moveAmount = cursorPos.x - previousPosition.x;
+            CheckDrag(cursorPos);
+        }
+    }
 
-                // Check direction and if we can move in that direction
-                if ((moveAmount < 0 && CheckUserMove(moveAmount)) ||
+    /*
+    * NOTE: Fine grain control over horizontal movement for better feel.
+    *       Coarse grain control over vertical movement to avoid accidental dropping.
+    */
+    void CheckDrag(Vector3 cursorPos)
+    {
+        Vector2 boardPos = new Vector2(Mathf.RoundToInt(cursorPos.x - transform.position.x), 
+                                       Mathf.RoundToInt(cursorPos.y - transform.position.y));
+        // Check if input is on the board
+        if (boardPos.x >= 0 && boardPos.x < 12 &&
+                boardPos.y >= 0 && boardPos.y < 24)
+        {
+            //Get spawned block pos
+            float moveAmount = cursorPos.x - previousPosition.x;
+
+            // Check direction and if we can move in that direction
+            if ((moveAmount < 0 && CheckUserMove(moveAmount)) ||
                     (moveAmount > 0 && CheckUserMove(moveAmount)))
-                {
-                    pivot.transform.position = new Vector3(pivot.transform.position.x + moveAmount,
+            {
+                pivot.transform.position = new Vector3(pivot.transform.position.x + moveAmount,
                                                            pivot.transform.position.y, 
                                                            pivot.transform.position.z);
 
-                    for (int i = 0; i < shapes.Count; i++)
-                    {
-                        shapes[i].position = new Vector3(shapes[i].position.x + moveAmount, shapes[i].position.y, shapes[i].position.z);
-                    }
-                }
-
-                previousPosition.x = cursorPos.x;
-
-                // Move down if deltaY > 0
-                if (previousPosition.y - cursorPos.y > 1)
+                for (int i = 0; i < shapes.Count; i++)
                 {
-                    MoveDown();
-                    previousPosition.y = cursorPos.y;
+                    shapes[i].position = new Vector3(shapes[i].position.x + moveAmount, shapes[i].position.y, shapes[i].position.z);
                 }
+            }
+
+            previousPosition.x = cursorPos.x;
+
+            // Move down if deltaY > 0
+            if (previousPosition.y - cursorPos.y > 1)
+            {
+                MoveDown();
+                previousPosition.y = cursorPos.y;
             }
         }
     }
