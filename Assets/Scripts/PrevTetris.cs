@@ -497,7 +497,7 @@ public class PrevTetris : MonoBehaviour
 
     private void OnEnable()
     {
-        GetComponent<TransformGesture>().DeltaPosition -= transformHandler;
+        GetComponent<TransformGesture>().Transformed -= transformHandler;
         GetComponent<TapGesture>().Tapped += tappedHandler;
     }
 
