@@ -1,18 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using TouchScript.Gestures;
+using UnityEngine.Events;
 
 [AddComponentMenu("Scripts/UI/Options Button")]
 public class OptionsButton : MonoBehaviour {
-	
-	// Use this for initialization
-	void Start () {
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	public UnityEvent showOptions;
 
 	private void OnEnable() 
 	{
@@ -26,6 +19,6 @@ public class OptionsButton : MonoBehaviour {
 	
 	private void optionsHandler(object sender, System.EventArgs e) 
 	{
-		Debug.Log ("Options button pressed!");
+		showOptions.Invoke ();
 	}
 }
