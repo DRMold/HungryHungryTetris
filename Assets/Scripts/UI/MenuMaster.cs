@@ -8,6 +8,9 @@ using UnityEngine.Events;
 public class MenuMaster : MonoBehaviour
 {
     public GameObject mainPanel, readyPanel, optionsPanel;
+    public Text countDownText;
+
+    private int readyPlayerCount = 0;
 
     private Dictionary<string, UnityEvent> eventDictionary;
     private static MenuMaster menuMaster;
@@ -80,26 +83,38 @@ public class MenuMaster : MonoBehaviour
         mainPanel.SetActive(true);
         readyPanel.SetActive(false);
         optionsPanel.SetActive(false);
+        countDownText.enabled = false;
     }
 
     void OnEnable()
     {
-        MenuMaster.StartListening("playerReady", addPlayerReady);
-        MenuMaster.StartListening("playerNotReady", removePlayerReady);
+        MenuMaster.StartListening("PlayerReady", addPlayerReady);
+        MenuMaster.StartListening("PlayerNotReady", removePlayerReady);
     }
     void OnDisable()
     {
-        MenuMaster.StopListening("playerReady", addPlayerReady);
-        MenuMaster.StopListening("playerNotReady", removePlayerReady);
+        MenuMaster.StopListening("PlayerReady", addPlayerReady);
+        MenuMaster.StopListening("PlayerNotReady", removePlayerReady);
     }
 
     void addPlayerReady()
     {
-        Debug.Log("New player added!");
+        readyPlayerCount++;
+        Debug.Log("New player added! Count: " + readyPlayerCount);
+        if(readyPlayerCount >= 4) //TODO: Check for game mode as well!
+        {
+            MenuMaster.TriggerEvent("AllPlayersReady");
+            GameMaster.TriggerEvent("AllPlayersReady");
+        }
+        //countDownText.enabled = true;
     }
     void removePlayerReady()
     {
-        Debug.Log("Player removed!");
+        readyPlayerCount--;
+        Debug.Log("Player removed! Count: " + readyPlayerCount);
+        MenuMaster.TriggerEvent("AllPlayersNotReady");
+        //countDownText.enabled = false;
+        //MenuMaster.TriggerEvent("CountdownInterrupted");
     }
     public void showMainMenu() {
         mainPanel.SetActive (true);

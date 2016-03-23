@@ -194,6 +194,7 @@ MonoBehaviour:
   mainPanel: {fileID: 1447112079}
   readyPanel: {fileID: 434697860}
   optionsPanel: {fileID: 331112335}
+  countDownText: {fileID: 1387299602}
 --- !u!1 &88513976
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,6 +222,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 043b326af64324911b27618d348ae517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeIn: 1
+  fadeOut: 1
+  transitionTime: 0.5
+  fadeImg: {fileID: 1839986433}
 --- !u!4 &88513978
 Transform:
   m_ObjectHideFlags: 0
@@ -714,6 +719,7 @@ RectTransform:
   - {fileID: 1384346350}
   - {fileID: 927460329}
   - {fileID: 829197542}
+  - {fileID: 1387299600}
   m_Father: {fileID: 1850903578}
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0}
@@ -879,11 +885,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb9549dc284fd064296853163f2a2b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
 --- !u!114 &460039304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -906,7 +907,7 @@ MonoBehaviour:
   requireGestureToFail: {fileID: 0}
   friendlyGestures:
   - {fileID: 460039305}
-  timeToPress: 1
+  timeToPress: 0.5
   distanceLimit: Infinity
 --- !u!114 &460039305
 MonoBehaviour:
@@ -1624,6 +1625,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+  backText: {fileID: 505904015}
 --- !u!114 &829197547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2086,11 +2088,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb9549dc284fd064296853163f2a2b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
 --- !u!114 &927460335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2834,11 +2831,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb9549dc284fd064296853163f2a2b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
 --- !u!114 &1384346356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2906,6 +2898,106 @@ MonoBehaviour:
   requireGestureToFail: {fileID: 0}
   friendlyGestures: []
   ignoreChildren: 0
+--- !u!1 &1387299599
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 1387299600}
+  - 222: {fileID: 1387299603}
+  - 114: {fileID: 1387299602}
+  - 114: {fileID: 1387299601}
+  - 114: {fileID: 1387299604}
+  m_Layer: 5
+  m_Name: CountdownText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1387299600
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1387299599}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 434697861}
+  m_RootOrder: 5
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 80, y: 220}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1387299601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1387299599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 10, y: -10}
+  m_UseGraphicAlpha: 1
+--- !u!114 &1387299602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1387299599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: fe8f5ed69a873ea4cb9d89cc5ec1b259, type: 3}
+    m_FontSize: 200
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 1
+    m_MaxSize: 200
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 3
+--- !u!222 &1387299603
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1387299599}
+--- !u!114 &1387299604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1387299599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed7c3e29d72ed48418eee72ed71def93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1419676744
 GameObject:
   m_ObjectHideFlags: 0
@@ -3701,11 +3793,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb9549dc284fd064296853163f2a2b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
 --- !u!114 &1692879664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4228,6 +4315,73 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 3, y: -3}
   m_UseGraphicAlpha: 1
+--- !u!1 &1839986431
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 1839986432}
+  - 222: {fileID: 1839986434}
+  - 114: {fileID: 1839986433}
+  m_Layer: 5
+  m_Name: ScreenImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1839986432
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1839986431}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1850903578}
+  m_RootOrder: 4
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1839986433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1839986431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1839986434
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1839986431}
 --- !u!1 &1850903574
 GameObject:
   m_ObjectHideFlags: 0
@@ -4315,6 +4469,7 @@ RectTransform:
   - {fileID: 1447112080}
   - {fileID: 434697861}
   - {fileID: 331112336}
+  - {fileID: 1839986432}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0}
@@ -4824,6 +4979,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+  backText: {fileID: 1956038453}
 --- !u!114 &2096209689
 MonoBehaviour:
   m_ObjectHideFlags: 0
