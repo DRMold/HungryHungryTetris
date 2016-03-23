@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using TouchScript.Gestures;
 using UnityEngine.Events;
@@ -19,7 +19,6 @@ public class ButtonBack : MonoBehaviour {
 	
 	private void backHandler(object sender, System.EventArgs e) 
 	{
-		Debug.Log ("Going back!");
 		showMain.Invoke ();
 	}
 }
