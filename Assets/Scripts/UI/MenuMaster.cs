@@ -12,6 +12,8 @@ public class MenuMaster : MonoBehaviour
 
     private int readyPlayerCount = 0;
 
+    public static int musicVolume = 100;
+
     private Dictionary<string, UnityEvent> eventDictionary;
     private static MenuMaster menuMaster;
     public static MenuMaster instance
@@ -90,11 +92,15 @@ public class MenuMaster : MonoBehaviour
     {
         MenuMaster.StartListening("PlayerReady", addPlayerReady);
         MenuMaster.StartListening("PlayerNotReady", removePlayerReady);
+        MenuMaster.StartListening("DecreaseMusicVolume", decreaseMusicVolume);
+        MenuMaster.StartListening("IncreaseMusicVolume", increaseMusicVolume);
     }
     void OnDisable()
     {
         MenuMaster.StopListening("PlayerReady", addPlayerReady);
         MenuMaster.StopListening("PlayerNotReady", removePlayerReady);
+        MenuMaster.StopListening("DecreaseMusicVolume", decreaseMusicVolume);
+        MenuMaster.StopListening("IncreaseMusicVolume", increaseMusicVolume);
     }
 
     void addPlayerReady()
@@ -108,6 +114,7 @@ public class MenuMaster : MonoBehaviour
         }
         //countDownText.enabled = true;
     }
+
     void removePlayerReady()
     {
         readyPlayerCount--;
@@ -115,6 +122,26 @@ public class MenuMaster : MonoBehaviour
         MenuMaster.TriggerEvent("AllPlayersNotReady");
         //countDownText.enabled = false;
         //MenuMaster.TriggerEvent("CountdownInterrupted");
+    }
+
+    void decreaseMusicVolume()
+    {
+        Debug.Log("Volumebefore : " + MenuMaster.musicVolume);
+        musicVolume--;
+        Debug.Log("Volumeafter : " + MenuMaster.musicVolume);
+        if (musicVolume < 0)
+        {
+            musicVolume = 0;
+        }
+    }
+
+    void increaseMusicVolume()
+    {
+        musicVolume++;
+        if (musicVolume > 100)
+        {
+            musicVolume = 100;
+        }
     }
     public void showMainMenu() {
         mainPanel.SetActive (true);
