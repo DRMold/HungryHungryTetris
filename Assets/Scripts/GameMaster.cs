@@ -44,8 +44,11 @@ public class GameMaster : MonoBehaviour {
         }
         if (fadeIn)
         {
-            fadeImg.gameObject.SetActive(true);
-            fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b, 1.0f);
+            if(fadeImg != null )
+            {
+                fadeImg.gameObject.SetActive(true);
+                fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b, 1.0f);
+            }
         }
     }
 
@@ -138,10 +141,16 @@ public class GameMaster : MonoBehaviour {
         SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
         StartCoroutine(StartScene());
     }
+
     public void startGame()
     {
         //TODO: Load options and modes
         instance.LoadScene("Vertical_Slice_POC");
+    }
+
+    public void showMenu()
+    {
+        instance.LoadScene("MainMenu");
     }
 
 	public void setNumPlayers(int num) {
