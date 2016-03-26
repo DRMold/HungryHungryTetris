@@ -65,6 +65,9 @@ public class PrevTetris : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		//Fix spawn freezing when queue becomes empty
+		if (shapes.Count == 0 && shapeQueue.Count == 0)
+		{ spawn = false; }
         // If nothing spawned and game isn't over, then spawn
         if (!spawn && !gameOver)
         {
@@ -230,7 +233,6 @@ public class PrevTetris : MonoBehaviour
 		//qPrev = Random.Range (0, 6);
         if (shapeQueue.Count > 0)
         {
-			
 			qPrev = shapeQueue.Peek();
             int shape = shapeQueue.Dequeue();
 			if (shapeQueue.Count > 0) qPrev = shapeQueue.Peek();
