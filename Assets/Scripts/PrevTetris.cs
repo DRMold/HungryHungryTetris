@@ -227,11 +227,14 @@ public class PrevTetris : MonoBehaviour
 
     void SpawnShape()
     {
-		qPrev = Random.Range (0, 6);
+		//qPrev = Random.Range (0, 6);
         if (shapeQueue.Count > 0)
         {
+			
+			qPrev = shapeQueue.Peek();
             int shape = shapeQueue.Dequeue();
-            shapeQueue.Enqueue(qPrev);
+			if (shapeQueue.Count > 0) qPrev = shapeQueue.Peek();
+            //shapeQueue.Enqueue(qPrev);
 			destroyQueue();
 			
             int height = (int)transform.position.y + board.GetLength(1) - 4;
@@ -538,6 +541,11 @@ public class PrevTetris : MonoBehaviour
             }
     }
 
+	public void AddToQueue(int shape) {
+		shapeQueue.Enqueue(shape);
+		Debug.Log(shapeQueue.Count);
+	}
+	
 	void destroyQueue()
 	{
 		int length = qShapes.Count;
@@ -553,6 +561,7 @@ public class PrevTetris : MonoBehaviour
 	
     IEnumerator Wait()
     {
+		Debug.Log("Waiting");
         yield return new WaitForSeconds(nxtBlkSpawnTime);
         SpawnShape();
     }
