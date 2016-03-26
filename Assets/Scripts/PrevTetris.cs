@@ -20,9 +20,12 @@ public class PrevTetris : MonoBehaviour
     // 20 board + 2 edge
     //Queue
     public Queue<int> shapeQueue = new Queue<int>();
+	public int[,] qPreview;
+	int qPrev;
     //Current Shape
     private List<Transform> shapes = new List<Transform>();
-
+	//Current Shape in Queue
+	private List<Transform> qShapes = new List<Transform> ();
     // Camera attached to this board
     private Camera myCam;
     private bool notDragged;
@@ -51,6 +54,9 @@ public class PrevTetris : MonoBehaviour
         board = new int[12, 24]; // Set board width and height
         GenBoard();
 
+		qPreview  = new int[7, 9]; // Set queue width and height
+		GenQueue ();
+		
         shapeQueue.Enqueue(Random.Range(0, 6));
 
         InvokeRepeating("MoveDown", blkFallSpeed, blkFallSpeed); //move blk down
@@ -173,16 +179,66 @@ public class PrevTetris : MonoBehaviour
         }
     }
 
+	void GenQueue()
+	{
+		for (int x = 0; x < qPreview.GetLength(0); x++)
+		{
+			for (int y = 0; y < qPreview.GetLength(1); y++)
+			{
+				if (x < 6 && x > 0)
+				{
+					if (y > 0 && y < qPreview.GetLength(1) - 2)
+					{
+						//Back
+						qPreview [x, y] = 0;
+						GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+						cube.transform.position = new Vector3(x + 14 + transform.position.x, y + 15 + transform.position.y, 1);
+						Material material = new Material(Shader.Find("Diffuse"));
+						material.color = Color.grey;
+						cube.GetComponent<Renderer>().material = material;
+						cube.transform.parent = transform;
+					}
+					else if (y < qPreview.GetLength(1) - 2 || y == qPreview.GetLength(1) - 2) 
+					{
+						qPreview [x, y] = 1;
+						GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+						cube.transform.position = new Vector3(x + 14 + transform.position.x, y + 15 + transform.position.y, 0);
+						Material material = new Material(Shader.Find("Diffuse"));
+						material.color = Color.black;
+						cube.GetComponent<Renderer>().material = material;
+						cube.transform.parent = transform;
+						cube.GetComponent<Collider>().isTrigger = true;
+					}
+				}
+				else if ((y < qPreview.GetLength(1) - 1))
+				{
+					// Left and Right edge
+					qPreview [x, y] = 1;
+					GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+					cube.transform.position = new Vector3(x +  14 + transform.position.x, y + 15 + transform.position.y, 0);
+					Material material = new Material(Shader.Find("Diffuse"));
+					material.color = Color.black;
+					cube.GetComponent<Renderer>().material = material;
+					cube.transform.parent = transform;
+				}
+			}
+		}
+	}
+
     void SpawnShape()
     {
-//		int shape = Random.Range(0, 6); //Rand shape
+		qPrev = Random.Range (0, 6);
         if (shapeQueue.Count > 0)
         {
             int shape = shapeQueue.Dequeue();
-            shapeQueue.Enqueue(Random.Range(0, 6));
+            shapeQueue.Enqueue(qPrev);
+			destroyQueue();
+			
             int height = (int)transform.position.y + board.GetLength(1) - 4;
             int xPos = (int)transform.position.x + board.GetLength(0) / 2 - 1;
-
+			//Creates shape in Queue
+			int Qheight = (int)transform.position.y + qPreview.GetLength(1) + 9;
+			int QxPos = (int)transform.position.x + 15 + qPreview.GetLength(0) / 2 - 1;
             //Create pivot
             pivot = new GameObject("RotateAround"); //Pivot of shape
             List<Vector3> cubePosList = new List<Vector3>();
@@ -254,6 +310,75 @@ public class PrevTetris : MonoBehaviour
             {
                 Debug.Log("Illegal shape code: " + shape);
             }
+			Debug.Log("qPrev: "+qPrev);
+			
+			if (qPrev == 0)
+			{ //S Shape
+
+				SetQueuePositions(
+					new Vector3(QxPos, Qheight, 0),
+					new Vector3(QxPos - 1, Qheight, 0),
+					new Vector3(QxPos, Qheight + 1, 0),
+					new Vector3(QxPos + 1, Qheight + 1, 0));
+			}
+			else if (qPrev == 1)
+			{ //I Shape
+
+				SetQueuePositions(
+					new Vector3(QxPos, Qheight, 0),
+					new Vector3(QxPos, Qheight + 1, 0),
+					new Vector3(QxPos, Qheight + 2, 0),
+					new Vector3(QxPos, Qheight + 3, 0));
+			}
+			else if (qPrev == 2)
+			{ //O Shape
+
+				SetQueuePositions(
+					new Vector3(QxPos, Qheight, 0),
+					new Vector3(QxPos + 1, Qheight, 0),
+					new Vector3(QxPos, Qheight + 1, 0),
+					new Vector3(QxPos + 1, Qheight + 1, 0));
+			}
+			else if (qPrev == 3)
+			{ //J Shape
+
+				SetQueuePositions(
+					new Vector3(QxPos, Qheight, 0),
+					new Vector3(QxPos + 1, Qheight, 0),
+					new Vector3(QxPos, Qheight + 1, 0),
+					new Vector3(QxPos, Qheight + 2, 0));
+			}
+			else if (qPrev == 4)
+			{ //T Shape
+
+				SetQueuePositions(
+					new Vector3(QxPos, Qheight, 0),
+					new Vector3(QxPos - 1, Qheight, 0),
+					new Vector3(QxPos + 1, Qheight, 0),
+					new Vector3(QxPos, Qheight + 1, 0));
+			}
+			else if (qPrev == 5)
+			{ //L Shape
+
+				SetQueuePositions(
+					new Vector3(QxPos, Qheight, 0),
+					new Vector3(QxPos - 1, Qheight, 0),
+					new Vector3(QxPos, Qheight + 1, 0),
+					new Vector3(QxPos, Qheight + 2, 0));
+			}
+			else if (qPrev == 6)
+			{ //Z Shape
+
+				SetQueuePositions(
+					new Vector3(QxPos, Qheight, 0),
+					new Vector3(QxPos + 1, Qheight, 0),
+					new Vector3(QxPos, Qheight + 1, 0),
+					new Vector3(QxPos - 1, Qheight + 1, 0));
+			}
+			else
+			{
+				Debug.Log("Illegal shape code: " + shape);
+			}
         }
     }
 
@@ -265,6 +390,14 @@ public class PrevTetris : MonoBehaviour
         for (int i = 0; i < cubePosList.Count; i++)
             shapes.Add(GenBlock(cubePosList[i]));
     }
+
+	void SetQueuePositions(Vector3 b1, Vector3 b2, Vector3 b3, Vector3 b4)
+	{
+		qShapes.Add(GenBlock(b1));
+		qShapes.Add(GenBlock(b2));
+		qShapes.Add(GenBlock(b3));
+		qShapes.Add(GenBlock(b4));
+	}
 
     //Create block at position
     Transform GenBlock(Vector3 pos)
@@ -405,6 +538,19 @@ public class PrevTetris : MonoBehaviour
             }
     }
 
+	void destroyQueue()
+	{
+		int length = qShapes.Count;
+		int i;
+
+		for (i = 0; i < length; i++) {
+			Destroy (qShapes [i].gameObject);
+		}
+
+		qShapes.Clear();
+
+	}
+	
     IEnumerator Wait()
     {
         yield return new WaitForSeconds(nxtBlkSpawnTime);
@@ -497,14 +643,14 @@ public class PrevTetris : MonoBehaviour
 
     private void OnEnable()
     {
-        GetComponent<TransformGesture>().Transformed -= transformHandler;
         GetComponent<TapGesture>().Tapped += tappedHandler;
+        GetComponent<TransformGesture>().Transformed += transformHandler;
     }
 
     private void OnDisable()
     {
+        GetComponent<TapGesture>().Tapped -= tappedHandler;
         GetComponent<TransformGesture>().Transformed -= transformHandler;
-        GetComponent<TapGesture>().Tapped += tappedHandler;
     }
 
     private void transformHandler(object sender, System.EventArgs e)
