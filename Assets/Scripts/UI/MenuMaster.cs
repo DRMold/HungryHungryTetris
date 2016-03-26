@@ -148,7 +148,6 @@ public class MenuMaster : MonoBehaviour
 
     void fastDecreaseMusicVolume()
     {
-        Debug.Log("Fast decrease!");
         musicVolume -= 5;
         if (musicVolume < 0)
         {
