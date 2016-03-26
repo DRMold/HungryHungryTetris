@@ -86,6 +86,9 @@ public class GameMaster : MonoBehaviour {
     void Start()
     {
         numPlayers = 4;
+		AudioSource audio = GetComponent<AudioSource>();
+		audio.Play();
+		DontDestroyOnLoad(this.gameObject);
     }
 
     void Update() {
