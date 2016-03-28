@@ -94,6 +94,8 @@ public class MenuMaster : MonoBehaviour
         MenuMaster.StartListening("PlayerNotReady", removePlayerReady);
         MenuMaster.StartListening("DecreaseMusicVolume", decreaseMusicVolume);
         MenuMaster.StartListening("IncreaseMusicVolume", increaseMusicVolume);
+        MenuMaster.StartListening("FastDecreaseMusicVolume", fastDecreaseMusicVolume);
+        MenuMaster.StartListening("FastIncreaseMusicVolume", fastIncreaseMusicVolume);
     }
     void OnDisable()
     {
@@ -101,6 +103,8 @@ public class MenuMaster : MonoBehaviour
         MenuMaster.StopListening("PlayerNotReady", removePlayerReady);
         MenuMaster.StopListening("DecreaseMusicVolume", decreaseMusicVolume);
         MenuMaster.StopListening("IncreaseMusicVolume", increaseMusicVolume);
+        MenuMaster.StopListening("FastDecreaseMusicVolume", fastDecreaseMusicVolume);
+        MenuMaster.StopListening("FastIncreaseMusicVolume", fastIncreaseMusicVolume);
     }
 
     void addPlayerReady()
@@ -126,9 +130,7 @@ public class MenuMaster : MonoBehaviour
 
     void decreaseMusicVolume()
     {
-        Debug.Log("Volumebefore : " + MenuMaster.musicVolume);
         musicVolume--;
-        Debug.Log("Volumeafter : " + MenuMaster.musicVolume);
         if (musicVolume < 0)
         {
             musicVolume = 0;
@@ -138,6 +140,24 @@ public class MenuMaster : MonoBehaviour
     void increaseMusicVolume()
     {
         musicVolume++;
+        if (musicVolume > 100)
+        {
+            musicVolume = 100;
+        }
+    }
+
+    void fastDecreaseMusicVolume()
+    {
+        musicVolume -= 5;
+        if (musicVolume < 0)
+        {
+            musicVolume = 0;
+        }
+    }
+
+    void fastIncreaseMusicVolume()
+    {
+        musicVolume += 5;
         if (musicVolume > 100)
         {
             musicVolume = 100;

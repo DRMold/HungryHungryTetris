@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class TextCountdown : MonoBehaviour {
     private Text myText;
     private int counter;
+    private Coroutine countingFunction;
 
     void Start() {
         myText = GetComponent<Text>();
@@ -34,6 +35,7 @@ public class TextCountdown : MonoBehaviour {
         StopCoroutine(StartCountdown());
         MenuMaster.StopListening("CountdownInterrupted", interruptHandler);
         Debug.Log("Disabled countdown.");
+        counter = 3;
     }
 
     private void interruptHandler()
