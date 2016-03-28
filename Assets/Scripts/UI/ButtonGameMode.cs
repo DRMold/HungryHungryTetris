@@ -10,6 +10,7 @@ public class ButtonGameMode : MonoBehaviour {
     private Button myButton;
     void Start() {
         myButton = gameObject.GetComponent<Button>();
+        myButton.interactable = false;
     }
 
     private void OnEnable()

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using TouchScript.Gestures;
 using UnityEngine.Events;
@@ -19,6 +19,8 @@ public class ButtonStart : MonoBehaviour {
 	
 	private void readyHandler(object sender, System.EventArgs e) 
 	{
-		showReady.Invoke ();
+        //TODO: FIX ready screen!
+        //showReady.Invoke ();
+        GameMaster.TriggerEvent("AllPlayersReady");
 	}
 }

@@ -135,6 +135,7 @@ public class MenuMaster : MonoBehaviour
         {
             musicVolume = 0;
         }
+        GameMaster.TriggerEvent("MusicVolumeChange");
     }
 
     void increaseMusicVolume()
@@ -144,6 +145,7 @@ public class MenuMaster : MonoBehaviour
         {
             musicVolume = 100;
         }
+        GameMaster.TriggerEvent("MusicVolumeChange");
     }
 
     void fastDecreaseMusicVolume()
@@ -153,6 +155,7 @@ public class MenuMaster : MonoBehaviour
         {
             musicVolume = 0;
         }
+        GameMaster.TriggerEvent("MusicVolumeChange");
     }
 
     void fastIncreaseMusicVolume()
@@ -162,12 +165,13 @@ public class MenuMaster : MonoBehaviour
         {
             musicVolume = 100;
         }
+        GameMaster.TriggerEvent("MusicVolumeChange");
     }
     public void showMainMenu() {
         mainPanel.SetActive (true);
 		readyPanel.SetActive (false);
 		optionsPanel.SetActive (false);
-	}
+    }
 
 	public void showReadyMenu() {
 		mainPanel.SetActive (false);

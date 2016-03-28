@@ -12,6 +12,7 @@ public class GameMaster : MonoBehaviour {
     float time = 0f;
 
     private int numPlayers;
+    private AudioSource gameAudio;
 
     private Dictionary<string, UnityEvent> eventDictionary;
     private static GameMaster gameMaster;
@@ -22,14 +23,14 @@ public class GameMaster : MonoBehaviour {
             if (!gameMaster)
             {
                 gameMaster = FindObjectOfType(typeof(GameMaster)) as GameMaster;
-            }
-            if (!gameMaster)
-            {
-                Debug.LogError("There needs to be a GameMaster script on a GameObject.");
-            }
-            else
-            {
-                gameMaster.initialize();
+                if (!gameMaster)
+                {
+                    Debug.LogError("There needs to be a GameMaster script on a GameObject.");
+                }
+                else
+                {
+                    gameMaster.initialize();
+                }
             }
             return gameMaster;
         }
@@ -44,7 +45,7 @@ public class GameMaster : MonoBehaviour {
         }
         if (fadeIn)
         {
-            if(fadeImg != null )
+            if (fadeImg != null )
             {
                 fadeImg.gameObject.SetActive(true);
                 fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b, 1.0f);
@@ -89,8 +90,9 @@ public class GameMaster : MonoBehaviour {
     void Start()
     {
         numPlayers = 4;
-		AudioSource audio = GetComponent<AudioSource>();
-		audio.Play();
+		gameAudio = GetComponent<AudioSource>();
+        gameAudio.loop = true;
+		gameAudio.Play();
 		DontDestroyOnLoad(this.gameObject);
     }
 
@@ -100,16 +102,18 @@ public class GameMaster : MonoBehaviour {
 
     private void OnEnable()
     {
-        GameMaster.StartListening("AllPlayersReady", startGame);
-        if(fadeIn)
+        if (fadeIn)
         {
             StartCoroutine(StartScene());
         }
+        GameMaster.StartListening("AllPlayersReady", startGame);
+        GameMaster.StartListening("MusicVolumeChange", musicVolumeChange);
     }
 
     private void OnDisable()
     {
         GameMaster.StopListening("AllPlayersReady", startGame);
+        GameMaster.StopListening("MusicVolumeChange", musicVolumeChange);
     }
 
     public void LoadScene(string level)
@@ -161,5 +165,8 @@ public class GameMaster : MonoBehaviour {
 		Debug.Log ("Number of players: " + numPlayers);
 	}
 
-    
+    private void musicVolumeChange()
+    {
+        gameAudio.volume = MenuMaster.musicVolume / 100f;
+    }
 }
