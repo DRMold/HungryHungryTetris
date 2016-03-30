@@ -1,0 +1,22 @@
+BUGS (Priority 0)
+Up next preview is empty when queue is empty
+Two pieces spawn simultaneously (boolean lock?)
+Tetris board touch controls not swiping
+
+PRIORITY 1
+Return to Main Menu after game end
+Display winner after game end
+Timer/Score display (with toggleable settings in options menu)
+Texture Tetris board pieces (implement single block textures)
+Power-Ups (3-5 powerups)
+  Increase fall speed
+  Random row generated
+  ===
+  Reduce fall speed
+  Piece cycle
+Penalizing for Empty Queue (raise floor / create row of indestructable pieces)
+Middle Lane Texture (distinguish between teams)
+
+Priority 2
+Timer affects game speed
+Power-up Inventory
