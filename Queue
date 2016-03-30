@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using TouchScript.Gestures;
@@ -7,21 +7,14 @@ public class PrevTetris : MonoBehaviour
 {
     //Board
     public int[,] board;
-    private int curBottom;
     //Block
     public Transform block;
     //Spawn Bool
-    public bool spawn, spawning;
+    public bool spawn;
     //Sec before nxt blk spawn
-    public static float NXTBLKSPAWNTIME = 0.5f;
-    public float nxtBlkSpawnTime = NXTBLKSPAWNTIME;
-    private bool curWaiting = false;
-    private bool movingDown = false;
-    private int  cyclesEmpty = 0;
-    public  int  MAX_ALLOWED_CYCLES_EMPTY = 8;
+    public float nxtBlkSpawnTime = 0.5f;
     //Block fall speed
-    public static float BLKFALLSPEED = 0.5f;
-    public float blkFallSpeed = BLKFALLSPEED;
+    public float blkFallSpeed = 0.5f;
     //Game Over Level
     public int gameOverHeight = 22;
     // 20 board + 2 edge
@@ -57,19 +50,16 @@ public class PrevTetris : MonoBehaviour
         //+1 - Top Edge
         //20 - Height
         //+1 - Down Edge
-        gameOver = false;
         myCam = transform.GetChild(0).gameObject.GetComponent<Camera>();
         board = new int[12, 24]; // Set board width and height
         GenBoard();
-        curBottom = 1;
 
 		qPreview  = new int[7, 9]; // Set queue width and height
 		GenQueue ();
 		
-		spawning = false;
         shapeQueue.Enqueue(Random.Range(0, 6));
 
-        //InvokeRepeating("MoveDown", blkFallSpeed, blkFallSpeed); //move blk down
+        InvokeRepeating("MoveDown", blkFallSpeed, blkFallSpeed); //move blk down
     }
 
     // Update is called once per frame
@@ -77,27 +67,14 @@ public class PrevTetris : MonoBehaviour
     {
 		//Fix spawn freezing when queue becomes empty
 		if (shapes.Count == 0 && shapeQueue.Count == 0)
-		{ 
-            spawn = false; 
-        }
-        if (curBottom == gameOverHeight)
-        {
-            Debug.LogWarning("Game over");
-            gameOver = true;
-        }
+		{ spawn = false; }
         // If nothing spawned and game isn't over, then spawn
-        if (!spawning && !spawn && !gameOver && !curWaiting)
+        if (!spawn && !gameOver)
         {
-            curWaiting = true;
-            spawning = true;
             StartCoroutine("Wait");
+            spawn = true;
             //Reset rotation 
             currentRot = 0;
-        }
-        if (!movingDown)
-        {
-            movingDown = true;
-            StartCoroutine("WaitMoveDown");
         }
         if (gameOver)
         {
@@ -157,10 +134,6 @@ public class PrevTetris : MonoBehaviour
                 Rotate();	
             }
         }
-
-		if (shapeQueue.Count > 0) {
-			popQueue ();
-		}
     }
 
     void GenBoard()
@@ -255,200 +228,146 @@ public class PrevTetris : MonoBehaviour
 		}
 	}
 
-    void GenBottomAndMoveShapesUp()
-    {
-        GameObject[] blocks = GameObject.FindGameObjectsWithTag("Block"); //All blocks in the scene
-        for (int y = board.GetLength(1) - 2; y >= curBottom; y--)
-        {
-            for (int x = 1; x < board.GetLength(0) - 1; x++)
-            {
-                board[x, y + 1] = board[x, y];
-            }
-        }
-        foreach (GameObject go in blocks)
-        {
-            int blkX = Mathf.RoundToInt(go.transform.position.x - transform.position.x);
-            int blkY = Mathf.RoundToInt(go.transform.position.y - transform.position.y);
-            if (blkX > 0 && blkX < board.GetLength(0) - 1 &&
-                blkY > 0 && blkY < board.GetLength(1) - 2)
-                go.transform.position = new Vector3(go.transform.position.x, 
-                                                    go.transform.position.y + 1, 
-                                                    go.transform.position.z);
-        }
-        for (int x = 1; x < board.GetLength(0) - 1; x++)
-        {
-            board[x, curBottom] = 1;
-            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = new Vector3(x + transform.position.x, curBottom + transform.position.y, 0);
-            Material material = new Material(Shader.Find("Diffuse"));
-            material.color = Color.black;
-            cube.GetComponent<Renderer>().material = material;
-            cube.transform.parent = transform;
-            cube.GetComponent<Collider>().isTrigger = true;
-        }
-        curBottom++;
-        CheckRow(gameOverHeight); //Check for game over
-    }
-
     void SpawnShape()
     {
-        if (shapeQueue.Count > 0)
-        {
-            cyclesEmpty = 0;
-            int shape = shapeQueue.Dequeue();
-
-            // Refresh preview block
-			destroyQueue();
+		if (shapeQueue.Count > 0) {
+			qPrev = shapeQueue.Peek ();
+			int shape = shapeQueue.Dequeue ();
+			//shapeQueue.Enqueue(qPrev);
+			destroyQueue ();
 			
-            int height = (int)transform.position.y + board.GetLength(1) - 4;
-            int xPos = (int)transform.position.x + board.GetLength(0) / 2 - 1;
-            //Create pivot
-            pivot = new GameObject("RotateAround"); //Pivot of shape
-            List<Vector3> cubePosList = new List<Vector3>();
+			int height = (int)transform.position.y + board.GetLength (1) - 4;
+			int xPos = (int)transform.position.x + board.GetLength (0) / 2 - 1;
+		
+			//Create pivot
+			pivot = new GameObject ("RotateAround"); //Pivot of shape
+			List<Vector3> cubePosList = new List<Vector3> ();
 
-            if (shape == 0)
-            { //S Shape
-                cubePosList.Add(new Vector3(xPos, height, 0));
-                cubePosList.Add(new Vector3(xPos - 1, height, 0));
-                cubePosList.Add(new Vector3(xPos, height + 1, 0));
-                cubePosList.Add(new Vector3(xPos + 1, height + 1, 0));
+			if (shape == 0) { //S Shape
+				cubePosList.Add (new Vector3 (xPos, height, 0));
+				cubePosList.Add (new Vector3 (xPos - 1, height, 0));
+				cubePosList.Add (new Vector3 (xPos, height + 1, 0));
+				cubePosList.Add (new Vector3 (xPos + 1, height + 1, 0));
 
-                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
-            }
-            else if (shape == 1)
-            { //I Shape
-                cubePosList.Add(new Vector3(xPos, height, 0));
-                cubePosList.Add(new Vector3(xPos, height + 1, 0));
-                cubePosList.Add(new Vector3(xPos, height + 2, 0));
-                cubePosList.Add(new Vector3(xPos, height + 3, 0));
+				SetCubePositions (new Vector3 (xPos, height + 1, 0), cubePosList);
+			} else if (shape == 1) { //I Shape
+				cubePosList.Add (new Vector3 (xPos, height, 0));
+				cubePosList.Add (new Vector3 (xPos, height + 1, 0));
+				cubePosList.Add (new Vector3 (xPos, height + 2, 0));
+				cubePosList.Add (new Vector3 (xPos, height + 3, 0));
 
-                SetCubePositions(new Vector3(xPos + 0.5f, height + 1.5f, 0), cubePosList);
-            }
-            else if (shape == 2)
-            { //O Shape
-                cubePosList.Add(new Vector3(xPos, height, 0));
-                cubePosList.Add(new Vector3(xPos + 1, height, 0));
-                cubePosList.Add(new Vector3(xPos, height + 1, 0));
-                cubePosList.Add(new Vector3(xPos + 1, height + 1, 0));
+				SetCubePositions (new Vector3 (xPos + 0.5f, height + 1.5f, 0), cubePosList);
+			} else if (shape == 2) { //O Shape
+				cubePosList.Add (new Vector3 (xPos, height, 0));
+				cubePosList.Add (new Vector3 (xPos + 1, height, 0));
+				cubePosList.Add (new Vector3 (xPos, height + 1, 0));
+				cubePosList.Add (new Vector3 (xPos + 1, height + 1, 0));
 
-                SetCubePositions(new Vector3(xPos + 0.5f, height + 0.5f, 0), cubePosList);
-            }
-            else if (shape == 3)
-            { //J Shape
-                cubePosList.Add(new Vector3(xPos, height, 0));
-                cubePosList.Add(new Vector3(xPos + 1, height, 0));
-                cubePosList.Add(new Vector3(xPos, height + 1, 0));
-                cubePosList.Add(new Vector3(xPos, height + 2, 0));
+				SetCubePositions (new Vector3 (xPos + 0.5f, height + 0.5f, 0), cubePosList);
+			} else if (shape == 3) { //J Shape
+				cubePosList.Add (new Vector3 (xPos, height, 0));
+				cubePosList.Add (new Vector3 (xPos + 1, height, 0));
+				cubePosList.Add (new Vector3 (xPos, height + 1, 0));
+				cubePosList.Add (new Vector3 (xPos, height + 2, 0));
 
-                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
-            }
-            else if (shape == 4)
-            { //T Shape
-                cubePosList.Add(new Vector3(xPos, height, 0));
-                cubePosList.Add(new Vector3(xPos - 1, height, 0));
-                cubePosList.Add(new Vector3(xPos + 1, height, 0));
-                cubePosList.Add(new Vector3(xPos, height + 1, 0));
+				SetCubePositions (new Vector3 (xPos, height + 1, 0), cubePosList);
+			} else if (shape == 4) { //T Shape
+				cubePosList.Add (new Vector3 (xPos, height, 0));
+				cubePosList.Add (new Vector3 (xPos - 1, height, 0));
+				cubePosList.Add (new Vector3 (xPos + 1, height, 0));
+				cubePosList.Add (new Vector3 (xPos, height + 1, 0));
 
-                SetCubePositions(new Vector3(xPos, height, 0), cubePosList);
-            }
-            else if (shape == 5)
-            { //L Shape
-                cubePosList.Add(new Vector3(xPos, height, 0));
-                cubePosList.Add(new Vector3(xPos - 1, height, 0));
-                cubePosList.Add(new Vector3(xPos, height + 1, 0));
-                cubePosList.Add(new Vector3(xPos, height + 2, 0));
+				SetCubePositions (new Vector3 (xPos, height, 0), cubePosList);
+			} else if (shape == 5) { //L Shape
+				cubePosList.Add (new Vector3 (xPos, height, 0));
+				cubePosList.Add (new Vector3 (xPos - 1, height, 0));
+				cubePosList.Add (new Vector3 (xPos, height + 1, 0));
+				cubePosList.Add (new Vector3 (xPos, height + 2, 0));
 
-                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
-            }
-            else if (shape == 6)
-            { //Z Shape
-                cubePosList.Add(new Vector3(xPos, height, 0));
-                cubePosList.Add(new Vector3(xPos + 1, height, 0));
-                cubePosList.Add(new Vector3(xPos, height + 1, 0));
-                cubePosList.Add(new Vector3(xPos - 1, height + 1, 0));
+				SetCubePositions (new Vector3 (xPos, height + 1, 0), cubePosList);
+			} else if (shape == 6) { //Z Shape
+				cubePosList.Add (new Vector3 (xPos, height, 0));
+				cubePosList.Add (new Vector3 (xPos + 1, height, 0));
+				cubePosList.Add (new Vector3 (xPos, height + 1, 0));
+				cubePosList.Add (new Vector3 (xPos - 1, height + 1, 0));
 
-                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
-            }
-            else
-            {
-                Debug.Log("Illegal shape code: " + shape);
-            }
-        }
-        else
-        {
-            cyclesEmpty++;
-            if (cyclesEmpty > MAX_ALLOWED_CYCLES_EMPTY)
-            {
-                cyclesEmpty = 0;
-                GenBottomAndMoveShapesUp();
-            }
-        }
+				SetCubePositions (new Vector3 (xPos, height + 1, 0), cubePosList);
+			} else {
+				Debug.Log ("Illegal shape code: " + shape);
+			}
+			Debug.Log ("qPrev: " + qPrev);
+
+			if (shapeQueue.Count > 0) {
+				popQueue ();
+			}
+		}
+	    else {
+			destroyQueue ();
+		}
     }
 
-	void populateQueue ()
-    {
- 		//Creates shape in Queue
- 		int Qheight = (int)transform.position.y + qPreview.GetLength (1) + 9;
- 		int QxPos = (int)transform.position.x + 15 + qPreview.GetLength (0) / 2 - 1;
+	void popQueue (){
+		
+		qPrev = shapeQueue.Peek ();
 
- 		qPrev = shapeQueue.Peek ();
- 
- 		List<Vector3> cubePosList = new List<Vector3> ();
- 
- 		if (qPrev == 0) { //S Shape
- 			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
- 			cubePosList.Add (new Vector3 (QxPos - 1, Qheight, 0));
- 			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
- 			cubePosList.Add (new Vector3 (QxPos + 1, Qheight + 1, 0));
- 
- 			SetQueuePositions (cubePosList);
- 		} else if (qPrev == 1) { //I Shape
- 			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
- 			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
- 			cubePosList.Add (new Vector3 (QxPos, Qheight + 2, 0));
- 			cubePosList.Add (new Vector3 (QxPos, Qheight + 3, 0));
- 
- 			SetQueuePositions (cubePosList);
- 		} else if (qPrev == 2) { //O Shape
- 			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
- 			cubePosList.Add (new Vector3 (QxPos + 1, Qheight, 0));
- 			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
- 			cubePosList.Add (new Vector3 (QxPos + 1, Qheight + 1, 0));
- 
- 			SetQueuePositions (cubePosList);
- 		} else if (qPrev == 3) { //J Shape
- 			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
- 			cubePosList.Add (new Vector3 (QxPos + 1, Qheight, 0));
- 			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
- 			cubePosList.Add (new Vector3 (QxPos, Qheight + 2, 0));
- 
- 			SetQueuePositions (cubePosList);
- 		} else if (qPrev == 4) { //T Shape
- 			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
- 			cubePosList.Add (new Vector3 (QxPos - 1, Qheight, 0));
- 			cubePosList.Add (new Vector3 (QxPos + 1, Qheight, 0));
- 			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
- 
- 			SetQueuePositions (cubePosList);
- 		} else if (qPrev == 5) { //L Shape
- 			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
- 			cubePosList.Add (new Vector3 (QxPos - 1, Qheight, 0));
- 			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
- 			cubePosList.Add (new Vector3 (QxPos, Qheight + 2, 0));
- 
- 			SetQueuePositions (cubePosList);
- 		} else if (qPrev == 6) { //Z Shape
- 			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
- 			cubePosList.Add (new Vector3 (QxPos + 1, Qheight, 0));
- 			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
- 			cubePosList.Add (new Vector3 (QxPos - 1, Qheight + 1, 0));
- 
- 			SetQueuePositions (cubePosList);
- 		} else {
- 			Debug.Log ("Illegal shape code: " + qPrev);
- 		}
- 	}
- 			
+		//Creates shape in Queue
+		int Qheight = (int)transform.position.y + qPreview.GetLength (1) + 9;
+		int QxPos = (int)transform.position.x + 15 + qPreview.GetLength (0) / 2 - 1;
+
+		if (qPrev == 0) { //S Shape
+
+			SetQueuePositions (
+				new Vector3 (QxPos, Qheight, 0),
+				new Vector3 (QxPos - 1, Qheight, 0),
+				new Vector3 (QxPos, Qheight + 1, 0),
+				new Vector3 (QxPos + 1, Qheight + 1, 0));
+		} else if (qPrev == 1) { //I Shape
+
+			SetQueuePositions (
+				new Vector3 (QxPos, Qheight, 0),
+				new Vector3 (QxPos, Qheight + 1, 0),
+				new Vector3 (QxPos, Qheight + 2, 0),
+				new Vector3 (QxPos, Qheight + 3, 0));
+		} else if (qPrev == 2) { //O Shape
+
+			SetQueuePositions (
+				new Vector3 (QxPos, Qheight, 0),
+				new Vector3 (QxPos + 1, Qheight, 0),
+				new Vector3 (QxPos, Qheight + 1, 0),
+				new Vector3 (QxPos + 1, Qheight + 1, 0));
+		} else if (qPrev == 3) { //J Shape
+
+			SetQueuePositions (
+				new Vector3 (QxPos, Qheight, 0),
+				new Vector3 (QxPos + 1, Qheight, 0),
+				new Vector3 (QxPos, Qheight + 1, 0),
+				new Vector3 (QxPos, Qheight + 2, 0));
+		} else if (qPrev == 4) { //T Shape
+
+			SetQueuePositions (
+				new Vector3 (QxPos, Qheight, 0),
+				new Vector3 (QxPos - 1, Qheight, 0),
+				new Vector3 (QxPos + 1, Qheight, 0),
+				new Vector3 (QxPos, Qheight + 1, 0));
+		} else if (qPrev == 5) { //L Shape
+
+			SetQueuePositions (
+				new Vector3 (QxPos, Qheight, 0),
+				new Vector3 (QxPos - 1, Qheight, 0),
+				new Vector3 (QxPos, Qheight + 1, 0),
+				new Vector3 (QxPos, Qheight + 2, 0));
+		} else if (qPrev == 6) { //Z Shape
+
+			SetQueuePositions (
+				new Vector3 (QxPos, Qheight, 0),
+				new Vector3 (QxPos + 1, Qheight, 0),
+				new Vector3 (QxPos, Qheight + 1, 0),
+				new Vector3 (QxPos - 1, Qheight + 1, 0));
+		} else {
+				Debug.Log ("Illegal shape code: " + qPrev);
+		}
+	}
+
     // Creates a pivot and individual blocks to form a tetris shape
     // List format allows for any number of blocks to be spawned
     void SetCubePositions(Vector3 piv, List<Vector3> cubePosList)
@@ -458,10 +377,12 @@ public class PrevTetris : MonoBehaviour
             shapes.Add(GenBlock(cubePosList[i]));
     }
 
-	void SetQueuePositions(List<Vector3> cubePosList)
+	void SetQueuePositions(Vector3 b1, Vector3 b2, Vector3 b3, Vector3 b4)
 	{
-		for (int i = 0; i < cubePosList.Count; i++)
- 			qShapes.Add(GenBlock(cubePosList[i]));
+		qShapes.Add(GenBlock(b1));
+		qShapes.Add(GenBlock(b2));
+		qShapes.Add(GenBlock(b3));
+		qShapes.Add(GenBlock(b4));
 	}
 
     //Create block at position
@@ -471,20 +392,6 @@ public class PrevTetris : MonoBehaviour
         obj.tag = "Block";
 
         return obj;
-    }
-
-    IEnumerator WaitMoveDown()
-    {
-        // NOTE: shared BLKFALLSPEED that is affected by game timer
-        //       individual blkFallSpeed based on BLKFALLSPEED that can be affected by powerups
-
-        //if (!spedUp)
-        yield return new WaitForSeconds(BLKFALLSPEED);
-        //else
-        //yield return new WaitForSeconds(blkFallSpeed);
-
-        MoveDown();
-        movingDown = false;
     }
 
     void MoveDown()
@@ -500,8 +407,8 @@ public class PrevTetris : MonoBehaviour
             for (int i = 0; i < shapes.Count; i++)
             {
                 shapes[i].position = new Vector3(shapes[i].position.x, 
-                                                 Mathf.RoundToInt(shapes[i].position.y - 1.0f), 
-                                                 shapes[i].position.z);
+                                                           Mathf.RoundToInt(shapes[i].position.y - 1.0f), 
+                                                           shapes[i].position.z);
             }
 
             pivot.transform.position = new Vector3(pivot.transform.position.x, 
@@ -521,7 +428,7 @@ public class PrevTetris : MonoBehaviour
             }
 
             //****************************************************
-            CheckRow(curBottom); //Check for any match
+            CheckRow(1); //Check for any match
             CheckRow(gameOverHeight); //Check for game over
             //****************************************************
 
@@ -612,15 +519,14 @@ public class PrevTetris : MonoBehaviour
             CheckRow(y); //We moved blocks down, check again this row
         }
         else if (y + 1 < board.GetLength(1) - 3)
-        {
-            CheckRow(y + 1); //Check row above this
-        }
+            {
+                CheckRow(y + 1); //Check row above this
+            }
     }
 
-	public void AddToQueue(int shape)
-    {
+	public void AddToQueue(int shape) {
 		shapeQueue.Enqueue(shape);
-        destroyQueue();
+		Debug.Log(shapeQueue.Count);
 	}
 	
 	void destroyQueue()
@@ -634,26 +540,13 @@ public class PrevTetris : MonoBehaviour
 
 		qShapes.Clear();
 
-        if (shapeQueue.Count > 0)
-            populateQueue();
 	}
 	
     IEnumerator Wait()
     {
-
-        // NOTE: shared NXTBLKSPAWNTIME that is affected by game timer
-        //       individual nxtBlkSpawnTime based on NXTBLKSPAWNTIME that can be affected by powerups
-
-        //if (!spedUp)
-        yield return new WaitForSeconds(NXTBLKSPAWNTIME);
-        //else
-        //yield return new WaitForSeconds(nxtBlkSpawnTime);
-
+		Debug.Log("Waiting");
+        yield return new WaitForSeconds(nxtBlkSpawnTime);
         SpawnShape();
-        curWaiting = false;
-
-        spawn = true;
-		spawning = false;
     }
 
     ///////////////////////////////////////
@@ -698,13 +591,17 @@ public class PrevTetris : MonoBehaviour
             moveAmount += 0.49f;
         
         //Will Player movement cause collision?
+        bool hit = false;
         for (int i = 0; i < shapes.Count; i++)
             if (board[Mathf.RoundToInt(shapes[i].position.x + moveAmount - transform.position.x), 
                       Mathf.RoundToInt(shapes[i].position.y - transform.position.y)] == 1)
             {
-                return false;
+                hit = true;
                 break;
             }
+
+        if (hit)
+            return false;
         
         return true;
     }
@@ -728,6 +625,7 @@ public class PrevTetris : MonoBehaviour
             }
         }
 
+        Debug.Log("Can Rotate");
         return true; //We can rotate
     }
 
@@ -737,26 +635,14 @@ public class PrevTetris : MonoBehaviour
 
     private void OnEnable()
     {
-        GetComponent<PressGesture>().AddFriendlyGesture(GetComponent<TransformGesture>());
         GetComponent<TapGesture>().Tapped += tappedHandler;
-        GetComponent<PressGesture>().Pressed += pressedHandler;
         GetComponent<TransformGesture>().Transformed += transformHandler;
     }
 
     private void OnDisable()
     {
         GetComponent<TapGesture>().Tapped -= tappedHandler;
-        GetComponent<PressGesture>().Pressed += pressedHandler;
         GetComponent<TransformGesture>().Transformed -= transformHandler;
-    }
-
-    private void pressedHandler(object sender, System.EventArgs e)
-    {
-        if (!gameOver)
-        {
-            PressGesture message = (PressGesture)sender;
-            previousPosition = myCam.ScreenToWorldPoint(message.ScreenPosition);
-        }
     }
 
     private void transformHandler(object sender, System.EventArgs e)
@@ -775,7 +661,6 @@ public class PrevTetris : MonoBehaviour
             Rotate();
     }
 
-    /*
     void OnMouseDown()
     {
         if (!gameOver)
@@ -804,9 +689,8 @@ public class PrevTetris : MonoBehaviour
             CheckDrag(cursorPos);
         }
     }
-    */
 
-   /*
+    /*
     * NOTE: Fine grain control over horizontal movement for better feel.
     *       Coarse grain control over vertical movement to avoid accidental dropping.
     */
@@ -816,17 +700,18 @@ public class PrevTetris : MonoBehaviour
                                        Mathf.RoundToInt(cursorPos.y - transform.position.y));
         // Check if input is on the board
         if (boardPos.x >= 0 && boardPos.x < 12 &&
-            boardPos.y >= 0 && boardPos.y < 24)
+                boardPos.y >= 0 && boardPos.y < 24)
         {
             //Get spawned block pos
             float moveAmount = cursorPos.x - previousPosition.x;
 
             // Check direction and if we can move in that direction
-            if (moveAmount != 0 && CheckUserMove(moveAmount))
+            if ((moveAmount < 0 && CheckUserMove(moveAmount)) ||
+                    (moveAmount > 0 && CheckUserMove(moveAmount)))
             {
                 pivot.transform.position = new Vector3(pivot.transform.position.x + moveAmount,
-                                                       pivot.transform.position.y, 
-                                                       pivot.transform.position.z);
+                                                           pivot.transform.position.y, 
+                                                           pivot.transform.position.z);
 
                 for (int i = 0; i < shapes.Count; i++)
                 {
