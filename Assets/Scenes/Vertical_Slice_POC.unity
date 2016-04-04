@@ -962,7 +962,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cbcf9ad451e44846ba91bc363c3a10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nxtBlckSpawnTime: 2
+  nxtBlckSpawnTime: 0.6
 --- !u!65 &1141336504
 BoxCollider:
   m_ObjectHideFlags: 0
