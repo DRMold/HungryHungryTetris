@@ -11,7 +11,7 @@ public class PrevTetris : MonoBehaviour
     //Block
     public Transform block;
     //Spawn Bool
-    public bool spawn;
+    public bool spawn, spawning;
     //Sec before nxt blk spawn
     public float nxtBlkSpawnTime = 0.5f;
     private bool curWaiting = false;
@@ -62,6 +62,7 @@ public class PrevTetris : MonoBehaviour
 		qPreview  = new int[7, 9]; // Set queue width and height
 		GenQueue ();
 		
+		spawning = false;
         shapeQueue.Enqueue(Random.Range(0, 6));
 
         InvokeRepeating("MoveDown", blkFallSpeed, blkFallSpeed); //move blk down
@@ -80,7 +81,7 @@ public class PrevTetris : MonoBehaviour
             gameOver = true;
         }
         // If nothing spawned and game isn't over, then spawn
-        if (!spawn && !gameOver && !curWaiting)
+        if (!spawning && !spawn && !gameOver && !curWaiting)
         {
             curWaiting = true;
             StartCoroutine("Wait");
@@ -146,6 +147,9 @@ public class PrevTetris : MonoBehaviour
                 Rotate();	
             }
         }
+		
+		if (shapeQueue.Count > 0)
+		{ populateQueue(); }
     }
 
     void GenBoard()
@@ -363,74 +367,6 @@ public class PrevTetris : MonoBehaviour
                 Debug.Log("Illegal shape code: " + shape);
             }
 			Debug.Log("qPrev: "+qPrev);
-			
-			if (qPrev == 0)
-			{ //S Shape
-
-				SetQueuePositions(
-					new Vector3(QxPos, Qheight, 0),
-					new Vector3(QxPos - 1, Qheight, 0),
-					new Vector3(QxPos, Qheight + 1, 0),
-					new Vector3(QxPos + 1, Qheight + 1, 0));
-			}
-			else if (qPrev == 1)
-			{ //I Shape
-
-				SetQueuePositions(
-					new Vector3(QxPos, Qheight, 0),
-					new Vector3(QxPos, Qheight + 1, 0),
-					new Vector3(QxPos, Qheight + 2, 0),
-					new Vector3(QxPos, Qheight + 3, 0));
-			}
-			else if (qPrev == 2)
-			{ //O Shape
-
-				SetQueuePositions(
-					new Vector3(QxPos, Qheight, 0),
-					new Vector3(QxPos + 1, Qheight, 0),
-					new Vector3(QxPos, Qheight + 1, 0),
-					new Vector3(QxPos + 1, Qheight + 1, 0));
-			}
-			else if (qPrev == 3)
-			{ //J Shape
-
-				SetQueuePositions(
-					new Vector3(QxPos, Qheight, 0),
-					new Vector3(QxPos + 1, Qheight, 0),
-					new Vector3(QxPos, Qheight + 1, 0),
-					new Vector3(QxPos, Qheight + 2, 0));
-			}
-			else if (qPrev == 4)
-			{ //T Shape
-
-				SetQueuePositions(
-					new Vector3(QxPos, Qheight, 0),
-					new Vector3(QxPos - 1, Qheight, 0),
-					new Vector3(QxPos + 1, Qheight, 0),
-					new Vector3(QxPos, Qheight + 1, 0));
-			}
-			else if (qPrev == 5)
-			{ //L Shape
-
-				SetQueuePositions(
-					new Vector3(QxPos, Qheight, 0),
-					new Vector3(QxPos - 1, Qheight, 0),
-					new Vector3(QxPos, Qheight + 1, 0),
-					new Vector3(QxPos, Qheight + 2, 0));
-			}
-			else if (qPrev == 6)
-			{ //Z Shape
-
-				SetQueuePositions(
-					new Vector3(QxPos, Qheight, 0),
-					new Vector3(QxPos + 1, Qheight, 0),
-					new Vector3(QxPos, Qheight + 1, 0),
-					new Vector3(QxPos - 1, Qheight + 1, 0));
-			}
-			else
-			{
-				Debug.Log("Illegal shape code: " + shape);
-			}
         }
         else
         {
@@ -443,25 +379,87 @@ public class PrevTetris : MonoBehaviour
         }
     }
 
+	void populateQueue () {
+ 
+ 		//Creates shape in Queue
+ 		int Qheight = (int)transform.position.y + qPreview.GetLength (1) + 9;
+ 		int QxPos = (int)transform.position.x + 15 + qPreview.GetLength (0) / 2 - 1;
+ 
+ 		qPrev = shapeQueue.Peek ();
+ 
+ 		List<Vector3> cubePosList = new List<Vector3> ();
+ 
+ 		if (qPrev == 0) { //S Shape
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
+ 			cubePosList.Add (new Vector3 (QxPos - 1, Qheight, 0));
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
+ 			cubePosList.Add (new Vector3 (QxPos + 1, Qheight + 1, 0));
+ 
+ 			SetQueuePositions (cubePosList);
+ 		} else if (qPrev == 1) { //I Shape
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight + 2, 0));
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight + 3, 0));
+ 
+ 			SetQueuePositions (cubePosList);
+ 		} else if (qPrev == 2) { //O Shape
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
+ 			cubePosList.Add (new Vector3 (QxPos + 1, Qheight, 0));
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
+ 			cubePosList.Add (new Vector3 (QxPos + 1, Qheight + 1, 0));
+ 
+ 			SetQueuePositions (cubePosList);
+ 		} else if (qPrev == 3) { //J Shape
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
+ 			cubePosList.Add (new Vector3 (QxPos + 1, Qheight, 0));
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight + 2, 0));
+ 
+ 			SetQueuePositions (cubePosList);
+ 		} else if (qPrev == 4) { //T Shape
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
+ 			cubePosList.Add (new Vector3 (QxPos - 1, Qheight, 0));
+ 			cubePosList.Add (new Vector3 (QxPos + 1, Qheight, 0));
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
+ 
+ 			SetQueuePositions (cubePosList);
+ 		} else if (qPrev == 5) { //L Shape
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
+ 			cubePosList.Add (new Vector3 (QxPos - 1, Qheight, 0));
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight + 2, 0));
+ 
+ 			SetQueuePositions (cubePosList);
+ 		} else if (qPrev == 6) { //Z Shape
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
+ 			cubePosList.Add (new Vector3 (QxPos + 1, Qheight, 0));
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
+ 			cubePosList.Add (new Vector3 (QxPos - 1, Qheight + 1, 0));
+ 
+ 			SetQueuePositions (cubePosList);
+ 		} else {
+ 			Debug.Log ("Illegal shape code: " + qPrev);
+ 		}
+ 	}
+ 			
     // Creates a pivot and individual blocks to form a tetris shape
     // List format allows for any number of blocks to be spawned
     void SetCubePositions(Vector3 piv, List<Vector3> cubePosList)
     {
         pivot.transform.position = piv;
         for (int i = 0; i < cubePosList.Count; i++)
-            shapes.Add(GenBlock(cubePosList[i], false));
+            shapes.Add(GenBlock(cubePosList[i]));
     }
 
-	void SetQueuePositions(Vector3 b1, Vector3 b2, Vector3 b3, Vector3 b4)
+	void SetQueuePositions(List<Vector3> cubePosList)
 	{
-		qShapes.Add(GenBlock(b1, true));
-		qShapes.Add(GenBlock(b2, true));
-		qShapes.Add(GenBlock(b3, true));
-		qShapes.Add(GenBlock(b4, true));
+		for (int i = 0; i < cubePosList.Count; i++)
+ 			qShapes.Add(GenBlock(cubePosList[i]));
 	}
 
     //Create block at position
-    Transform GenBlock(Vector3 pos, bool q)
+    Transform GenBlock(Vector3 pos)
     {
         Transform obj = (Transform)Instantiate(block.transform, pos, Quaternion.identity) as Transform;
         obj.tag = "Block";
@@ -619,10 +617,12 @@ public class PrevTetris : MonoBehaviour
 	
     IEnumerator Wait()
     {
+		spawning = true;
 		Debug.Log("Waiting");
         yield return new WaitForSeconds(nxtBlkSpawnTime);
         SpawnShape();
         curWaiting = false;
+		spawning = false;
     }
 
     ///////////////////////////////////////
