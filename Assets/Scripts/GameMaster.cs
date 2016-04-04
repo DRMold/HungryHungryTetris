@@ -176,12 +176,12 @@ public class GameMaster : MonoBehaviour {
 
     private void FadeToClear()
     {
-        fadeTexture.color = Color.Lerp(fadeTexture.color, Color.clear, transitionTime * Time.deltaTime);
+        fadeTexture.color = Color.Lerp(fadeTexture.color, Color.clear, transitionTime);
     }
 
     private void FadeToBlack()
     {
-        fadeTexture.color = Color.Lerp(fadeTexture.color, Color.black, transitionTime * Time.deltaTime);
+        fadeTexture.color = Color.Lerp(fadeTexture.color, Color.black, transitionTime);
     }
 
     public void startGame()

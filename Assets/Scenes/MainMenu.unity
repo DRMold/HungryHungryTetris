@@ -246,7 +246,7 @@ AudioSource:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 88513976}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 6ca25dd6a6dfaa24a805ef451a7b63b6, type: 3}
@@ -320,8 +320,8 @@ GUITexture:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 88513976}
-  m_Enabled: 1
-  m_Texture: {fileID: 2800000, guid: c9e21f4e5a2d1ff4b8e17dc3b24f1263, type: 3}
+  m_Enabled: 0
+  m_Texture: {fileID: 0}
   m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
   m_PixelInset:
     serializedVersion: 2
