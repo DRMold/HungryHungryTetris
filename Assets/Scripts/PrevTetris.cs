@@ -7,12 +7,16 @@ public class PrevTetris : MonoBehaviour
 {
     //Board
     public int[,] board;
+    private int curBottom;
     //Block
     public Transform block;
     //Spawn Bool
     public bool spawn;
     //Sec before nxt blk spawn
     public float nxtBlkSpawnTime = 0.5f;
+    private bool curWaiting = false;
+    private int  cyclesEmpty = 0;
+    public  int  MAX_ALLOWED_CYCLES_EMPTY = 8;
     //Block fall speed
     public float blkFallSpeed = 0.5f;
     //Game Over Level
@@ -53,6 +57,7 @@ public class PrevTetris : MonoBehaviour
         myCam = transform.GetChild(0).gameObject.GetComponent<Camera>();
         board = new int[12, 24]; // Set board width and height
         GenBoard();
+        curBottom = 1;
 
 		qPreview  = new int[7, 9]; // Set queue width and height
 		GenQueue ();
@@ -67,10 +72,17 @@ public class PrevTetris : MonoBehaviour
     {
 		//Fix spawn freezing when queue becomes empty
 		if (shapes.Count == 0 && shapeQueue.Count == 0)
-		{ spawn = false; }
-        // If nothing spawned and game isn't over, then spawn
-        if (!spawn && !gameOver)
+		{ 
+            spawn = false; 
+        }
+        if (curBottom == gameOverHeight)
         {
+            gameOver = true;
+        }
+        // If nothing spawned and game isn't over, then spawn
+        if (!spawn && !gameOver && !curWaiting)
+        {
+            curWaiting = true;
             StartCoroutine("Wait");
             spawn = true;
             //Reset rotation 
@@ -228,11 +240,46 @@ public class PrevTetris : MonoBehaviour
 		}
 	}
 
+    void GenBottomAndMoveShapesUp()
+    {
+        GameObject[] blocks = GameObject.FindGameObjectsWithTag("Block"); //All blocks in the scene
+        for (int y = board.GetLength(1) - 2; y >= curBottom; y--)
+        {
+            for (int x = 1; x < board.GetLength(0) - 1; x++)
+            {
+                board[x, y + 1] = board[x, y];
+            }
+        }
+        foreach (GameObject go in blocks)
+        {
+            int blkX = Mathf.RoundToInt(go.transform.position.x - transform.position.x);
+            int blkY = Mathf.RoundToInt(go.transform.position.y - transform.position.y);
+            if (blkX > 0 && blkX < board.GetLength(0) - 1 &&
+                blkY > 0 && blkY < board.GetLength(1) - 2)
+                go.transform.position = new Vector3(go.transform.position.x, 
+                                                    go.transform.position.y + 1, 
+                                                    go.transform.position.z);
+        }
+        for (int x = 1; x < board.GetLength(0) - 1; x++)
+        {
+            board[x, curBottom] = 1;
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = new Vector3(x + transform.position.x, curBottom + transform.position.y, 0);
+            Material material = new Material(Shader.Find("Diffuse"));
+            material.color = Color.black;
+            cube.GetComponent<Renderer>().material = material;
+            cube.transform.parent = transform;
+            cube.GetComponent<Collider>().isTrigger = true;
+        }
+        curBottom++;
+    }
+
     void SpawnShape()
     {
 		//qPrev = Random.Range (0, 6);
         if (shapeQueue.Count > 0)
         {
+            cyclesEmpty = 0;
 			qPrev = shapeQueue.Peek();
             int shape = shapeQueue.Dequeue();
 			if (shapeQueue.Count > 0) qPrev = shapeQueue.Peek();
@@ -385,6 +432,15 @@ public class PrevTetris : MonoBehaviour
 				Debug.Log("Illegal shape code: " + shape);
 			}
         }
+        else
+        {
+            cyclesEmpty++;
+            if (cyclesEmpty > MAX_ALLOWED_CYCLES_EMPTY)
+            {
+                cyclesEmpty = 0;
+                GenBottomAndMoveShapesUp();
+            }
+        }
     }
 
     // Creates a pivot and individual blocks to form a tetris shape
@@ -393,19 +449,19 @@ public class PrevTetris : MonoBehaviour
     {
         pivot.transform.position = piv;
         for (int i = 0; i < cubePosList.Count; i++)
-            shapes.Add(GenBlock(cubePosList[i]));
+            shapes.Add(GenBlock(cubePosList[i], false));
     }
 
 	void SetQueuePositions(Vector3 b1, Vector3 b2, Vector3 b3, Vector3 b4)
 	{
-		qShapes.Add(GenBlock(b1));
-		qShapes.Add(GenBlock(b2));
-		qShapes.Add(GenBlock(b3));
-		qShapes.Add(GenBlock(b4));
+		qShapes.Add(GenBlock(b1, true));
+		qShapes.Add(GenBlock(b2, true));
+		qShapes.Add(GenBlock(b3, true));
+		qShapes.Add(GenBlock(b4, true));
 	}
 
     //Create block at position
-    Transform GenBlock(Vector3 pos)
+    Transform GenBlock(Vector3 pos, bool q)
     {
         Transform obj = (Transform)Instantiate(block.transform, pos, Quaternion.identity) as Transform;
         obj.tag = "Block";
@@ -447,7 +503,7 @@ public class PrevTetris : MonoBehaviour
             }
 
             //****************************************************
-            CheckRow(1); //Check for any match
+            CheckRow(curBottom); //Check for any match
             CheckRow(gameOverHeight); //Check for game over
             //****************************************************
 
@@ -566,6 +622,7 @@ public class PrevTetris : MonoBehaviour
 		Debug.Log("Waiting");
         yield return new WaitForSeconds(nxtBlkSpawnTime);
         SpawnShape();
+        curWaiting = false;
     }
 
     ///////////////////////////////////////
