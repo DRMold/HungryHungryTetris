@@ -13,6 +13,7 @@ public class GameMaster : MonoBehaviour {
 
     private int numPlayers;
     private AudioSource gameAudio;
+    private GUITexture fadeTexture;
 
     private Dictionary<string, UnityEvent> eventDictionary;
     private static GameMaster gameMaster;
@@ -45,11 +46,13 @@ public class GameMaster : MonoBehaviour {
         }
         if (fadeIn)
         {
-            if (fadeImg != null )
-            {
-                fadeImg.gameObject.SetActive(true);
-                fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b, 1.0f);
-            }
+            fadeTexture = GetComponent<GUITexture>();
+            fadeTexture.pixelInset = new Rect(0f, 0f, Screen.width, Screen.height);
+            //if (fadeImg != null )
+            //{
+            //    fadeImg.gameObject.SetActive(true);
+            //    fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b, 1.0f);
+            //}
         }
     }
 
@@ -86,14 +89,21 @@ public class GameMaster : MonoBehaviour {
             thisEvent.Invoke();
         }
     }
-
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+        if(FindObjectsOfType(GetType()).Length > 1)
+        {
+            Destroy(gameObject);
+        }
+    }
     void Start()
     {
         numPlayers = 4;
 		gameAudio = GetComponent<AudioSource>();
         gameAudio.loop = true;
 		gameAudio.Play();
-		DontDestroyOnLoad(this.gameObject);
+		//DontDestroyOnLoad(this.gameObject);
     }
 
     void Update() {
@@ -107,12 +117,16 @@ public class GameMaster : MonoBehaviour {
             StartCoroutine(StartScene());
         }
         GameMaster.StartListening("AllPlayersReady", startGame);
+        GameMaster.StartListening("GameRestart", startGame);
+        GameMaster.StartListening("ShowMenu", showMenu);
         GameMaster.StartListening("MusicVolumeChange", musicVolumeChange);
     }
 
     private void OnDisable()
     {
         GameMaster.StopListening("AllPlayersReady", startGame);
+        GameMaster.StopListening("GameRestart", startGame);
+        GameMaster.StopListening("ShowMenu", showMenu);
         GameMaster.StopListening("MusicVolumeChange", musicVolumeChange);
     }
 
@@ -123,40 +137,63 @@ public class GameMaster : MonoBehaviour {
 
     IEnumerator StartScene()
     {
-        time = 1.0f;
+        Debug.Log("Starting scene");
         yield return null;
-        while(time >= 0.0f)
+        FadeToClear();
+        if(fadeTexture.color.a <= 0.05f)
         {
-            fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b, time);
-            time -= Time.deltaTime * (1.0f / transitionTime);
-            yield return null;
+            fadeTexture.color = Color.clear;
+            fadeTexture.enabled = false;
+            Debug.Log("Scene started");
         }
-        fadeImg.gameObject.SetActive(false);
+        //while(time >= 0.0f)
+        //{
+        //    fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b, time);
+        //    time -= Time.deltaTime * (1.0f / transitionTime);
+        //    yield return null;
+        //}
+        //fadeImg.gameObject.SetActive(false);
     }
 
     IEnumerator EndScene(string nextScene)
     {
-        fadeImg.gameObject.SetActive(true);
-        time = 0.0f;
+        //fadeImg.gameObject.SetActive(true);
         yield return null;
-        while (time <= 1.0f)
+        fadeTexture.enabled = true;
+        FadeToBlack();
+        if (fadeTexture.color.a <= 0.95f)
         {
-            fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b, time);
-            time += Time.deltaTime * (1.0f / transitionTime);
-            yield return null;
+            SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
         }
-        SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
+        //while (time <= 1.0f)
+        //{
+        //    fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b, time);
+        //    time += Time.deltaTime * (1.0f / transitionTime);
+        //    yield return null;
+        //}
         StartCoroutine(StartScene());
+    }
+
+    private void FadeToClear()
+    {
+        fadeTexture.color = Color.Lerp(fadeTexture.color, Color.clear, transitionTime * Time.deltaTime);
+    }
+
+    private void FadeToBlack()
+    {
+        fadeTexture.color = Color.Lerp(fadeTexture.color, Color.black, transitionTime * Time.deltaTime);
     }
 
     public void startGame()
     {
         //TODO: Load options and modes
+        Debug.Log("Starting game");
         instance.LoadScene("Vertical_Slice_POC");
     }
 
     public void showMenu()
     {
+        Debug.Log("Showing Menu");
         instance.LoadScene("MainMenu");
     }
 
