@@ -561,8 +561,9 @@ GameObject:
   - 4: {fileID: 159384407}
   - 114: {fileID: 159384408}
   - 65: {fileID: 159384406}
-  - 114: {fileID: 159384410}
   - 114: {fileID: 159384409}
+  - 114: {fileID: 159384410}
+  - 114: {fileID: 159384411}
   m_Layer: 0
   m_Name: P1
   m_TagString: New Tag
@@ -609,6 +610,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   block: {fileID: 1609835556}
   spawn: 0
+  spawning: 0
   nxtBlkSpawnTime: 0.5
   MAX_ALLOWED_CYCLES_EMPTY: 8
   blkFallSpeed: 0.5
@@ -636,11 +638,10 @@ MonoBehaviour:
   useSendMessage: 0
   sendStateChangeMessages: 0
   sendMessageTarget: {fileID: 0}
-  requireGestureToFail: {fileID: 159384410}
-  friendlyGestures:
-  - {fileID: 159384410}
-  numberOfTapsRequired: 2
-  timeLimit: Infinity
+  requireGestureToFail: {fileID: 0}
+  friendlyGestures: []
+  numberOfTapsRequired: 1
+  timeLimit: 0.3
   distanceLimit: Infinity
 --- !u!114 &159384410
 MonoBehaviour:
@@ -650,7 +651,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 159384405}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ba67d04e07d3491989322c6414feaf3, type: 3}
+  m_Script: {fileID: 11500000, guid: 11ea9930ecb674732bee27116520fad8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   advancedProps: 0
@@ -662,12 +663,34 @@ MonoBehaviour:
   sendStateChangeMessages: 0
   sendMessageTarget: {fileID: 0}
   requireGestureToFail: {fileID: 159384409}
-  friendlyGestures:
-  - {fileID: 159384409}
-  flickTime: 0.1
-  minDistance: 1
-  movementThreshold: 0.5
-  direction: 1
+  friendlyGestures: []
+  type: 1
+  minScreenPointsDistance: 0.5
+  screenTransformThreshold: 0.1
+  projection: 0
+  projectionPlaneNormal: {x: 0, y: 0, z: 1}
+--- !u!114 &159384411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 159384405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6be551879cd14d739b0188844ef2c60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  advancedProps: 0
+  minTouches: 0
+  maxTouches: 0
+  combineTouches: 0
+  combineTouchesInterval: 0.3
+  useSendMessage: 0
+  sendStateChangeMessages: 0
+  sendMessageTarget: {fileID: 0}
+  requireGestureToFail: {fileID: 0}
+  friendlyGestures: []
+  ignoreChildren: 0
 --- !u!1 &401322376
 GameObject:
   m_ObjectHideFlags: 0
@@ -1487,7 +1510,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 870702133}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17fdf02507df2433595874500f6eef4c, type: 3}
   m_Name: 
@@ -1503,7 +1526,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 870702133}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33cbf52dea18b40649d742b0c6f96d3c, type: 3}
   m_Name: 
@@ -1733,8 +1756,9 @@ GameObject:
   - 4: {fileID: 1103355964}
   - 114: {fileID: 1103355962}
   - 65: {fileID: 1103355963}
-  - 114: {fileID: 1103355966}
   - 114: {fileID: 1103355965}
+  - 114: {fileID: 1103355966}
+  - 114: {fileID: 1103355967}
   m_Layer: 0
   m_Name: P2
   m_TagString: P2
@@ -1755,6 +1779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   block: {fileID: 1609835556}
   spawn: 0
+  spawning: 0
   nxtBlkSpawnTime: 0.5
   MAX_ALLOWED_CYCLES_EMPTY: 8
   blkFallSpeed: 0.5
@@ -1808,11 +1833,10 @@ MonoBehaviour:
   useSendMessage: 0
   sendStateChangeMessages: 0
   sendMessageTarget: {fileID: 0}
-  requireGestureToFail: {fileID: 1103355966}
-  friendlyGestures:
-  - {fileID: 1103355966}
-  numberOfTapsRequired: 2
-  timeLimit: Infinity
+  requireGestureToFail: {fileID: 0}
+  friendlyGestures: []
+  numberOfTapsRequired: 1
+  timeLimit: 0.3
   distanceLimit: Infinity
 --- !u!114 &1103355966
 MonoBehaviour:
@@ -1822,7 +1846,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1103355961}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ba67d04e07d3491989322c6414feaf3, type: 3}
+  m_Script: {fileID: 11500000, guid: 11ea9930ecb674732bee27116520fad8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   advancedProps: 0
@@ -1834,12 +1858,34 @@ MonoBehaviour:
   sendStateChangeMessages: 0
   sendMessageTarget: {fileID: 0}
   requireGestureToFail: {fileID: 1103355965}
-  friendlyGestures:
-  - {fileID: 1103355965}
-  flickTime: 0.1
-  minDistance: 1
-  movementThreshold: 0.5
-  direction: 1
+  friendlyGestures: []
+  type: 1
+  minScreenPointsDistance: 0.5
+  screenTransformThreshold: 0.1
+  projection: 0
+  projectionPlaneNormal: {x: 0, y: 0, z: 1}
+--- !u!114 &1103355967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1103355961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6be551879cd14d739b0188844ef2c60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  advancedProps: 0
+  minTouches: 0
+  maxTouches: 0
+  combineTouches: 0
+  combineTouchesInterval: 0.3
+  useSendMessage: 0
+  sendStateChangeMessages: 0
+  sendMessageTarget: {fileID: 0}
+  requireGestureToFail: {fileID: 0}
+  friendlyGestures: []
+  ignoreChildren: 0
 --- !u!1 &1141336501
 GameObject:
   m_ObjectHideFlags: 0
@@ -1888,7 +1934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cbcf9ad451e44846ba91bc363c3a10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nxtBlckSpawnTime: 2
+  nxtBlckSpawnTime: 0.6
 --- !u!65 &1141336504
 BoxCollider:
   m_ObjectHideFlags: 0

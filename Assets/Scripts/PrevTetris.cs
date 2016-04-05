@@ -366,7 +366,7 @@ public class PrevTetris : MonoBehaviour
             {
                 Debug.Log("Illegal shape code: " + shape);
             }
-			Debug.Log("qPrev: "+qPrev);
+//			Debug.Log("qPrev: "+qPrev);
         }
         else
         {
@@ -554,7 +554,7 @@ public class PrevTetris : MonoBehaviour
 
         if (y == gameOverHeight && count > 0)
         {//If the current height is game over height, and there is more than 0 block, then game over
-            Debug.LogWarning("Game over");
+//            Debug.LogWarning("Game over");
             gameOver = true;
         }
         if (count == 10)
@@ -599,7 +599,7 @@ public class PrevTetris : MonoBehaviour
 
 	public void AddToQueue(int shape) {
 		shapeQueue.Enqueue(shape);
-		Debug.Log(shapeQueue.Count);
+//		Debug.Log(shapeQueue.Count);
 	}
 	
 	void destroyQueue()
@@ -618,7 +618,7 @@ public class PrevTetris : MonoBehaviour
     IEnumerator Wait()
     {
 		spawning = true;
-		Debug.Log("Waiting");
+//		Debug.Log("Waiting");
         yield return new WaitForSeconds(nxtBlkSpawnTime);
         SpawnShape();
         curWaiting = false;
@@ -701,7 +701,7 @@ public class PrevTetris : MonoBehaviour
             }
         }
 
-        Debug.Log("Can Rotate");
+//        Debug.Log("Can Rotate");
         return true; //We can rotate
     }
 
@@ -711,20 +711,34 @@ public class PrevTetris : MonoBehaviour
 
     private void OnEnable()
     {
+        GetComponent<PressGesture>().AddFriendlyGesture(GetComponent<TransformGesture>());
         GetComponent<TapGesture>().Tapped += tappedHandler;
+        GetComponent<PressGesture>().Pressed += pressedHandler;
         GetComponent<TransformGesture>().Transformed += transformHandler;
     }
 
     private void OnDisable()
     {
         GetComponent<TapGesture>().Tapped -= tappedHandler;
+        GetComponent<PressGesture>().Pressed += pressedHandler;
         GetComponent<TransformGesture>().Transformed -= transformHandler;
+    }
+
+    private void pressedHandler(object sender, System.EventArgs e)
+    {
+        if (!gameOver)
+        {
+            Debug.Log("Press");
+            PressGesture message = (PressGesture)sender;
+            previousPosition = myCam.ScreenToWorldPoint(message.ScreenPosition);
+        }
     }
 
     private void transformHandler(object sender, System.EventArgs e)
     {
         if (!gameOver && pivot != null)
         {
+            Debug.Log("TRANSFORM");
             TransformGesture message = (TransformGesture)sender;
             Vector3 cursorPos = myCam.ScreenToWorldPoint(message.ScreenPosition);
             CheckDrag(cursorPos);
@@ -733,10 +747,12 @@ public class PrevTetris : MonoBehaviour
 
     private void tappedHandler(object sender, System.EventArgs e)
     {
+        Debug.Log("TAPPED");
         if (!gameOver && pivot != null)
             Rotate();
     }
 
+    /*
     void OnMouseDown()
     {
         if (!gameOver)
@@ -765,6 +781,7 @@ public class PrevTetris : MonoBehaviour
             CheckDrag(cursorPos);
         }
     }
+    */
 
     /*
     * NOTE: Fine grain control over horizontal movement for better feel.
