@@ -78,6 +78,7 @@ public class PrevTetris : MonoBehaviour
         }
         if (curBottom == gameOverHeight)
         {
+            Debug.LogWarning("Game over");
             gameOver = true;
         }
         // If nothing spawned and game isn't over, then spawn
@@ -276,6 +277,7 @@ public class PrevTetris : MonoBehaviour
             cube.GetComponent<Collider>().isTrigger = true;
         }
         curBottom++;
+        CheckRow(gameOverHeight); //Check for game over
     }
 
     void SpawnShape()
@@ -554,7 +556,7 @@ public class PrevTetris : MonoBehaviour
 
         if (y == gameOverHeight && count > 0)
         {//If the current height is game over height, and there is more than 0 block, then game over
-//            Debug.LogWarning("Game over");
+            Debug.LogWarning("Game over");
             gameOver = true;
         }
         if (count == 10)
