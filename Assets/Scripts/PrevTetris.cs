@@ -85,8 +85,8 @@ public class PrevTetris : MonoBehaviour
         if (!spawning && !spawn && !gameOver && !curWaiting)
         {
             curWaiting = true;
+            spawning = true;
             StartCoroutine("Wait");
-            spawn = true;
             //Reset rotation 
             currentRot = 0;
         }
@@ -148,9 +148,6 @@ public class PrevTetris : MonoBehaviour
                 Rotate();	
             }
         }
-		
-		if (shapeQueue.Count > 0)
-		{ populateQueue(); }
     }
 
     void GenBoard()
@@ -282,21 +279,16 @@ public class PrevTetris : MonoBehaviour
 
     void SpawnShape()
     {
-		//qPrev = Random.Range (0, 6);
         if (shapeQueue.Count > 0)
         {
             cyclesEmpty = 0;
-			qPrev = shapeQueue.Peek();
             int shape = shapeQueue.Dequeue();
-			if (shapeQueue.Count > 0) qPrev = shapeQueue.Peek();
-            //shapeQueue.Enqueue(qPrev);
+
+            // Refresh preview block
 			destroyQueue();
 			
             int height = (int)transform.position.y + board.GetLength(1) - 4;
             int xPos = (int)transform.position.x + board.GetLength(0) / 2 - 1;
-			//Creates shape in Queue
-			int Qheight = (int)transform.position.y + qPreview.GetLength(1) + 9;
-			int QxPos = (int)transform.position.x + 15 + qPreview.GetLength(0) / 2 - 1;
             //Create pivot
             pivot = new GameObject("RotateAround"); //Pivot of shape
             List<Vector3> cubePosList = new List<Vector3>();
@@ -381,12 +373,12 @@ public class PrevTetris : MonoBehaviour
         }
     }
 
-	void populateQueue () {
- 
+	void populateQueue ()
+    {
  		//Creates shape in Queue
  		int Qheight = (int)transform.position.y + qPreview.GetLength (1) + 9;
  		int QxPos = (int)transform.position.x + 15 + qPreview.GetLength (0) / 2 - 1;
- 
+
  		qPrev = shapeQueue.Peek ();
  
  		List<Vector3> cubePosList = new List<Vector3> ();
@@ -598,11 +590,6 @@ public class PrevTetris : MonoBehaviour
                 CheckRow(y + 1); //Check row above this
             }
     }
-
-	public void AddToQueue(int shape) {
-		shapeQueue.Enqueue(shape);
-//		Debug.Log(shapeQueue.Count);
-	}
 	
 	void destroyQueue()
 	{
@@ -615,15 +602,18 @@ public class PrevTetris : MonoBehaviour
 
 		qShapes.Clear();
 
+        if (shapeQueue.Count > 0)
+            populateQueue();
 	}
 	
     IEnumerator Wait()
     {
-		spawning = true;
 //		Debug.Log("Waiting");
         yield return new WaitForSeconds(nxtBlkSpawnTime);
         SpawnShape();
         curWaiting = false;
+
+        spawn = true;
 		spawning = false;
     }
 
