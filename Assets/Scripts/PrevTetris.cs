@@ -13,12 +13,15 @@ public class PrevTetris : MonoBehaviour
     //Spawn Bool
     public bool spawn, spawning;
     //Sec before nxt blk spawn
-    public float nxtBlkSpawnTime = 0.5f;
+    public static float NXTBLKSPAWNTIME = 0.5f;
+    public float nxtBlkSpawnTime = NXTBLKSPAWNTIME;
     private bool curWaiting = false;
+    private bool movingDown = false;
     private int  cyclesEmpty = 0;
     public  int  MAX_ALLOWED_CYCLES_EMPTY = 8;
     //Block fall speed
-    public float blkFallSpeed = 0.5f;
+    public static float BLKFALLSPEED = 0.5f;
+    public float blkFallSpeed = BLKFALLSPEED;
     //Game Over Level
     public int gameOverHeight = 22;
     // 20 board + 2 edge
@@ -65,7 +68,7 @@ public class PrevTetris : MonoBehaviour
 		spawning = false;
         shapeQueue.Enqueue(Random.Range(0, 6));
 
-        InvokeRepeating("MoveDown", blkFallSpeed, blkFallSpeed); //move blk down
+        //InvokeRepeating("MoveDown", blkFallSpeed, blkFallSpeed); //move blk down
     }
 
     // Update is called once per frame
@@ -89,6 +92,11 @@ public class PrevTetris : MonoBehaviour
             StartCoroutine("Wait");
             //Reset rotation 
             currentRot = 0;
+        }
+        if (!movingDown)
+        {
+            movingDown = true;
+            StartCoroutine("WaitMoveDown");
         }
         if (gameOver)
         {
@@ -461,6 +469,20 @@ public class PrevTetris : MonoBehaviour
         return obj;
     }
 
+    IEnumerator WaitMoveDown()
+    {
+        // NOTE: shared BLKFALLSPEED that is affected by game timer
+        //       individual blkFallSpeed based on BLKFALLSPEED that can be affected by powerups
+
+        //if (!spedUp)
+        yield return new WaitForSeconds(BLKFALLSPEED);
+        //else
+        //yield return new WaitForSeconds(blkFallSpeed);
+
+        MoveDown();
+        movingDown = false;
+    }
+
     void MoveDown()
     {
         //Spawned blocks position 
@@ -614,7 +636,15 @@ public class PrevTetris : MonoBehaviour
     IEnumerator Wait()
     {
 //		Debug.Log("Waiting");
-        yield return new WaitForSeconds(nxtBlkSpawnTime);
+
+        // NOTE: shared NXTBLKSPAWNTIME that is affected by game timer
+        //       individual nxtBlkSpawnTime based on NXTBLKSPAWNTIME that can be affected by powerups
+
+        //if (!spedUp)
+        yield return new WaitForSeconds(NXTBLKSPAWNTIME);
+        //else
+        //yield return new WaitForSeconds(nxtBlkSpawnTime);
+
         SpawnShape();
         curWaiting = false;
 
