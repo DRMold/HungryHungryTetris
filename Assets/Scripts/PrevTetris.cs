@@ -590,6 +590,11 @@ public class PrevTetris : MonoBehaviour
                 CheckRow(y + 1); //Check row above this
             }
     }
+
+	public void AddToQueue(int shape) {
+		shapeQueue.Enqueue(shape);
+//		Debug.Log(shapeQueue.Count);
+	}
 	
 	void destroyQueue()
 	{
