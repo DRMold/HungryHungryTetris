@@ -13,12 +13,15 @@ public class PrevTetris : MonoBehaviour
     //Spawn Bool
     public bool spawn, spawning;
     //Sec before nxt blk spawn
-    public float nxtBlkSpawnTime = 0.5f;
+    public static float NXTBLKSPAWNTIME = 0.5f;
+    public float nxtBlkSpawnTime = NXTBLKSPAWNTIME;
     private bool curWaiting = false;
+    private bool movingDown = false;
     private int  cyclesEmpty = 0;
     public  int  MAX_ALLOWED_CYCLES_EMPTY = 8;
     //Block fall speed
-    public float blkFallSpeed = 0.5f;
+    public static float BLKFALLSPEED = 0.5f;
+    public float blkFallSpeed = BLKFALLSPEED;
     //Game Over Level
     public int gameOverHeight = 22;
     // 20 board + 2 edge
@@ -65,7 +68,7 @@ public class PrevTetris : MonoBehaviour
 		spawning = false;
         shapeQueue.Enqueue(Random.Range(0, 6));
 
-        InvokeRepeating("MoveDown", blkFallSpeed, blkFallSpeed); //move blk down
+        //InvokeRepeating("MoveDown", blkFallSpeed, blkFallSpeed); //move blk down
     }
 
     // Update is called once per frame
@@ -78,16 +81,22 @@ public class PrevTetris : MonoBehaviour
         }
         if (curBottom == gameOverHeight)
         {
+            Debug.LogWarning("Game over");
             gameOver = true;
         }
         // If nothing spawned and game isn't over, then spawn
         if (!spawning && !spawn && !gameOver && !curWaiting)
         {
             curWaiting = true;
+            spawning = true;
             StartCoroutine("Wait");
-            spawn = true;
             //Reset rotation 
             currentRot = 0;
+        }
+        if (!movingDown)
+        {
+            movingDown = true;
+            StartCoroutine("WaitMoveDown");
         }
         if (gameOver)
         {
@@ -147,9 +156,6 @@ public class PrevTetris : MonoBehaviour
                 Rotate();	
             }
         }
-		
-		if (shapeQueue.Count > 0)
-		{ populateQueue(); }
     }
 
     void GenBoard()
@@ -276,25 +282,21 @@ public class PrevTetris : MonoBehaviour
             cube.GetComponent<Collider>().isTrigger = true;
         }
         curBottom++;
+        CheckRow(gameOverHeight); //Check for game over
     }
 
     void SpawnShape()
     {
-		//qPrev = Random.Range (0, 6);
         if (shapeQueue.Count > 0)
         {
             cyclesEmpty = 0;
-			qPrev = shapeQueue.Peek();
             int shape = shapeQueue.Dequeue();
-			if (shapeQueue.Count > 0) qPrev = shapeQueue.Peek();
-            //shapeQueue.Enqueue(qPrev);
+
+            // Refresh preview block
 			destroyQueue();
 			
             int height = (int)transform.position.y + board.GetLength(1) - 4;
             int xPos = (int)transform.position.x + board.GetLength(0) / 2 - 1;
-			//Creates shape in Queue
-			int Qheight = (int)transform.position.y + qPreview.GetLength(1) + 9;
-			int QxPos = (int)transform.position.x + 15 + qPreview.GetLength(0) / 2 - 1;
             //Create pivot
             pivot = new GameObject("RotateAround"); //Pivot of shape
             List<Vector3> cubePosList = new List<Vector3>();
@@ -379,12 +381,12 @@ public class PrevTetris : MonoBehaviour
         }
     }
 
-	void populateQueue () {
- 
+	void populateQueue ()
+    {
  		//Creates shape in Queue
  		int Qheight = (int)transform.position.y + qPreview.GetLength (1) + 9;
  		int QxPos = (int)transform.position.x + 15 + qPreview.GetLength (0) / 2 - 1;
- 
+
  		qPrev = shapeQueue.Peek ();
  
  		List<Vector3> cubePosList = new List<Vector3> ();
@@ -465,6 +467,20 @@ public class PrevTetris : MonoBehaviour
         obj.tag = "Block";
 
         return obj;
+    }
+
+    IEnumerator WaitMoveDown()
+    {
+        // NOTE: shared BLKFALLSPEED that is affected by game timer
+        //       individual blkFallSpeed based on BLKFALLSPEED that can be affected by powerups
+
+        //if (!spedUp)
+        yield return new WaitForSeconds(BLKFALLSPEED);
+        //else
+        //yield return new WaitForSeconds(blkFallSpeed);
+
+        MoveDown();
+        movingDown = false;
     }
 
     void MoveDown()
@@ -554,7 +570,7 @@ public class PrevTetris : MonoBehaviour
 
         if (y == gameOverHeight && count > 0)
         {//If the current height is game over height, and there is more than 0 block, then game over
-//            Debug.LogWarning("Game over");
+            Debug.LogWarning("Game over");
             gameOver = true;
         }
         if (count == 10)
@@ -613,15 +629,26 @@ public class PrevTetris : MonoBehaviour
 
 		qShapes.Clear();
 
+        if (shapeQueue.Count > 0)
+            populateQueue();
 	}
 	
     IEnumerator Wait()
     {
-		spawning = true;
 //		Debug.Log("Waiting");
-        yield return new WaitForSeconds(nxtBlkSpawnTime);
+
+        // NOTE: shared NXTBLKSPAWNTIME that is affected by game timer
+        //       individual nxtBlkSpawnTime based on NXTBLKSPAWNTIME that can be affected by powerups
+
+        //if (!spedUp)
+        yield return new WaitForSeconds(NXTBLKSPAWNTIME);
+        //else
+        //yield return new WaitForSeconds(nxtBlkSpawnTime);
+
         SpawnShape();
         curWaiting = false;
+
+        spawn = true;
 		spawning = false;
     }
 
