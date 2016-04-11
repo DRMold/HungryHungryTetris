@@ -57,6 +57,7 @@ public class PrevTetris : MonoBehaviour
         //+1 - Top Edge
         //20 - Height
         //+1 - Down Edge
+        gameOver = false;
         myCam = transform.GetChild(0).gameObject.GetComponent<Camera>();
         board = new int[12, 24]; // Set board width and height
         GenBoard();
@@ -368,7 +369,6 @@ public class PrevTetris : MonoBehaviour
             {
                 Debug.Log("Illegal shape code: " + shape);
             }
-//			Debug.Log("qPrev: "+qPrev);
         }
         else
         {
@@ -496,8 +496,8 @@ public class PrevTetris : MonoBehaviour
             for (int i = 0; i < shapes.Count; i++)
             {
                 shapes[i].position = new Vector3(shapes[i].position.x, 
-                                                           Mathf.RoundToInt(shapes[i].position.y - 1.0f), 
-                                                           shapes[i].position.z);
+                                                 Mathf.RoundToInt(shapes[i].position.y - 1.0f), 
+                                                 shapes[i].position.z);
             }
 
             pivot.transform.position = new Vector3(pivot.transform.position.x, 
@@ -608,14 +608,15 @@ public class PrevTetris : MonoBehaviour
             CheckRow(y); //We moved blocks down, check again this row
         }
         else if (y + 1 < board.GetLength(1) - 3)
-            {
-                CheckRow(y + 1); //Check row above this
-            }
+        {
+            CheckRow(y + 1); //Check row above this
+        }
     }
 
-	public void AddToQueue(int shape) {
+	public void AddToQueue(int shape)
+    {
 		shapeQueue.Enqueue(shape);
-//		Debug.Log(shapeQueue.Count);
+        destroyQueue();
 	}
 	
 	void destroyQueue()
@@ -635,7 +636,6 @@ public class PrevTetris : MonoBehaviour
 	
     IEnumerator Wait()
     {
-//		Debug.Log("Waiting");
 
         // NOTE: shared NXTBLKSPAWNTIME that is affected by game timer
         //       individual nxtBlkSpawnTime based on NXTBLKSPAWNTIME that can be affected by powerups
@@ -694,17 +694,13 @@ public class PrevTetris : MonoBehaviour
             moveAmount += 0.49f;
         
         //Will Player movement cause collision?
-        bool hit = false;
         for (int i = 0; i < shapes.Count; i++)
             if (board[Mathf.RoundToInt(shapes[i].position.x + moveAmount - transform.position.x), 
                       Mathf.RoundToInt(shapes[i].position.y - transform.position.y)] == 1)
             {
-                hit = true;
+                return false;
                 break;
             }
-
-        if (hit)
-            return false;
         
         return true;
     }
@@ -728,7 +724,6 @@ public class PrevTetris : MonoBehaviour
             }
         }
 
-//        Debug.Log("Can Rotate");
         return true; //We can rotate
     }
 
@@ -755,7 +750,6 @@ public class PrevTetris : MonoBehaviour
     {
         if (!gameOver)
         {
-            Debug.Log("Press");
             PressGesture message = (PressGesture)sender;
             previousPosition = myCam.ScreenToWorldPoint(message.ScreenPosition);
         }
@@ -765,7 +759,6 @@ public class PrevTetris : MonoBehaviour
     {
         if (!gameOver && pivot != null)
         {
-            Debug.Log("TRANSFORM");
             TransformGesture message = (TransformGesture)sender;
             Vector3 cursorPos = myCam.ScreenToWorldPoint(message.ScreenPosition);
             CheckDrag(cursorPos);
@@ -774,7 +767,6 @@ public class PrevTetris : MonoBehaviour
 
     private void tappedHandler(object sender, System.EventArgs e)
     {
-        Debug.Log("TAPPED");
         if (!gameOver && pivot != null)
             Rotate();
     }
@@ -810,7 +802,7 @@ public class PrevTetris : MonoBehaviour
     }
     */
 
-    /*
+   /*
     * NOTE: Fine grain control over horizontal movement for better feel.
     *       Coarse grain control over vertical movement to avoid accidental dropping.
     */
@@ -820,18 +812,17 @@ public class PrevTetris : MonoBehaviour
                                        Mathf.RoundToInt(cursorPos.y - transform.position.y));
         // Check if input is on the board
         if (boardPos.x >= 0 && boardPos.x < 12 &&
-                boardPos.y >= 0 && boardPos.y < 24)
+            boardPos.y >= 0 && boardPos.y < 24)
         {
             //Get spawned block pos
             float moveAmount = cursorPos.x - previousPosition.x;
 
             // Check direction and if we can move in that direction
-            if ((moveAmount < 0 && CheckUserMove(moveAmount)) ||
-                    (moveAmount > 0 && CheckUserMove(moveAmount)))
+            if (moveAmount != 0 && CheckUserMove(moveAmount))
             {
                 pivot.transform.position = new Vector3(pivot.transform.position.x + moveAmount,
-                                                           pivot.transform.position.y, 
-                                                           pivot.transform.position.z);
+                                                       pivot.transform.position.y, 
+                                                       pivot.transform.position.z);
 
                 for (int i = 0; i < shapes.Count; i++)
                 {
