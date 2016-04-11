@@ -205,6 +205,7 @@ GameObject:
   - 4: {fileID: 88513978}
   - 114: {fileID: 88513977}
   - 82: {fileID: 88513979}
+  - 131: {fileID: 88513980}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -245,7 +246,7 @@ AudioSource:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 88513976}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: e983d0d42fdfa4a1ca1ed5723c572d3f, type: 3}
@@ -313,6 +314,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!131 &88513980
+GUITexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 88513976}
+  m_Enabled: 0
+  m_Texture: {fileID: 0}
+  m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+  m_PixelInset:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  m_LeftBorder: 0
+  m_RightBorder: 0
+  m_TopBorder: 0
+  m_BottomBorder: 0
 --- !u!1 &110159112
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,7 +448,7 @@ GameObject:
   - 114: {fileID: 213992058}
   m_Layer: 5
   m_Name: FadeIMG
-  m_TagString: Untagged
+  m_TagString: FadeIMG
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4591,6 +4611,7 @@ Canvas:
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
