@@ -28,38 +28,40 @@ public class HockeyController : MonoBehaviour {
 		//   t                  4
 		//   l                  5
 		//   z                  6
-		int genShape = Random.Range (0, 7);
+		int genShape = Random.Range (0, 8);
 		if (genShape == 0) {
-			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("S"),
-			                                                     new Vector3(100.0f, 20.0f, -1.0f),
-			                                                     Quaternion.identity));
+			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("S"),
+				new Vector3 (100.0f, 20.0f, -1.0f),
+				Quaternion.identity));
 		} else if (genShape == 1) {
-			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("I"),
-			                                                     new Vector3(100.0f, 20.0f, -1.0f),
-			                                                     Quaternion.identity));
+			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("I"),
+				new Vector3 (100.0f, 20.0f, -1.0f),
+				Quaternion.identity));
 		} else if (genShape == 2) {
-			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("O"),
-			                                                     new Vector3(100.0f, 20.0f, -1.0f),
-			                                                     Quaternion.identity));
+			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("O"),
+				new Vector3 (100.0f, 20.0f, -1.0f),
+				Quaternion.identity));
 		} else if (genShape == 3) {
-			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("J"),
-			                                                     new Vector3(100.0f, 20.0f, -1.0f),
-			                                                     Quaternion.identity));
+			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("J"),
+				new Vector3 (100.0f, 20.0f, -1.0f),
+				Quaternion.identity));
 		} else if (genShape == 4) {
-			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("T"),
-			                                                     new Vector3(100.0f, 20.0f, -1.0f),
-			                                                     Quaternion.identity));
+			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("T"),
+				new Vector3 (100.0f, 20.0f, -1.0f),
+				Quaternion.identity));
 		} else if (genShape == 5) {
-			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("L"),
-			                                                     new Vector3(100.0f, 20.0f, -1.0f),
-			                                                     Quaternion.identity));
+			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("L"),
+				new Vector3 (100.0f, 20.0f, -1.0f),
+				Quaternion.identity));
 		} else if (genShape == 6) {
-			spawnedShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("Z"),
-			                                                       new Vector3(100.0f, 20.0f, -1.0f),
-			                                                       Quaternion.identity));
-		}	
-
-
+			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("Z"),
+				new Vector3 (100.0f, 20.0f, -1.0f),
+				Quaternion.identity));
+		} else if (genShape == 7) {
+			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("P"),
+				new Vector3 (100.0f, 20.0f, -1.0f),
+				Quaternion.identity));
+		}
 	}
 
 	IEnumerator Wait()

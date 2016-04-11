@@ -33,6 +33,9 @@ public class PrevTetris : MonoBehaviour
     private List<Transform> shapes = new List<Transform>();
 	//Current Shape in Queue
 	private List<Transform> qShapes = new List<Transform> ();
+
+	private List<GameObject> queueShapes = new List<GameObject>();
+
     // Camera attached to this board
     private Camera myCam;
     private bool notDragged;
@@ -160,6 +163,7 @@ public class PrevTetris : MonoBehaviour
 
 		if (shapeQueue.Count > 0) {
 			popQueue ();
+			//textureShape ();
 		}
     }
 
@@ -462,6 +466,44 @@ public class PrevTetris : MonoBehaviour
 	{
 		for (int i = 0; i < cubePosList.Count; i++)
  			qShapes.Add(GenBlock(cubePosList[i]));
+	}
+
+	void textureShape()
+	{
+		int qShape = qPrev;
+
+		int Qheight = (int)transform.position.y + qPreview.GetLength (1) + 9;
+		int QxPos = (int)transform.position.x + 15 + qPreview.GetLength (0) / 2 - 1;
+
+		if ( qShape == 0) {
+			queueShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("S"),
+				new Vector3(QxPos, Qheight, 0),
+				Quaternion.identity));
+		} else if (qShape == 1) {
+			queueShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("I"),
+				new Vector3(QxPos, Qheight, 0),
+				Quaternion.identity));
+		} else if (qShape == 2) {
+			queueShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("O"),
+				new Vector3(QxPos, Qheight, 0),
+				Quaternion.identity));
+		} else if (qShape == 3) {
+			queueShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("J"),
+				new Vector3(QxPos, Qheight, 0),
+				Quaternion.identity));
+		} else if (qShape == 4) {
+			queueShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("T"),
+				new Vector3(QxPos, Qheight, 0),
+				Quaternion.identity));
+		} else if (qShape == 5) {
+			queueShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("L"),
+				new Vector3(QxPos, Qheight, 0),
+				Quaternion.identity));
+		} else if (qShape == 6) {
+			queueShapes.Add((GameObject)GameObject.Instantiate(Resources.Load ("Z"),
+				new Vector3(QxPos, Qheight, 0),
+				Quaternion.identity));
+		}	
 	}
 
     //Create block at position
