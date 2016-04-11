@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using TouchScript.Gestures;
@@ -101,6 +101,7 @@ public class PrevTetris : MonoBehaviour
         if (gameOver)
         {
             Time.timeScale = 0;
+            GameMaster.TriggerEvent("ShowGameOver");
         }
         //////////////////////////////////////////////////////
         // Begin Player Input Checks

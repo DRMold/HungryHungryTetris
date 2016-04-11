@@ -12,23 +12,17 @@ public class InGameOverPanel : MonoBehaviour {
         myCanvasGroup.interactable = false;
     }
 
-    void Update()
-    {
-        //TODO: Trigger event in actual game
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            GameMaster.TriggerEvent("ShowGameOver");
-        }
-    }
-
     void OnEnable()
     {
-        GameMaster.StartListening("ShowGameOver", showPanel);
+        //TODO: Stop game movement, obtain and display final scores, show winner
+        Debug.Log("Show game over panel!");
+        StartCoroutine(fadePanel());
+        //GameMaster.StartListening("ShowGameOver", showPanel);
     }
 
     void OnDisable()
     {
-        GameMaster.StopListening("ShowGameOver", showPanel);
+        //GameMaster.StopListening("ShowGameOver", showPanel);
     }
 
     private void showPanel()
@@ -44,8 +38,9 @@ public class InGameOverPanel : MonoBehaviour {
         float time = 0f;
         while (time < 1f)
         {
-            time += Time.deltaTime;
+            time += Time.unscaledDeltaTime;
             myCanvasGroup.alpha = time;
+            Debug.Log(time + " " + myCanvasGroup.alpha);
             yield return null;
         }
         myCanvasGroup.alpha = 1f;

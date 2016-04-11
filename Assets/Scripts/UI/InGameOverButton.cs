@@ -19,13 +19,16 @@ public class InGameOverButton : MonoBehaviour {
 
     void OnEnable()
     {
-        GameMaster.StartListening("ShowGameOver", overHandler);
+        //GameMaster.StartListening("ShowGameOver", overHandler);
+        myButton.enabled = true;
+        myButton.interactable = true;
+        GetComponent<PressGesture>().Pressed += pressHandler;
     }
 
     void OnDisable()
     {
+        //GameMaster.StopListening("ShowGameOver", overHandler);
         GetComponent<PressGesture>().Pressed -= pressHandler;
-        GameMaster.StopListening("ShowGameOver", overHandler);
     }
 	
     private void pressHandler(object sender, System.EventArgs e)
@@ -48,12 +51,5 @@ public class InGameOverButton : MonoBehaviour {
         {
             Debug.LogError("Game Over Button Press: Invalid name!");
         }
-    }
-
-    private void overHandler()
-    {
-        myButton.enabled = true;
-        myButton.interactable = true;
-        GetComponent<PressGesture>().Pressed += pressHandler;
     }
 }

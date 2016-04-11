@@ -139,13 +139,14 @@ public class GameMaster : MonoBehaviour {
     {
         Debug.Log("Starting scene");
         yield return null;
-        FadeToClear();
-        if(fadeTexture.color.a <= 0.05f)
-        {
-            fadeTexture.color = Color.clear;
-            fadeTexture.enabled = false;
-            Debug.Log("Scene started");
-        }
+        Time.timeScale = 1.0f;
+        //FadeToClear();
+        //if(fadeTexture.color.a <= 0.05f)
+        //{
+        //    fadeTexture.color = Color.clear;
+        //    fadeTexture.enabled = false;
+        //    Debug.Log("Scene started");
+        //}
         //while(time >= 0.0f)
         //{
         //    fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b, time);
@@ -159,12 +160,12 @@ public class GameMaster : MonoBehaviour {
     {
         //fadeImg.gameObject.SetActive(true);
         yield return null;
-        fadeTexture.enabled = true;
-        FadeToBlack();
-        if (fadeTexture.color.a <= 0.95f)
-        {
+        //fadeTexture.enabled = true;
+        //FadeToBlack();
+        //if (fadeTexture.color.a <= 0.95f)
+        //{
             SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
-        }
+        //}
         //while (time <= 1.0f)
         //{
         //    fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b, time);
