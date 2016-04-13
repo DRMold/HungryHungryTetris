@@ -3,16 +3,22 @@ using System.Collections;
 
 public class InGameCanvasManager : MonoBehaviour {
     public GameObject gameOverPanel;
+	public GameMaster gameMasterScript;
 
 	void Awake()
     {
         gameOverPanel.SetActive(false);
     }
+	
+	void Start()
+	{
+		gameMasterScript = GameObject.FindWithTag("GameMaster").GetComponent("GameMaster.cs") as GameMaster;
+	}
 
     void Update()
     {
         //TODO: Trigger event in actual game
-        if (GameMaster.GetTime() = 0f)
+        if (gameMasterScript.GetTime() == 0f)
         {
             GameMaster.TriggerEvent("ShowGameOver");
         }

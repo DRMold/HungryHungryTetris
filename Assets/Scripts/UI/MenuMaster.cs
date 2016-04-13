@@ -89,8 +89,8 @@ public class MenuMaster : MonoBehaviour
 		timerOptions.Add(500f);
 		timerOptions.Add(300f);
 		timerOptions.Add(180f);
-		timerOption.Add(60f);
-		timerOption.Add(-1f);
+		timerOptions.Add(60f);
+		timerOptions.Add(-1f);
 		
         mainPanel.SetActive(true);
         readyPanel.SetActive(false);
@@ -106,7 +106,7 @@ public class MenuMaster : MonoBehaviour
         MenuMaster.StartListening("IncreaseMusicVolume", increaseMusicVolume);
         MenuMaster.StartListening("FastDecreaseMusicVolume", fastDecreaseMusicVolume);
         MenuMaster.StartListening("FastIncreaseMusicVolume", fastIncreaseMusicVolume);
-		MenuMaster.Startistening("DecreaseTimer", DecreaseTimer);
+		MenuMaster.StartListening("DecreaseTimer", DecreaseTimer);
 		MenuMaster.StartListening("IncreaseTimer", IncreaseTimer);
     }
     void OnDisable()
@@ -147,7 +147,7 @@ public class MenuMaster : MonoBehaviour
 		timerOptionIndex++;
 		if (timerOptionIndex > 5)
 			timerOptionIndex = 5;
-		length = timerOption[timerOptionIndex];
+		length = timerOptions[timerOptionIndex];
 	}
 	
 	void DecreaseTimer()
@@ -155,7 +155,7 @@ public class MenuMaster : MonoBehaviour
 		timerOptionIndex--;
 		if (timerOptionIndex < 0)
 			timerOptionIndex = 0;
-		length = timerOption[timerOptionIndex];
+		length = timerOptions[timerOptionIndex];
 	}
 	
     void decreaseMusicVolume()
