@@ -160,11 +160,6 @@ public class PrevTetris : MonoBehaviour
                 Rotate();	
             }
         }
-
-		if (shapeQueue.Count > 0) {
-			popQueue ();
-			//textureShape ();
-		}
     }
 
     void GenBoard()
