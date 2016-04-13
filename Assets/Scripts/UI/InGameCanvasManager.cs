@@ -12,7 +12,7 @@ public class InGameCanvasManager : MonoBehaviour {
     void Update()
     {
         //TODO: Trigger event in actual game
-        if (Input.GetKeyDown(KeyCode.G))
+        if (GameMaster.GetTime() = 0f)
         {
             GameMaster.TriggerEvent("ShowGameOver");
         }
@@ -30,5 +30,6 @@ public class InGameCanvasManager : MonoBehaviour {
     private void showGameOver()
     {
         gameOverPanel.SetActive(true);
+		Time.timeScale = 0f;
     }
 }

@@ -10,6 +10,7 @@ public class GameMaster : MonoBehaviour {
     public float transitionTime = 1.0f;
     public Image fadeImg;
     float time = 0f;
+	bool countingDown;
 
     private int numPlayers;
     private AudioSource gameAudio;
@@ -55,6 +56,12 @@ public class GameMaster : MonoBehaviour {
             //}
         }
     }
+	
+	void OnLevelWasLoaded(int level)
+	{
+		if (level == 1)
+			InitTimer();
+	}
 
     public static void StartListening(string eventName, UnityAction listener)
     {
@@ -99,6 +106,7 @@ public class GameMaster : MonoBehaviour {
     }
     void Start()
     {
+		countingDown = false;
         numPlayers = 4;
 		gameAudio = GetComponent<AudioSource>();
         gameAudio.loop = true;
@@ -107,7 +115,12 @@ public class GameMaster : MonoBehaviour {
     }
 
     void Update() {
-
+		if (countingDown)
+		{
+			time -= 1.0f * Time.deltaTime;
+			if (time < 0f)
+				time = 0.0f;
+		}
     }
 
     private void OnEnable()
@@ -120,6 +133,7 @@ public class GameMaster : MonoBehaviour {
         GameMaster.StartListening("GameRestart", startGame);
         GameMaster.StartListening("ShowMenu", showMenu);
         GameMaster.StartListening("MusicVolumeChange", musicVolumeChange);
+		GameMaster.StartListening("TimerChange", SetTimer);
     }
 
     private void OnDisable()
@@ -128,6 +142,7 @@ public class GameMaster : MonoBehaviour {
         GameMaster.StopListening("GameRestart", startGame);
         GameMaster.StopListening("ShowMenu", showMenu);
         GameMaster.StopListening("MusicVolumeChange", musicVolumeChange);
+		GameMaster.StopListening("TimerChange", SetTimer);
     }
 
     public void LoadScene(string level)
@@ -191,6 +206,21 @@ public class GameMaster : MonoBehaviour {
         Debug.Log("Starting game");
         instance.LoadScene("Vertical_Slice_POC");
     }
+	
+	void SetTimer()
+	{
+		time = MenuMaster.length;
+		Debug.Log("Timer set to: " + time);
+	}
+	
+	void InitTimer() 
+	{ 
+		if (time > 0)
+			countingDown = true; 
+	}
+	
+	public float GetTime()
+	{ return time; }
 
     public void showMenu()
     {
