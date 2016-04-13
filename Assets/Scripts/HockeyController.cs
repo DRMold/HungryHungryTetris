@@ -58,6 +58,7 @@ public class HockeyController : MonoBehaviour {
 				new Vector3 (100.0f, 20.0f, -1.0f),
 				Quaternion.identity));
 		} else if (genShape == 7) {
+			//powerup, will be replaced by better resource when available
 			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("P"),
 				new Vector3 (100.0f, 20.0f, -1.0f),
 				Quaternion.identity));
