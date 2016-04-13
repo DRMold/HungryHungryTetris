@@ -850,7 +850,6 @@ Canvas:
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -1276,6 +1275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerQueue: {fileID: 1103355961}
+  opponentQueue: {fileID: 159384405}
 --- !u!1 &601232470
 GameObject:
   m_ObjectHideFlags: 0
@@ -1330,6 +1330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerQueue: {fileID: 159384405}
+  opponentQueue: {fileID: 1103355961}
 --- !u!1 &709874630
 GameObject:
   m_ObjectHideFlags: 0

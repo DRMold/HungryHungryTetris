@@ -52,6 +52,23 @@ public class PrevTetris : MonoBehaviour
     // Controls
     public KeyCode rot, down, left, right;
 
+	//slows down tetris game for 5 seconds
+	public void slowDown() 
+	{
+		blkFallSpeed = 1.0f;
+		Invoke ("resetSpeed", 5.0f);
+	}
+
+	private void resetSpeed()
+	{
+		blkFallSpeed = BLKFALLSPEED;
+	}
+
+	public void speedUp() {
+		blkFallSpeed = 0.25f;
+		Invoke ("resetSpeed", 5.0f);
+	}
+
     void Start()
     {
         //Default board is 10x16
@@ -516,7 +533,7 @@ public class PrevTetris : MonoBehaviour
         //       individual blkFallSpeed based on BLKFALLSPEED that can be affected by powerups
 
         //if (!spedUp)
-        yield return new WaitForSeconds(BLKFALLSPEED);
+		yield return new WaitForSeconds(blkFallSpeed);
         //else
         //yield return new WaitForSeconds(blkFallSpeed);
 
