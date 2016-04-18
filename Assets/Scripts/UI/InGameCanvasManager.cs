@@ -12,13 +12,13 @@ public class InGameCanvasManager : MonoBehaviour {
 	
 	void Start()
 	{
-		gameMasterScript = GameObject.FindWithTag("GameMaster").GetComponent("GameMaster.cs") as GameMaster;
+		//gameMasterScript = GameObject.FindWithTag("GameMaster").GetComponent("GameMaster.cs") as GameMaster;
 	}
 
     void Update()
     {
         //TODO: Trigger event in actual game
-        if (gameMasterScript.GetTime() == 0f)
+        if (GameMaster.instance.GetTime() == 0f)
         {
             GameMaster.TriggerEvent("ShowGameOver");
         }
