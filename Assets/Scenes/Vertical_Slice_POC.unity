@@ -392,6 +392,7 @@ MonoBehaviour:
   down: 274
   left: 276
   right: 275
+  UI_Score: {fileID: 748005397}
 --- !u!114 &159384409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -798,6 +799,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverPanel: {fileID: 438716634}
+  gameMasterScript: {fileID: 0}
 --- !u!114 &435290736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -850,7 +852,6 @@ Canvas:
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -2076,6 +2077,7 @@ MonoBehaviour:
   down: 115
   left: 97
   right: 100
+  UI_Score: {fileID: 2026844623}
 --- !u!65 &1103355963
 BoxCollider:
   m_ObjectHideFlags: 0
