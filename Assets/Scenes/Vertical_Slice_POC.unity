@@ -386,6 +386,7 @@ MonoBehaviour:
   spawning: 0
   nxtBlkSpawnTime: 0.5
   MAX_ALLOWED_CYCLES_EMPTY: 8
+  PowerBar: 0
   blkFallSpeed: 0.5
   gameOverHeight: 22
   rot: 273
@@ -850,7 +851,6 @@ Canvas:
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -2070,6 +2070,7 @@ MonoBehaviour:
   spawning: 0
   nxtBlkSpawnTime: 0.5
   MAX_ALLOWED_CYCLES_EMPTY: 8
+  PowerBar: 0
   blkFallSpeed: 0.5
   gameOverHeight: 22
   rot: 119
@@ -2222,7 +2223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cbcf9ad451e44846ba91bc363c3a10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nxtBlckSpawnTime: 0.6
+  nxtBlckSpawnTime: 1.5
 --- !u!65 &1141336504
 BoxCollider:
   m_ObjectHideFlags: 0

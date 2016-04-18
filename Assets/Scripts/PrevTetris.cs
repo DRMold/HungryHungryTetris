@@ -19,6 +19,7 @@ public class PrevTetris : MonoBehaviour
     private bool movingDown = false;
     private int  cyclesEmpty = 0;
     public  int  MAX_ALLOWED_CYCLES_EMPTY = 8;
+	public bool PowerBar = false;
     //Block fall speed
     public static float BLKFALLSPEED = 0.5f;
     public float blkFallSpeed = BLKFALLSPEED;
@@ -160,6 +161,10 @@ public class PrevTetris : MonoBehaviour
                 Rotate();	
             }
         }
+
+		//if (PowerBar == true) {
+		//
+		//}
     }
 
     void GenBoard()
@@ -291,87 +296,95 @@ public class PrevTetris : MonoBehaviour
 
     void SpawnShape()
     {
+		
         if (shapeQueue.Count > 0)
         {
-            cyclesEmpty = 0;
-            int shape = shapeQueue.Dequeue();
+			if (PowerBar == true) {
 
-            // Refresh preview block
-			destroyQueue();
-			
-            int height = (int)transform.position.y + board.GetLength(1) - 4;
-            int xPos = (int)transform.position.x + board.GetLength(0) / 2 - 1;
-            //Create pivot
-            pivot = new GameObject("RotateAround"); //Pivot of shape
-            List<Vector3> cubePosList = new List<Vector3>();
+				int Pheight = (int)transform.position.y + board.GetLength(1) - 4;
+				int PxPos = (int)transform.position.x + board.GetLength(0) - 1;
 
-            if (shape == 0)
-            { //S Shape
-                cubePosList.Add(new Vector3(xPos, height, 0));
-                cubePosList.Add(new Vector3(xPos - 1, height, 0));
-                cubePosList.Add(new Vector3(xPos, height + 1, 0));
-                cubePosList.Add(new Vector3(xPos + 1, height + 1, 0));
+				//Create pivot
+				pivot = new GameObject("RotateAround"); //Pivot of shape
+				List<Vector3> cubePosList = new List<Vector3>();
 
-                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
-            }
-            else if (shape == 1)
-            { //I Shape
-                cubePosList.Add(new Vector3(xPos, height, 0));
-                cubePosList.Add(new Vector3(xPos, height + 1, 0));
-                cubePosList.Add(new Vector3(xPos, height + 2, 0));
-                cubePosList.Add(new Vector3(xPos, height + 3, 0));
+				for (int i = 0; i < 10; i++) {
+					cubePosList.Add (new Vector3 (PxPos - i, Pheight, 0));
 
-                SetCubePositions(new Vector3(xPos + 0.5f, height + 1.5f, 0), cubePosList);
-            }
-            else if (shape == 2)
-            { //O Shape
-                cubePosList.Add(new Vector3(xPos, height, 0));
-                cubePosList.Add(new Vector3(xPos + 1, height, 0));
-                cubePosList.Add(new Vector3(xPos, height + 1, 0));
-                cubePosList.Add(new Vector3(xPos + 1, height + 1, 0));
+					SetPowerBarPositions(new Vector3(PxPos, Pheight, 0), cubePosList);
+				}
 
-                SetCubePositions(new Vector3(xPos + 0.5f, height + 0.5f, 0), cubePosList);
-            }
-            else if (shape == 3)
-            { //J Shape
-                cubePosList.Add(new Vector3(xPos, height, 0));
-                cubePosList.Add(new Vector3(xPos + 1, height, 0));
-                cubePosList.Add(new Vector3(xPos, height + 1, 0));
-                cubePosList.Add(new Vector3(xPos, height + 2, 0));
+				//for (int j = 0; j < 10; j++) {
+				//
+				//}
 
-                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
-            }
-            else if (shape == 4)
-            { //T Shape
-                cubePosList.Add(new Vector3(xPos, height, 0));
-                cubePosList.Add(new Vector3(xPos - 1, height, 0));
-                cubePosList.Add(new Vector3(xPos + 1, height, 0));
-                cubePosList.Add(new Vector3(xPos, height + 1, 0));
+			} else {
 
-                SetCubePositions(new Vector3(xPos, height, 0), cubePosList);
-            }
-            else if (shape == 5)
-            { //L Shape
-                cubePosList.Add(new Vector3(xPos, height, 0));
-                cubePosList.Add(new Vector3(xPos - 1, height, 0));
-                cubePosList.Add(new Vector3(xPos, height + 1, 0));
-                cubePosList.Add(new Vector3(xPos, height + 2, 0));
+				cyclesEmpty = 0;
+				int shape = shapeQueue.Dequeue ();
 
-                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
-            }
-            else if (shape == 6)
-            { //Z Shape
-                cubePosList.Add(new Vector3(xPos, height, 0));
-                cubePosList.Add(new Vector3(xPos + 1, height, 0));
-                cubePosList.Add(new Vector3(xPos, height + 1, 0));
-                cubePosList.Add(new Vector3(xPos - 1, height + 1, 0));
+				// Refresh preview block
+				destroyQueue ();
+				
+				int height = (int)transform.position.y + board.GetLength (1) - 4;
+				int xPos = (int)transform.position.x + board.GetLength (0) / 2 - 1;
+				//Create pivot
+				pivot = new GameObject ("RotateAround"); //Pivot of shape
+				List<Vector3> cubePosList = new List<Vector3> ();
 
-                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
-            }
-            else
-            {
-                Debug.Log("Illegal shape code: " + shape);
-            }
+				if (shape == 0) { //S Shape
+					cubePosList.Add (new Vector3 (xPos, height, 0));
+					cubePosList.Add (new Vector3 (xPos - 1, height, 0));
+					cubePosList.Add (new Vector3 (xPos, height + 1, 0));
+					cubePosList.Add (new Vector3 (xPos + 1, height + 1, 0));
+
+					SetCubePositions (new Vector3 (xPos, height + 1, 0), cubePosList);
+				} else if (shape == 1) { //I Shape
+					cubePosList.Add (new Vector3 (xPos, height, 0));
+					cubePosList.Add (new Vector3 (xPos, height + 1, 0));
+					cubePosList.Add (new Vector3 (xPos, height + 2, 0));
+					cubePosList.Add (new Vector3 (xPos, height + 3, 0));
+
+					SetCubePositions (new Vector3 (xPos + 0.5f, height + 1.5f, 0), cubePosList);
+				} else if (shape == 2) { //O Shape
+					cubePosList.Add (new Vector3 (xPos, height, 0));
+					cubePosList.Add (new Vector3 (xPos + 1, height, 0));
+					cubePosList.Add (new Vector3 (xPos, height + 1, 0));
+					cubePosList.Add (new Vector3 (xPos + 1, height + 1, 0));
+
+					SetCubePositions (new Vector3 (xPos + 0.5f, height + 0.5f, 0), cubePosList);
+				} else if (shape == 3) { //J Shape
+					cubePosList.Add (new Vector3 (xPos, height, 0));
+					cubePosList.Add (new Vector3 (xPos + 1, height, 0));
+					cubePosList.Add (new Vector3 (xPos, height + 1, 0));
+					cubePosList.Add (new Vector3 (xPos, height + 2, 0));
+
+					SetCubePositions (new Vector3 (xPos, height + 1, 0), cubePosList);
+				} else if (shape == 4) { //T Shape
+					cubePosList.Add (new Vector3 (xPos, height, 0));
+					cubePosList.Add (new Vector3 (xPos - 1, height, 0));
+					cubePosList.Add (new Vector3 (xPos + 1, height, 0));
+					cubePosList.Add (new Vector3 (xPos, height + 1, 0));
+
+					SetCubePositions (new Vector3 (xPos, height, 0), cubePosList);
+				} else if (shape == 5) { //L Shape
+					cubePosList.Add (new Vector3 (xPos, height, 0));
+					cubePosList.Add (new Vector3 (xPos - 1, height, 0));
+					cubePosList.Add (new Vector3 (xPos, height + 1, 0));
+					cubePosList.Add (new Vector3 (xPos, height + 2, 0));
+
+					SetCubePositions (new Vector3 (xPos, height + 1, 0), cubePosList);
+				} else if (shape == 6) { //Z Shape
+					cubePosList.Add (new Vector3 (xPos, height, 0));
+					cubePosList.Add (new Vector3 (xPos + 1, height, 0));
+					cubePosList.Add (new Vector3 (xPos, height + 1, 0));
+					cubePosList.Add (new Vector3 (xPos - 1, height + 1, 0));
+
+					SetCubePositions (new Vector3 (xPos, height + 1, 0), cubePosList);
+				} else {
+					Debug.Log ("Illegal shape code: " + shape);
+				}
+			}
         }
         else
         {
@@ -881,4 +894,11 @@ public class PrevTetris : MonoBehaviour
             }
         }
     }
+
+	void SetPowerBarPositions(Vector3 piv, List<Vector3> cubePosList)
+	{
+		pivot.transform.position = piv;
+		for (int i = 0; i < cubePosList.Count; i++)
+			shapes.Insert(0,(GenBlock(cubePosList[i])));
+	}
 }

@@ -2,8 +2,9 @@
 using System.Collections;
 
 public class GoalLogic : MonoBehaviour {
-	public GameObject playerQueue;
 	
+	public GameObject playerQueue;
+
 	void OnTriggerEnter(Collider tetromino) {
 		//Have control flow based off type? Or shape will be property of tetromino?
 		int shape = tetromino.gameObject.GetComponent<Tetromino>().shape;
@@ -13,6 +14,8 @@ public class GoalLogic : MonoBehaviour {
 			Destroy (tetromino.gameObject);
 		} else {
 			//temporary select powerups, will be changed to link with powerup texture / model
+			playerQueue.GetComponent<PrevTetris> ().PowerBar = true;
+			/*
 			int power = Random.Range(0,4);
 			Debug.Log ("Applying powerup #" + power);
 			switch (power) {
@@ -21,6 +24,7 @@ public class GoalLogic : MonoBehaviour {
 				break;
 			case 1:
 				//A bunch of blocks created on player's tetris playfield
+				playerQueue.GetComponent<PrevTetris> ().PowerBar = true;
 				break;
 			case 2:
 				//reduce fall speed
@@ -29,6 +33,7 @@ public class GoalLogic : MonoBehaviour {
 				//piece cycle
 				break;
 			}
+			*/
 		}
 	}
 }
