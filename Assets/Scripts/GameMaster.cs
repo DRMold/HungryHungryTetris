@@ -9,8 +9,8 @@ public class GameMaster : MonoBehaviour {
     public bool fadeIn, fadeOut;
     public float transitionTime = 1.0f;
     public Image fadeImg;
-    float time = 0f;
-	bool countingDown;
+    float time = 500f;
+	bool countingDown = false;
 
     private int numPlayers;
     private AudioSource gameAudio;
@@ -106,7 +106,7 @@ public class GameMaster : MonoBehaviour {
     }
     void Start()
     {
-		countingDown = false;
+		//countingDown = false;
         numPlayers = 4;
 		gameAudio = GetComponent<AudioSource>();
         gameAudio.loop = true;
