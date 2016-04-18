@@ -9,7 +9,7 @@ public class GameMaster : MonoBehaviour {
     public bool fadeIn, fadeOut;
     public float transitionTime = 1.0f;
     public Image fadeImg;
-    float time = 0f;
+    float time = 500f;
 	bool countingDown;
 
     private int numPlayers;
