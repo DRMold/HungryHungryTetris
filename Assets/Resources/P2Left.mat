@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: iCube
+  m_Name: P2Left
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
@@ -19,8 +19,8 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 9378b8710a0134a1ab7697edf24682d4, type: 3}
-          m_Scale: {x: 1, y: -1}
+          m_Texture: {fileID: 2800000, guid: afa59c10d09024ba592dd8a192cf58e1, type: 3}
+          m_Scale: {x: -1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
@@ -55,7 +55,7 @@ Material:
           name: _EmissionMap
         second:
           m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: -1}
+          m_Scale: {x: -1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
