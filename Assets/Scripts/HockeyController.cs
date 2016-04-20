@@ -58,10 +58,10 @@ public class HockeyController : MonoBehaviour {
 				new Vector3 (100.0f, 20.0f, -1.0f),
 				Quaternion.identity));
 		} else if (genShape == 7) {
-			//powerup, will be replaced by better resource when available
-			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("P"),
+			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("Fast Fall Speed"),
 				new Vector3 (100.0f, 20.0f, -1.0f),
-				Quaternion.identity));
+				//rotate 90 degrees to show powerup's icon
+				Quaternion.Euler(new Vector3(-90,0,0))));
 		}
 	}
 
