@@ -15,12 +15,18 @@ public class InGameTextTimer : MonoBehaviour {
     void Start()
     {
         timeRemaining = GameMaster.instance.GetTime();
-        timerText.text = timeRemaining.ToString();
     }
 
     void Update()
     {
         timeRemaining = GameMaster.instance.GetTime();
-        timerText.text = Mathf.CeilToInt(timeRemaining).ToString();
+        if (timeRemaining < 0)
+        {
+            timerText.text = "-";
+        }
+        else
+        {
+            timerText.text = Mathf.CeilToInt(timeRemaining).ToString();
+        }   
     }
 }

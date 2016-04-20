@@ -15,8 +15,8 @@ public class MenuMaster : MonoBehaviour
     public static int musicVolume = 100;
 	
 	private static List<float> timerOptions = new List<float>();
-	private static int timerOptionIndex;
-	public static float length = 500f;
+	public static int timerOptionIndex = 0;
+	public static float length = -1f;
 
     private Dictionary<string, UnityEvent> eventDictionary;
     private static MenuMaster menuMaster;
@@ -47,6 +47,8 @@ public class MenuMaster : MonoBehaviour
         {
             eventDictionary = new Dictionary<string, UnityEvent>();
         }
+        //timerOptionIndex = 0;
+        //length = -1f;
     }
 
     public static void StartListening(string eventName, UnityAction listener)
@@ -91,7 +93,7 @@ public class MenuMaster : MonoBehaviour
 		timerOptions.Add(180f);
 		timerOptions.Add(60f);
 		timerOptions.Add(-1f);
-		
+        timerOptions.Sort();
         mainPanel.SetActive(true);
         readyPanel.SetActive(false);
         optionsPanel.SetActive(false);
@@ -144,19 +146,23 @@ public class MenuMaster : MonoBehaviour
 
 	void IncreaseTimer()
 	{
-		timerOptionIndex++;
-		if (timerOptionIndex > 5)
-			timerOptionIndex = 5;
+        Debug.Log("IT before:" + timerOptionIndex);
+        timerOptionIndex++;
+        if (timerOptionIndex > 4)
+			timerOptionIndex = 4;
 		length = timerOptions[timerOptionIndex];
-	}
+        Debug.Log("IT after:" + timerOptionIndex);
+    }
 	
 	void DecreaseTimer()
 	{
-		timerOptionIndex--;
-		if (timerOptionIndex < 0)
+        Debug.Log("DT before:" + timerOptionIndex);
+        timerOptionIndex--;
+        if (timerOptionIndex < 0)
 			timerOptionIndex = 0;
 		length = timerOptions[timerOptionIndex];
-	}
+        Debug.Log("DT after:" + timerOptionIndex);
+    }
 	
     void decreaseMusicVolume()
     {
@@ -213,6 +219,6 @@ public class MenuMaster : MonoBehaviour
 		mainPanel.SetActive (false);
 		readyPanel.SetActive (false);
 		optionsPanel.SetActive (true);
-	}
+    }
 }
 

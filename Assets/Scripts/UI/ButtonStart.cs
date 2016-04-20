@@ -22,5 +22,6 @@ public class ButtonStart : MonoBehaviour {
         //TODO: FIX ready screen!
         //showReady.Invoke ();
         GameMaster.TriggerEvent("AllPlayersReady");
+        Debug.Log(MenuMaster.length);
 	}
 }

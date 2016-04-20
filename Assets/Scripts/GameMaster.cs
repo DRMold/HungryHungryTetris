@@ -59,8 +59,11 @@ public class GameMaster : MonoBehaviour {
 	
 	void OnLevelWasLoaded(int level)
 	{
-		if (level == 1)
-			InitTimer();
+        if (level == 1)
+        {
+            time = MenuMaster.length;
+            InitTimer();
+        }
 	}
 
     public static void StartListening(string eventName, UnityAction listener)
