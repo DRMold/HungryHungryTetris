@@ -296,9 +296,7 @@ public class PrevTetris : MonoBehaviour
 						qPreview [x, y] = 1;
 						GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 						cube.transform.position = new Vector3(x + 14 + transform.position.x, y + 15 + transform.position.y, 0);
-						Material material = new Material(Shader.Find("Diffuse"));
-						material.color = Color.black;
-						cube.GetComponent<Renderer>().material = material;
+                        cube.GetComponent<Renderer>().material = BB;
 						cube.transform.parent = transform;
 						cube.GetComponent<Collider>().isTrigger = true;
 					}
@@ -309,9 +307,20 @@ public class PrevTetris : MonoBehaviour
 					qPreview [x, y] = 1;
 					GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 					cube.transform.position = new Vector3(x +  14 + transform.position.x, y + 15 + transform.position.y, 0);
-					Material material = new Material(Shader.Find("Diffuse"));
-					material.color = Color.black;
-					cube.GetComponent<Renderer>().material = material;
+                    if (y == 0)
+                    {
+                        if (x == 0)
+                            cube.GetComponent<Renderer>().material = LC;
+                        else
+                            cube.GetComponent<Renderer>().material = RC;
+                    }
+                    else
+                    {
+                        if (x == 0)
+                            cube.GetComponent<Renderer>().material = LB;
+                        else
+                            cube.GetComponent<Renderer>().material = RB;
+                    }
 					cube.transform.parent = transform;
 				}
 			}
@@ -366,7 +375,6 @@ public class PrevTetris : MonoBehaviour
             //Create pivot
             pivot = new GameObject("RotateAround"); //Pivot of shape
             List<Vector3> cubePosList = new List<Vector3>();
-            Material mat;
 
             if (shape == 0)
             { //S Shape
@@ -456,7 +464,6 @@ public class PrevTetris : MonoBehaviour
  		qPrev = shapeQueue.Peek ();
  
  		List<Vector3> cubePosList = new List<Vector3> ();
-        Material mat;
  
  		if (qPrev == 0) { //S Shape
  			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
