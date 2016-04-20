@@ -212,10 +212,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 8f7bd77610a61499eb9afb5ce87f1dd2, type: 2}
-  - {fileID: 2100000, guid: 8f7bd77610a61499eb9afb5ce87f1dd2, type: 2}
-  - {fileID: 2100000, guid: ecd57bb5356e8477fab29649ccf55068, type: 2}
-  - {fileID: 2100000, guid: ecd57bb5356e8477fab29649ccf55068, type: 2}
+  - {fileID: 2100000, guid: ec43438906afc4cb581d7b6d4e460583, type: 2}
+  - {fileID: 2100000, guid: ec43438906afc4cb581d7b6d4e460583, type: 2}
+  - {fileID: 2100000, guid: 41f74c68037274798b396c5ca5a2abc4, type: 2}
+  - {fileID: 2100000, guid: 41f74c68037274798b396c5ca5a2abc4, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -360,6 +360,22 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: 0.7071067
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ec43438906afc4cb581d7b6d4e460583, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: ec43438906afc4cb581d7b6d4e460583, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 41f74c68037274798b396c5ca5a2abc4, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 41f74c68037274798b396c5ca5a2abc4, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 105638}
