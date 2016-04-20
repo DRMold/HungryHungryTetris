@@ -11,6 +11,7 @@ Texture Tetris board pieces (implement single block textures)
 Power-Ups (3-5 powerups)
   Increase fall speed
   Random row generated
+  Clear Queue
   ===
   Reduce fall speed
   Piece cycle

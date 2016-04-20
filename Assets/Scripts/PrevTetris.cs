@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TouchScript.Gestures;
@@ -46,6 +47,15 @@ public class PrevTetris : MonoBehaviour
     //Current pivot of shape
     private GameObject pivot;
 
+    Material IMat;
+    Material JMat;
+    Material LMat;
+    Material OMat;
+    Material SMat;
+    Material TMat;
+    Material ZMat;
+    bool lsd;
+
     // Previous mouse position
     private Vector3 previousPosition;
 
@@ -68,15 +78,30 @@ public class PrevTetris : MonoBehaviour
 		blkFallSpeed = 0.25f;
 		Invoke ("resetSpeed", 5.0f);
 	}
+    private int score;
+    public Text UI_Score;
 
     void Start()
     {
+        IMat = (Material)Resources.Load("ICube");
+        JMat = (Material)Resources.Load("JCube");
+        LMat = (Material)Resources.Load("LCube");
+        OMat = (Material)Resources.Load("OCube");
+        SMat = (Material)Resources.Load("SCube");
+        TMat = (Material)Resources.Load("TCube");
+        ZMat = (Material)Resources.Load("ZCube");
+        lsd = false;
+
+        if (!lsd)
+            SetMats();
+        
         //Default board is 10x16
         //1+10+1 - Side edge
         //+2 - Space for spawning
         //+1 - Top Edge
         //20 - Height
         //+1 - Down Edge
+        score = 0;
         gameOver = false;
         myCam = transform.GetChild(0).gameObject.GetComponent<Camera>();
         board = new int[12, 24]; // Set board width and height
@@ -95,6 +120,8 @@ public class PrevTetris : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (lsd)
+            FWithMats();
 		//Fix spawn freezing when queue becomes empty
 		if (shapes.Count == 0 && shapeQueue.Count == 0)
 		{ 
@@ -321,6 +348,7 @@ public class PrevTetris : MonoBehaviour
             //Create pivot
             pivot = new GameObject("RotateAround"); //Pivot of shape
             List<Vector3> cubePosList = new List<Vector3>();
+            Material mat;
 
             if (shape == 0)
             { //S Shape
@@ -329,7 +357,7 @@ public class PrevTetris : MonoBehaviour
                 cubePosList.Add(new Vector3(xPos, height + 1, 0));
                 cubePosList.Add(new Vector3(xPos + 1, height + 1, 0));
 
-                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
+                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList, SMat);
             }
             else if (shape == 1)
             { //I Shape
@@ -338,7 +366,7 @@ public class PrevTetris : MonoBehaviour
                 cubePosList.Add(new Vector3(xPos, height + 2, 0));
                 cubePosList.Add(new Vector3(xPos, height + 3, 0));
 
-                SetCubePositions(new Vector3(xPos + 0.5f, height + 1.5f, 0), cubePosList);
+                SetCubePositions(new Vector3(xPos + 0.5f, height + 1.5f, 0), cubePosList, IMat);
             }
             else if (shape == 2)
             { //O Shape
@@ -347,7 +375,7 @@ public class PrevTetris : MonoBehaviour
                 cubePosList.Add(new Vector3(xPos, height + 1, 0));
                 cubePosList.Add(new Vector3(xPos + 1, height + 1, 0));
 
-                SetCubePositions(new Vector3(xPos + 0.5f, height + 0.5f, 0), cubePosList);
+                SetCubePositions(new Vector3(xPos + 0.5f, height + 0.5f, 0), cubePosList, OMat);
             }
             else if (shape == 3)
             { //J Shape
@@ -356,7 +384,7 @@ public class PrevTetris : MonoBehaviour
                 cubePosList.Add(new Vector3(xPos, height + 1, 0));
                 cubePosList.Add(new Vector3(xPos, height + 2, 0));
 
-                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
+                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList, JMat);
             }
             else if (shape == 4)
             { //T Shape
@@ -365,7 +393,7 @@ public class PrevTetris : MonoBehaviour
                 cubePosList.Add(new Vector3(xPos + 1, height, 0));
                 cubePosList.Add(new Vector3(xPos, height + 1, 0));
 
-                SetCubePositions(new Vector3(xPos, height, 0), cubePosList);
+                SetCubePositions(new Vector3(xPos, height, 0), cubePosList, TMat);
             }
             else if (shape == 5)
             { //L Shape
@@ -374,7 +402,7 @@ public class PrevTetris : MonoBehaviour
                 cubePosList.Add(new Vector3(xPos, height + 1, 0));
                 cubePosList.Add(new Vector3(xPos, height + 2, 0));
 
-                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
+                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList, LMat);
             }
             else if (shape == 6)
             { //Z Shape
@@ -383,7 +411,7 @@ public class PrevTetris : MonoBehaviour
                 cubePosList.Add(new Vector3(xPos, height + 1, 0));
                 cubePosList.Add(new Vector3(xPos - 1, height + 1, 0));
 
-                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList);
+                SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList, ZMat);
             }
             else
             {
@@ -410,6 +438,7 @@ public class PrevTetris : MonoBehaviour
  		qPrev = shapeQueue.Peek ();
  
  		List<Vector3> cubePosList = new List<Vector3> ();
+        Material mat;
  
  		if (qPrev == 0) { //S Shape
  			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
@@ -417,49 +446,49 @@ public class PrevTetris : MonoBehaviour
  			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
  			cubePosList.Add (new Vector3 (QxPos + 1, Qheight + 1, 0));
  
- 			SetQueuePositions (cubePosList);
+ 			SetQueuePositions(cubePosList, SMat);
  		} else if (qPrev == 1) { //I Shape
  			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
  			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
  			cubePosList.Add (new Vector3 (QxPos, Qheight + 2, 0));
  			cubePosList.Add (new Vector3 (QxPos, Qheight + 3, 0));
  
- 			SetQueuePositions (cubePosList);
+ 			SetQueuePositions(cubePosList, IMat);
  		} else if (qPrev == 2) { //O Shape
  			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
  			cubePosList.Add (new Vector3 (QxPos + 1, Qheight, 0));
  			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
  			cubePosList.Add (new Vector3 (QxPos + 1, Qheight + 1, 0));
  
- 			SetQueuePositions (cubePosList);
+ 			SetQueuePositions(cubePosList, OMat);
  		} else if (qPrev == 3) { //J Shape
  			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
  			cubePosList.Add (new Vector3 (QxPos + 1, Qheight, 0));
  			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
  			cubePosList.Add (new Vector3 (QxPos, Qheight + 2, 0));
  
- 			SetQueuePositions (cubePosList);
+ 			SetQueuePositions(cubePosList, JMat);
  		} else if (qPrev == 4) { //T Shape
  			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
  			cubePosList.Add (new Vector3 (QxPos - 1, Qheight, 0));
  			cubePosList.Add (new Vector3 (QxPos + 1, Qheight, 0));
  			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
  
- 			SetQueuePositions (cubePosList);
+ 			SetQueuePositions(cubePosList, TMat);
  		} else if (qPrev == 5) { //L Shape
  			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
  			cubePosList.Add (new Vector3 (QxPos - 1, Qheight, 0));
  			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
  			cubePosList.Add (new Vector3 (QxPos, Qheight + 2, 0));
  
- 			SetQueuePositions (cubePosList);
+ 			SetQueuePositions(cubePosList, LMat);
  		} else if (qPrev == 6) { //Z Shape
  			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
  			cubePosList.Add (new Vector3 (QxPos + 1, Qheight, 0));
  			cubePosList.Add (new Vector3 (QxPos, Qheight + 1, 0));
  			cubePosList.Add (new Vector3 (QxPos - 1, Qheight + 1, 0));
  
- 			SetQueuePositions (cubePosList);
+ 			SetQueuePositions(cubePosList, ZMat);
  		} else {
  			Debug.Log ("Illegal shape code: " + qPrev);
  		}
@@ -467,17 +496,17 @@ public class PrevTetris : MonoBehaviour
  			
     // Creates a pivot and individual blocks to form a tetris shape
     // List format allows for any number of blocks to be spawned
-    void SetCubePositions(Vector3 piv, List<Vector3> cubePosList)
+    void SetCubePositions(Vector3 piv, List<Vector3> cubePosList, Material mat)
     {
         pivot.transform.position = piv;
         for (int i = 0; i < cubePosList.Count; i++)
-            shapes.Add(GenBlock(cubePosList[i]));
+            shapes.Add(GenBlock(cubePosList[i], mat));
     }
 
-	void SetQueuePositions(List<Vector3> cubePosList)
+    void SetQueuePositions(List<Vector3> cubePosList, Material mat)
 	{
 		for (int i = 0; i < cubePosList.Count; i++)
- 			qShapes.Add(GenBlock(cubePosList[i]));
+ 			qShapes.Add(GenBlock(cubePosList[i], mat));
 	}
 
 	void textureShape()
@@ -519,10 +548,11 @@ public class PrevTetris : MonoBehaviour
 	}
 
     //Create block at position
-    Transform GenBlock(Vector3 pos)
+    Transform GenBlock(Vector3 pos, Material mat)
     {
         Transform obj = (Transform)Instantiate(block.transform, pos, Quaternion.identity) as Transform;
         obj.tag = "Block";
+        obj.GetComponent<Renderer>().material = mat;
 
         return obj;
     }
@@ -539,6 +569,27 @@ public class PrevTetris : MonoBehaviour
 
         MoveDown();
         movingDown = false;
+    }
+
+    void SetMats()
+    {
+        IMat.mainTextureOffset = Vector2.zero;
+        JMat.mainTextureOffset = Vector2.zero;
+        LMat.mainTextureOffset = Vector2.zero;
+        OMat.mainTextureOffset = Vector2.zero;
+        SMat.mainTextureOffset = Vector2.zero;
+        TMat.mainTextureOffset = Vector2.zero;
+        ZMat.mainTextureOffset = Vector2.zero;
+    }
+    void FWithMats()
+    {
+        IMat.mainTextureOffset += new Vector2(0.2f, 0.2f) * Time.deltaTime;
+        JMat.mainTextureOffset += new Vector2(0.2f, 0.2f) * Time.deltaTime;
+        LMat.mainTextureOffset += new Vector2(0.2f, 0.2f) * Time.deltaTime;
+        OMat.mainTextureOffset += new Vector2(0.2f, 0.2f) * Time.deltaTime;
+        SMat.mainTextureOffset += new Vector2(0.2f, 0.2f) * Time.deltaTime;
+        TMat.mainTextureOffset += new Vector2(0.2f, 0.2f) * Time.deltaTime;
+        ZMat.mainTextureOffset += new Vector2(0.2f, 0.2f) * Time.deltaTime;
     }
 
     void MoveDown()
@@ -634,6 +685,8 @@ public class PrevTetris : MonoBehaviour
         if (count == 10)
         {//The row is full
             //Start from bottom of the board(withouth edge and block spawn space)
+            score += 100;
+            UI_Score.text = score + "";
             for (int cy = y; cy < board.GetLength(1) - 3; cy++)
             {
                 for (int cx = 1; cx < board.GetLength(0) - 1; cx++)
@@ -755,10 +808,7 @@ public class PrevTetris : MonoBehaviour
         for (int i = 0; i < shapes.Count; i++)
             if (board[Mathf.RoundToInt(shapes[i].position.x + moveAmount - transform.position.x), 
                       Mathf.RoundToInt(shapes[i].position.y - transform.position.y)] == 1)
-            {
                 return false;
-                break;
-            }
         
         return true;
     }

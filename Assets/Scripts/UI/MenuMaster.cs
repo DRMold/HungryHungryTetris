@@ -13,6 +13,10 @@ public class MenuMaster : MonoBehaviour
     private int readyPlayerCount = 0;
 
     public static int musicVolume = 100;
+	
+	private static List<float> timerOptions = new List<float>();
+	private static int timerOptionIndex;
+	public static float length = 500f;
 
     private Dictionary<string, UnityEvent> eventDictionary;
     private static MenuMaster menuMaster;
@@ -82,6 +86,12 @@ public class MenuMaster : MonoBehaviour
 
     void Start()
     {
+		timerOptions.Add(500f);
+		timerOptions.Add(300f);
+		timerOptions.Add(180f);
+		timerOptions.Add(60f);
+		timerOptions.Add(-1f);
+		
         mainPanel.SetActive(true);
         readyPanel.SetActive(false);
         optionsPanel.SetActive(false);
@@ -96,6 +106,8 @@ public class MenuMaster : MonoBehaviour
         MenuMaster.StartListening("IncreaseMusicVolume", increaseMusicVolume);
         MenuMaster.StartListening("FastDecreaseMusicVolume", fastDecreaseMusicVolume);
         MenuMaster.StartListening("FastIncreaseMusicVolume", fastIncreaseMusicVolume);
+		MenuMaster.StartListening("DecreaseTimer", DecreaseTimer);
+		MenuMaster.StartListening("IncreaseTimer", IncreaseTimer);
     }
     void OnDisable()
     {
@@ -105,6 +117,8 @@ public class MenuMaster : MonoBehaviour
         MenuMaster.StopListening("IncreaseMusicVolume", increaseMusicVolume);
         MenuMaster.StopListening("FastDecreaseMusicVolume", fastDecreaseMusicVolume);
         MenuMaster.StopListening("FastIncreaseMusicVolume", fastIncreaseMusicVolume);
+		MenuMaster.StopListening("DecreaseTimer", DecreaseTimer);
+		MenuMaster.StopListening("IncreaseTimer", IncreaseTimer);
     }
 
     void addPlayerReady()
@@ -128,6 +142,22 @@ public class MenuMaster : MonoBehaviour
         //MenuMaster.TriggerEvent("CountdownInterrupted");
     }
 
+	void IncreaseTimer()
+	{
+		timerOptionIndex++;
+		if (timerOptionIndex > 5)
+			timerOptionIndex = 5;
+		length = timerOptions[timerOptionIndex];
+	}
+	
+	void DecreaseTimer()
+	{
+		timerOptionIndex--;
+		if (timerOptionIndex < 0)
+			timerOptionIndex = 0;
+		length = timerOptions[timerOptionIndex];
+	}
+	
     void decreaseMusicVolume()
     {
         musicVolume--;
