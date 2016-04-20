@@ -21,6 +21,6 @@ public class InGameTextTimer : MonoBehaviour {
     void Update()
     {
         timeRemaining = GameMaster.instance.GetTime();
-        timerText.text = timeRemaining.ToString();
+        timerText.text = Mathf.CeilToInt(timeRemaining).ToString();
     }
 }
