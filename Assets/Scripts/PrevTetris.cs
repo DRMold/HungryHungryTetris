@@ -51,6 +51,7 @@ public class PrevTetris : MonoBehaviour
     Material LC;
     Material RC;
     Material BB;
+    Material MI;
 
     Material IMat;
     Material JMat;
@@ -88,6 +89,7 @@ public class PrevTetris : MonoBehaviour
             LC = (Material)Resources.Load("P1LeftCorner");
             RC = (Material)Resources.Load("P1RightCorner");
             BB = (Material)Resources.Load("P1Bottom");
+            MI = (Material)Resources.Load("P1Middle");
         }
         else if (playerNum == 2)
         {
@@ -96,6 +98,7 @@ public class PrevTetris : MonoBehaviour
             LC = (Material)Resources.Load("P2LeftCorner");
             RC = (Material)Resources.Load("P2RightCorner");
             BB = (Material)Resources.Load("P2Bottom");
+            MI = (Material)Resources.Load("P2Middle");
         }
         else
             Debug.LogWarning("Illegal player num.");
@@ -228,7 +231,7 @@ public class PrevTetris : MonoBehaviour
                         board[x, y] = 0;
                         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                         cube.transform.position = new Vector3(x + transform.position.x, y + transform.position.y, 1);
-                        Material material = new Material(Shader.Find("Diffuse"));
+                        Material material = new Material(Shader.Find("Transparent/Diffuse"));
                         material.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
                         cube.GetComponent<Renderer>().material = material;
                         cube.transform.parent = transform;
@@ -283,7 +286,7 @@ public class PrevTetris : MonoBehaviour
 						qPreview [x, y] = 0;
 						GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 						cube.transform.position = new Vector3(x + 14 + transform.position.x, y + 15 + transform.position.y, 1);
-						Material material = new Material(Shader.Find("Diffuse"));
+                        Material material = new Material(Shader.Find("Transparent/Diffuse"));
                         material.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
 						cube.GetComponent<Renderer>().material = material;
 						cube.transform.parent = transform;
@@ -340,9 +343,7 @@ public class PrevTetris : MonoBehaviour
             board[x, curBottom] = 1;
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.position = new Vector3(x + transform.position.x, curBottom + transform.position.y, 0);
-            Material material = new Material(Shader.Find("Diffuse"));
-            material.color = Color.black;
-            cube.GetComponent<Renderer>().material = material;
+            cube.GetComponent<Renderer>().material = MI;
             cube.transform.parent = transform;
             cube.GetComponent<Collider>().isTrigger = true;
         }

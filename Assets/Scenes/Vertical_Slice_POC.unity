@@ -450,6 +450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccccb1502890e43a1b7cb33deadb3f6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerNum: 1
   block: {fileID: 1609835556}
   spawn: 0
   spawning: 0
@@ -1783,11 +1784,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 147
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 108
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_AnchorMin.x
@@ -1912,7 +1913,6 @@ Canvas:
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -2393,6 +2393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccccb1502890e43a1b7cb33deadb3f6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerNum: 2
   block: {fileID: 1609835556}
   spawn: 0
   spawning: 0
@@ -2991,11 +2992,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 147
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 108
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_AnchorMin.x
