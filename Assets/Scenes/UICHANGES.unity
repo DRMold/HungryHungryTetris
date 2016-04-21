@@ -242,7 +242,6 @@ Canvas:
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -318,11 +317,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 438.69437
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.y
-      value: 324.74777
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_AnchorMin.x
@@ -652,6 +651,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccccb1502890e43a1b7cb33deadb3f6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerNum: 0
   block: {fileID: 1609835556}
   spawn: 0
   spawning: 0
@@ -748,6 +748,7 @@ GameObject:
   - 114: {fileID: 192822260}
   - 114: {fileID: 192822259}
   - 114: {fileID: 192822258}
+  - 114: {fileID: 192822262}
   m_Layer: 5
   m_Name: RHeadText
   m_TagString: Untagged
@@ -770,7 +771,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 175}
-  m_SizeDelta: {x: 300, y: 60}
+  m_SizeDelta: {x: 0, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &192822258
 MonoBehaviour:
@@ -832,13 +833,26 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Team 2 Score:'
+  m_Text: 'Red Team Score:'
 --- !u!222 &192822261
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 192822256}
+--- !u!114 &192822262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 192822256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 0
 --- !u!1 &250213824
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,7 +958,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1139,10 +1153,10 @@ RectTransform:
   - {fileID: 488735334}
   m_Father: {fileID: 2004484180}
   m_RootOrder: 2
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -873.43225}
-  m_SizeDelta: {x: 1920, y: 212.42334}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &442343542
 MonoBehaviour:
@@ -1230,10 +1244,10 @@ RectTransform:
   - {fileID: 783434458}
   m_Father: {fileID: 442343541}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1440, y: -106.21167}
-  m_SizeDelta: {x: 860, y: 212.42334}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &488735335
 MonoBehaviour:
@@ -1390,7 +1404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1868,7 +1882,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1922,10 +1936,10 @@ RectTransform:
   - {fileID: 26903283}
   m_Father: {fileID: 442343541}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 480, y: -106.21167}
-  m_SizeDelta: {x: 860, y: 212.42334}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &650480385
 MonoBehaviour:
@@ -2196,10 +2210,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2004484180}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -182.39862}
-  m_SizeDelta: {x: 1920, y: 364.79724}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &850022393
 MonoBehaviour:
@@ -2376,7 +2390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2521,11 +2535,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 145.96492
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 106.66667
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_AnchorMin.x
@@ -2617,6 +2631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccccb1502890e43a1b7cb33deadb3f6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerNum: 0
   block: {fileID: 1609835556}
   spawn: 0
   spawning: 0
@@ -2873,11 +2888,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 145.96492
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 106.66667
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_AnchorMin.x
@@ -2958,6 +2973,7 @@ GameObject:
   - 114: {fileID: 1421762106}
   - 114: {fileID: 1421762105}
   - 114: {fileID: 1421762104}
+  - 114: {fileID: 1421762108}
   m_Layer: 5
   m_Name: LHeadText
   m_TagString: Untagged
@@ -2980,7 +2996,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 175}
-  m_SizeDelta: {x: 300, y: 60}
+  m_SizeDelta: {x: 0, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1421762104
 MonoBehaviour:
@@ -3042,13 +3058,26 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Team 1 Score:'
+  m_Text: 'Blue Team Score:'
 --- !u!222 &1421762107
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1421762102}
+--- !u!114 &1421762108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1421762102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 0
 --- !u!1 &1459495847
 GameObject:
   m_ObjectHideFlags: 0
@@ -3324,10 +3353,10 @@ RectTransform:
   - {fileID: 1579591040}
   m_Father: {fileID: 2004484180}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -566.0089}
-  m_SizeDelta: {x: 1920, y: 202.42334}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1567985978
 GameObject:
@@ -4044,7 +4073,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2004484175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4291,11 +4320,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 438.69437
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.y
-      value: 324.74777
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_AnchorMin.x

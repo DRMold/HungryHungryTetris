@@ -146,22 +146,18 @@ public class MenuMaster : MonoBehaviour
 
 	void IncreaseTimer()
 	{
-        Debug.Log("IT before:" + timerOptionIndex);
         timerOptionIndex++;
         if (timerOptionIndex > 4)
 			timerOptionIndex = 4;
 		length = timerOptions[timerOptionIndex];
-        Debug.Log("IT after:" + timerOptionIndex);
     }
 	
 	void DecreaseTimer()
 	{
-        Debug.Log("DT before:" + timerOptionIndex);
         timerOptionIndex--;
         if (timerOptionIndex < 0)
 			timerOptionIndex = 0;
 		length = timerOptions[timerOptionIndex];
-        Debug.Log("DT after:" + timerOptionIndex);
     }
 	
     void decreaseMusicVolume()

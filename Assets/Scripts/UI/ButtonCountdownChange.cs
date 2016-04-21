@@ -23,7 +23,6 @@ public class ButtonCountdownChange : MonoBehaviour {
 
     void checkBounded()
     {
-        Debug.Log(gameObject.name + " bound: " + MenuMaster.timerOptionIndex);
         if ((isIncreasing && MenuMaster.timerOptionIndex >= 4) || (!isIncreasing && MenuMaster.timerOptionIndex <= 0))
         {
             myButton.interactable = false;
@@ -49,7 +48,6 @@ public class ButtonCountdownChange : MonoBehaviour {
     {
         if(myButton.interactable)
         {
-            Debug.Log("Handle press!");
             if (isIncreasing)
             {
                 MenuMaster.TriggerEvent("IncreaseTimer");
