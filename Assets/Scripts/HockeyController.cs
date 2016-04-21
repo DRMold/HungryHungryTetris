@@ -28,7 +28,9 @@ public class HockeyController : MonoBehaviour {
 		//   t                  4
 		//   l                  5
 		//   z                  6
-		int genShape = Random.Range (0, 8);
+		//   FFS                7
+		//   SFS                8
+		int genShape = Random.Range (0, 9);
 		if (genShape == 0) {
 			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("S"),
 				new Vector3 (100.0f, 20.0f, -1.0f),
@@ -59,6 +61,11 @@ public class HockeyController : MonoBehaviour {
 				Quaternion.identity));
 		} else if (genShape == 7) {
 			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("Fast Fall Speed"),
+				new Vector3 (100.0f, 20.0f, -1.0f),
+				//rotate 90 degrees to show powerup's icon
+				Quaternion.Euler(new Vector3(-90,0,0))));
+		} else if (genShape == 8) {
+			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("Slow Fall Speed"),
 				new Vector3 (100.0f, 20.0f, -1.0f),
 				//rotate 90 degrees to show powerup's icon
 				Quaternion.Euler(new Vector3(-90,0,0))));
