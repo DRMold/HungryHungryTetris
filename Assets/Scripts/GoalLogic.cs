@@ -15,6 +15,8 @@ public class GoalLogic : MonoBehaviour {
 		} else {
 			//temporary select powerups, will be changed to link with powerup texture / model
 			playerQueue.GetComponent<PrevTetris> ().PowerBar = true;
+			playerQueue.GetComponent<PrevTetris> ().AddToQueue (shape);
+			Destroy (tetromino.gameObject);
 			/*
 			int power = Random.Range(0,4);
 			Debug.Log ("Applying powerup #" + power);

@@ -147,7 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minSwipeDist: 0
   maxSwipeTime: 2
-  shape: 0
+  shape: 7
 --- !u!114 &11473282
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -203,6 +203,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Name
       value: P
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: shape
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
