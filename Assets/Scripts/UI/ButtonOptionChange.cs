@@ -86,7 +86,6 @@ public class ButtonOptionChange : MonoBehaviour {
             {
                 MenuMaster.TriggerEvent("FastDecreaseMusicVolume");
             }
-            Debug.Log("LongPress: " + MenuMaster.musicVolume);
             textToChange.text = MenuMaster.musicVolume.ToString();
             checkBounded();
             otherButton.GetComponent<ButtonOptionChange>().checkBounded();
