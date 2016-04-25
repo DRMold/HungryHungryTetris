@@ -36,6 +36,8 @@ public class PrevTetris : MonoBehaviour
     private List<Transform> shapes = new List<Transform>();
 	//Current Shape in Queue
 	private List<Transform> qShapes = new List<Transform> ();
+	// No clue idfk
+	private List<GameObject> queueShapes = new List<GameObject>();
     // Camera attached to this board
     private Camera myCam;
     private bool notDragged;
@@ -231,7 +233,7 @@ public class PrevTetris : MonoBehaviour
                         board[x, y] = 0;
                         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                         cube.transform.position = new Vector3(x + transform.position.x, y + transform.position.y, 1);
-                        Material material = new Material(Shader.Find("Transparent/Diffuse"));
+                        Material material = new Material(Shader.Find("Diffuse"));
                         material.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
                         cube.GetComponent<Renderer>().material = material;
                         cube.transform.parent = transform;
@@ -286,7 +288,7 @@ public class PrevTetris : MonoBehaviour
 						qPreview [x, y] = 0;
 						GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 						cube.transform.position = new Vector3(x + 14 + transform.position.x, y + 15 + transform.position.y, 1);
-                        Material material = new Material(Shader.Find("Transparent/Diffuse"));
+                        Material material = new Material(Shader.Find("Diffuse"));
                         material.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
 						cube.GetComponent<Renderer>().material = material;
 						cube.transform.parent = transform;
@@ -439,6 +441,14 @@ public class PrevTetris : MonoBehaviour
 
                 SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList, ZMat);
             }
+			else if (shape == 7) { //PowerBar
+				cubePosList.Add (new Vector3 (xPos - 2, height, 0));
+				cubePosList.Add (new Vector3 (xPos, height, 0));
+				cubePosList.Add (new Vector3 (xPos + 2, height, 0));
+				cubePosList.Add (new Vector3 (xPos + 4, height, 0));
+
+				SetCubePositions (new Vector3 (xPos, height, 0), cubePosList);
+			}
             else
             {
                 Debug.Log("Illegal shape code: " + shape);
@@ -514,6 +524,14 @@ public class PrevTetris : MonoBehaviour
  			cubePosList.Add (new Vector3 (QxPos - 1, Qheight + 1, 0));
  
  			SetQueuePositions(cubePosList, ZMat);
+ 		}  else if (qPrev == 7) {
+ 			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
+ 			cubePosList.Add (new Vector3 (QxPos - 1, Qheight - 1, 0));
+ 			cubePosList.Add (new Vector3 (QxPos - 2, Qheight - 2, 0));
+ 			cubePosList.Add (new Vector3 (QxPos + 1, Qheight + 1, 0));
+ 			cubePosList.Add (new Vector3 (QxPos + 2, Qheight + 2, 0));
+ 		
+ 			SetQueuePositions (cubePosList);
  		} else {
  			Debug.Log ("Illegal shape code: " + qPrev);
  		}
@@ -550,14 +568,32 @@ public class PrevTetris : MonoBehaviour
         //       individual blkFallSpeed based on BLKFALLSPEED that can be affected by powerups
 
         //if (!spedUp)
-        yield return new WaitForSeconds(BLKFALLSPEED);
+        //yield return new WaitForSeconds(BLKFALLSPEED);
+		yield return new WaitForSeconds(blkFallSpeed);
         //else
         //yield return new WaitForSeconds(blkFallSpeed);
 
         MoveDown();
         movingDown = false;
     }
-
+	
+	//slows down tetris game for 5 seconds
+ 	public void slowDown() 
+ 	{
+ 		blkFallSpeed = 1.0f;
+ 		Invoke ("resetSpeed", 5.0f);
+ 	}
+ 
+ 	private void resetSpeed()
+ 	{
+ 		blkFallSpeed = BLKFALLSPEED;
+ 	}
+ 
+ 	public void speedUp() {
+ 		blkFallSpeed = 0.25f;
+ 		Invoke ("resetSpeed", 5.0f);
+	}
+	
     void SetMats()
     {
         IMat.mainTextureOffset = Vector2.zero;
@@ -578,7 +614,29 @@ public class PrevTetris : MonoBehaviour
         TMat.mainTextureOffset += new Vector2(0.2f, 0.2f) * Time.deltaTime;
         ZMat.mainTextureOffset += new Vector2(0.2f, 0.2f) * Time.deltaTime;
     }
-
+	
+	void SetPowerBarPositions(Vector3 piv, List<Vector3> cubePosList)
+  	{
+		pivot.transform.position = piv;
+	 	shapes.Insert(0,(GenBlock(cubePosList[0])));
+	}
+ 
+ 	void genPowerBar(int j) {
+ 		
+ 		int Pheight = (int)transform.position.y + board.GetLength(1) - 4;
+ 		int PxPos = (int)transform.position.x + board.GetLength(0) - 2;
+ 
+ 		//Create pivot
+ 		pivot = new GameObject("RotateAround"); //Pivot of shape
+ 		List<Vector3> cubePosList = new List<Vector3>();
+ 
+ 	    cubePosList.Add (new Vector3 (PxPos - j, Pheight, 0));
+ 
+ 	    SetPowerBarPositions(new Vector3(PxPos, Pheight, 0), cubePosList);
+ 
+ 		PowerBar = false;
+   	}
+ 
     void MoveDown()
     {
         //Spawned blocks position 
