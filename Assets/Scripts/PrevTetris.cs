@@ -22,6 +22,7 @@ public class PrevTetris : MonoBehaviour
     private bool movingDown = false;
     private int  cyclesEmpty = 0;
     public  int  MAX_ALLOWED_CYCLES_EMPTY = 8;
+	public bool PowerBar = false;
     //Block fall speed
     public static float BLKFALLSPEED = 0.5f;
     public float blkFallSpeed = BLKFALLSPEED;
@@ -62,6 +63,7 @@ public class PrevTetris : MonoBehaviour
     Material SMat;
     Material TMat;
     Material ZMat;
+	Material powerbar;
     bool lsd;
 
     // Previous mouse position
@@ -82,6 +84,7 @@ public class PrevTetris : MonoBehaviour
         SMat = (Material)Resources.Load("SCube");
         TMat = (Material)Resources.Load("TCube");
         ZMat = (Material)Resources.Load("ZCube");
+		powerbar = (Material)Resources.Load ("powerbar");
         lsd = false;
 
         if (playerNum == 1)
@@ -441,13 +444,13 @@ public class PrevTetris : MonoBehaviour
 
                 SetCubePositions(new Vector3(xPos, height + 1, 0), cubePosList, ZMat);
             }
-			else if (shape == 7) { //PowerBar
+			else if (shape == 9) { //PowerBar
 				cubePosList.Add (new Vector3 (xPos - 2, height, 0));
 				cubePosList.Add (new Vector3 (xPos, height, 0));
 				cubePosList.Add (new Vector3 (xPos + 2, height, 0));
 				cubePosList.Add (new Vector3 (xPos + 4, height, 0));
 
-				SetCubePositions (new Vector3 (xPos, height, 0), cubePosList);
+				SetCubePositions (new Vector3 (xPos, height, 0), cubePosList, powerbar);
 			}
             else
             {
@@ -524,14 +527,14 @@ public class PrevTetris : MonoBehaviour
  			cubePosList.Add (new Vector3 (QxPos - 1, Qheight + 1, 0));
  
  			SetQueuePositions(cubePosList, ZMat);
- 		}  else if (qPrev == 7) {
+ 		}  else if (qPrev == 9) {
  			cubePosList.Add (new Vector3 (QxPos, Qheight, 0));
  			cubePosList.Add (new Vector3 (QxPos - 1, Qheight - 1, 0));
  			cubePosList.Add (new Vector3 (QxPos - 2, Qheight - 2, 0));
  			cubePosList.Add (new Vector3 (QxPos + 1, Qheight + 1, 0));
  			cubePosList.Add (new Vector3 (QxPos + 2, Qheight + 2, 0));
  		
- 			SetQueuePositions (cubePosList);
+			SetQueuePositions (cubePosList, powerbar);
  		} else {
  			Debug.Log ("Illegal shape code: " + qPrev);
  		}
@@ -618,7 +621,7 @@ public class PrevTetris : MonoBehaviour
 	void SetPowerBarPositions(Vector3 piv, List<Vector3> cubePosList)
   	{
 		pivot.transform.position = piv;
-	 	shapes.Insert(0,(GenBlock(cubePosList[0])));
+		shapes.Insert(0,(GenBlock(cubePosList[0], powerbar)));
 	}
  
  	void genPowerBar(int j) {

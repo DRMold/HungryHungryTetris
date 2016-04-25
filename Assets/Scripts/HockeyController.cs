@@ -59,19 +59,19 @@ public class HockeyController : MonoBehaviour {
 			                                                       Quaternion.identity));
 		} else if (genShape == 7) {
 			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("Fast Fall Speed"),
-				new Vector3 (100.0f, 20.0f, -1.0f),
+				new Vector3 (100.0f, 20.0f, 1.5f),
 				//rotate 90 degrees to show powerup's icon
 				Quaternion.Euler(new Vector3(-90,0,0))));
 		} else if (genShape == 8) {
 			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("Slow Fall Speed"),
-				new Vector3 (100.0f, 20.0f, -1.0f),
+				new Vector3 (100.0f, 20.0f, 1.5f),
 				//rotate 90 degrees to show powerup's icon
 				Quaternion.Euler(new Vector3(-90,0,0))));
 		} else if (genShape == 9) {
 			spawnedShapes.Add ((GameObject)GameObject.Instantiate (Resources.Load ("P"),
 				new Vector3 (100.0f, 20.0f, -1.0f),
 				//rotate 90 degrees to show powerup's icon
-				Quaternion.Euler(new Vector3(-90,0,0))));
+				Quaternion.Euler(new Vector3(0,0,0))));
 		}
 	}
 
