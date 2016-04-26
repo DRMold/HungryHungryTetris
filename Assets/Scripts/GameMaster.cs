@@ -106,6 +106,7 @@ public class GameMaster : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+        instance.time = -1f;
     }
     void Start()
     {
@@ -158,38 +159,12 @@ public class GameMaster : MonoBehaviour {
         Debug.Log("Starting scene");
         yield return null;
         Time.timeScale = 1.0f;
-        //FadeToClear();
-        //if(fadeTexture.color.a <= 0.05f)
-        //{
-        //    fadeTexture.color = Color.clear;
-        //    fadeTexture.enabled = false;
-        //    Debug.Log("Scene started");
-        //}
-        //while(time >= 0.0f)
-        //{
-        //    fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b, time);
-        //    time -= Time.deltaTime * (1.0f / transitionTime);
-        //    yield return null;
-        //}
-        //fadeImg.gameObject.SetActive(false);
     }
 
     IEnumerator EndScene(string nextScene)
     {
-        //fadeImg.gameObject.SetActive(true);
         yield return null;
-        //fadeTexture.enabled = true;
-        //FadeToBlack();
-        //if (fadeTexture.color.a <= 0.95f)
-        //{
-            SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
-        //}
-        //while (time <= 1.0f)
-        //{
-        //    fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b, time);
-        //    time += Time.deltaTime * (1.0f / transitionTime);
-        //    yield return null;
-        //}
+        SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
         StartCoroutine(StartScene());
     }
 

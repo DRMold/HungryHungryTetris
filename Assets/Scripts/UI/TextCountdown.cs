@@ -7,19 +7,25 @@ public class TextCountdown : MonoBehaviour {
     private int counter;
     private Coroutine countingFunction;
 
-    void Start() {
+    void Awake() {
         myText = GetComponent<Text>();
-        counter = 3;
+        counter = 4;
+        myText.text = "";
     }
 
     private void OnEnable()
     {
         MenuMaster.StartListening("CountdownInterrupted", interruptHandler);
-        StartCoroutine(StartCountdown());
+        MenuMaster.StartListening("AllPlayersReady", ReadyHandle);
     }
-
+    
+    public void ReadyHandle()
+    {
+        countingFunction = StartCoroutine(StartCountdown());
+    }
     IEnumerator StartCountdown()
     {
+        myText.text = counter.ToString();
         yield return new WaitForSeconds(1f);
         while (counter > 0)
         {
@@ -29,21 +35,27 @@ public class TextCountdown : MonoBehaviour {
             myText.text = counter.ToString();
         }
         Debug.Log("Countdown finished!");
+        GameMaster.TriggerEvent("AllPlayersReady");
     }
     private void OnDisable()
     {
-        StopCoroutine(StartCountdown());
+        if(countingFunction != null)
+            StopCoroutine(countingFunction);
         MenuMaster.StopListening("CountdownInterrupted", interruptHandler);
+        MenuMaster.StopListening("AllPlayersReady", ReadyHandle);
         Debug.Log("Disabled countdown.");
-        counter = 3;
+        counter = 4;
+        if(myText != null)
+            myText.text = "";
     }
 
     private void interruptHandler()
     {
-        StopCoroutine(StartCountdown());
-        counter = 3;
-        myText.text = counter.ToString();
+        if(countingFunction != null)
+            StopCoroutine(countingFunction);
+        counter = 4;
+        myText.text = "";
         Debug.Log("Countdown interrupted!");
-        this.enabled = false;
+        //this.enabled = false;
     }
 }

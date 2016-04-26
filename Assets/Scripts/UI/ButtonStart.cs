@@ -20,7 +20,7 @@ public class ButtonStart : MonoBehaviour {
 	private void readyHandler(object sender, System.EventArgs e) 
 	{
         //TODO: FIX ready screen!
-        //showReady.Invoke ();
-        GameMaster.TriggerEvent("AllPlayersReady");
+        showReady.Invoke ();
+        //GameMaster.TriggerEvent("AllPlayersReady");
 	}
 }

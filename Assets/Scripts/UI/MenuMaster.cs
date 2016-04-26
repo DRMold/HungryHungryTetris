@@ -130,18 +130,19 @@ public class MenuMaster : MonoBehaviour
         if(readyPlayerCount >= 4) //TODO: Check for game mode as well!
         {
             MenuMaster.TriggerEvent("AllPlayersReady");
-            GameMaster.TriggerEvent("AllPlayersReady");
+            countDownText.enabled = true;
+            Debug.Log(countDownText.enabled + " is countdown enabled?");
+            //GameMaster.TriggerEvent("AllPlayersReady");
         }
-        //countDownText.enabled = true;
     }
 
     void removePlayerReady()
     {
         readyPlayerCount--;
         Debug.Log("Player removed! Count: " + readyPlayerCount);
+        countDownText.enabled = false;
+        MenuMaster.TriggerEvent("CountdownInterrupted");
         MenuMaster.TriggerEvent("AllPlayersNotReady");
-        //countDownText.enabled = false;
-        //MenuMaster.TriggerEvent("CountdownInterrupted");
     }
 
 	void IncreaseTimer()
