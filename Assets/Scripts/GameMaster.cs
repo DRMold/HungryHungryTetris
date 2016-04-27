@@ -138,6 +138,7 @@ public class GameMaster : MonoBehaviour {
         GameMaster.StartListening("ShowMenu", showMenu);
         GameMaster.StartListening("MusicVolumeChange", musicVolumeChange);
 		GameMaster.StartListening("TimerChange", SetTimer);
+        GameMaster.StartListening("QuitGame", ExitGame);
     }
 
     private void OnDisable()
@@ -147,6 +148,7 @@ public class GameMaster : MonoBehaviour {
         GameMaster.StopListening("ShowMenu", showMenu);
         GameMaster.StopListening("MusicVolumeChange", musicVolumeChange);
 		GameMaster.StopListening("TimerChange", SetTimer);
+        GameMaster.StopListening("QuitGame", ExitGame);
     }
 
     public void LoadScene(string level)
@@ -214,5 +216,26 @@ public class GameMaster : MonoBehaviour {
     private void musicVolumeChange()
     {
         gameAudio.volume = MenuMaster.musicVolume / 100f;
+    }
+
+    public void ExitGame()
+    {
+        int sceneNum = SceneManager.GetActiveScene().buildIndex;
+        Debug.Log(sceneNum + " - current scene");
+        if(sceneNum == 0)
+        {
+            Debug.Log("Close game!");
+            Application.Quit();
+        }
+        else if (sceneNum == 1)
+        {
+            Debug.Log("Show menu!");
+            GameMaster.TriggerEvent("ShowMenu");
+        } 
+        else
+        {
+            Debug.LogError("Invalid scene number when exiting game!");
+            GameMaster.TriggerEvent("ShowMenu");
+        }
     }
 }

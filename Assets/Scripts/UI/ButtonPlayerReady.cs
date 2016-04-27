@@ -12,7 +12,7 @@ public class ButtonPlayerReady : MonoBehaviour {
     private Text buttonText;
     private ColorBlock buttonColors, selectedButtonColors;
     private bool isReady;
-    void Start()
+    void Awake()
     {
         myButton = gameObject.GetComponent<Button>();
         //myButtonImage = gameObject.GetComponent<Image>();
@@ -29,10 +29,16 @@ public class ButtonPlayerReady : MonoBehaviour {
     private void OnEnable()
     {
         GetComponent<PressGesture>().Pressed += pressHandle;
+        buttonText.text = "Not Ready";
+        myButton.colors = buttonColors;
+        isReady = false;
     }
     private void OnDisable()
     {
         GetComponent<PressGesture>().Pressed -= pressHandle;
+        myButton.colors = buttonColors;
+        buttonText.text = "Not Ready";
+        isReady = false;
     }
 
     private void pressHandle(object sender, System.EventArgs e)
@@ -55,14 +61,5 @@ public class ButtonPlayerReady : MonoBehaviour {
             MenuMaster.TriggerEvent("PlayerNotReady");
             isReady = false;
         }
-    }
-
-    private void releaseHandle(object sender, System.EventArgs e)
-    {
-        Debug.Log("Ready button released. Colors before: " + buttonColors.normalColor);
-        MenuMaster.TriggerEvent("PlayerNotReady");
-        myButton.colors = buttonColors;
-        buttonText.text = "Not Ready";
-        Debug.Log("Normal colors now: " + myButton.colors.normalColor);
     }
 }

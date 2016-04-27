@@ -27,15 +27,15 @@ public class InGameCanvasManager : MonoBehaviour {
     void OnEnable()
     {
         GameMaster.StartListening("ShowGameOver", showGameOver);
-        //GameMaster.StartListening("ShowGameOver1", ShowRightLost);
-        //GameMaster.StartListening("ShowGameOver2", ShowLeftLost);
+        GameMaster.StartListening("ShowGameOver1", ShowRightLost);
+        GameMaster.StartListening("ShowGameOver2", ShowLeftLost);
 
     }
     void OnDisable()
     {
         GameMaster.StopListening("ShowGameOver", showGameOver);
-        //GameMaster.StopListening("ShowGameOver1", ShowRightLost);
-        //GameMaster.StopListening("ShowGameOver2", ShowLeftLost);
+        GameMaster.StopListening("ShowGameOver1", ShowRightLost);
+        GameMaster.StopListening("ShowGameOver2", ShowLeftLost);
     }
 
     private void showGameOver()

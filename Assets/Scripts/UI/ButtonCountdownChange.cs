@@ -18,7 +18,14 @@ public class ButtonCountdownChange : MonoBehaviour {
     void Awake()
     {
         myButton = gameObject.GetComponent<Button>();
-        textToChange.text = "NONE";
+        if (MenuMaster.length > 0)
+        {
+            textToChange.text = MenuMaster.length + " S";
+        }
+        else
+        {
+            textToChange.text = "NONE";
+        }
     }
 
     void checkBounded()

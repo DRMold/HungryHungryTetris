@@ -7,6 +7,8 @@ public class TextCountdown : MonoBehaviour {
     private int counter;
     private Coroutine countingFunction;
 
+    public GameObject parentPanel;
+
     void Awake() {
         myText = GetComponent<Text>();
         counter = 4;
@@ -35,6 +37,18 @@ public class TextCountdown : MonoBehaviour {
             myText.text = counter.ToString();
         }
         Debug.Log("Countdown finished!");
+        yield return null;
+        float time = .5f;
+        CanvasGroup cg = parentPanel.GetComponent<CanvasGroup>();
+        cg.alpha = 0f;
+        cg.interactable = false;
+        while (time >= 0f)
+        {
+            time -= Time.unscaledDeltaTime;
+            cg.alpha = time * 2;
+            yield return null;
+        }
+        cg.alpha = 0f;
         GameMaster.TriggerEvent("AllPlayersReady");
     }
     private void OnDisable()

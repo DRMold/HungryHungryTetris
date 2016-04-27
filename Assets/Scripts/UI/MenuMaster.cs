@@ -88,15 +88,17 @@ public class MenuMaster : MonoBehaviour
 
     void Start()
     {
-		timerOptions.Add(500f);
-		timerOptions.Add(300f);
-		timerOptions.Add(180f);
-		timerOptions.Add(60f);
-		timerOptions.Add(-1f);
-        timerOptions.Sort();
-        mainPanel.SetActive(true);
-        readyPanel.SetActive(false);
-        optionsPanel.SetActive(false);
+        if(timerOptions.Count != 5)
+        {
+            timerOptions.Clear();
+            timerOptions.Add(500f);
+            timerOptions.Add(300f);
+            timerOptions.Add(180f);
+            timerOptions.Add(60f);
+            timerOptions.Add(-1f);
+            timerOptions.Sort();
+        }
+        showMainMenu();
         countDownText.enabled = false;
     }
 
@@ -139,6 +141,8 @@ public class MenuMaster : MonoBehaviour
     void removePlayerReady()
     {
         readyPlayerCount--;
+        if (readyPlayerCount < 0)
+            readyPlayerCount = 0;
         Debug.Log("Player removed! Count: " + readyPlayerCount);
         countDownText.enabled = false;
         MenuMaster.TriggerEvent("CountdownInterrupted");
@@ -151,6 +155,11 @@ public class MenuMaster : MonoBehaviour
         if (timerOptionIndex > 4)
 			timerOptionIndex = 4;
 		length = timerOptions[timerOptionIndex];
+        Debug.Log("Index: " + timerOptionIndex + ",Timer: " + length);
+        string arr = "";
+        foreach (var ele in timerOptions)
+            arr += ele + " ";
+        Debug.Log(arr);
     }
 	
 	void DecreaseTimer()
@@ -159,6 +168,11 @@ public class MenuMaster : MonoBehaviour
         if (timerOptionIndex < 0)
 			timerOptionIndex = 0;
 		length = timerOptions[timerOptionIndex];
+        Debug.Log("Index: " + timerOptionIndex + ",Timer: " + length + ", ");
+        string arr = "";
+        foreach (var ele in timerOptions)
+            arr += ele + " ";
+        Debug.Log(arr);
     }
 	
     void decreaseMusicVolume()
@@ -201,21 +215,85 @@ public class MenuMaster : MonoBehaviour
         GameMaster.TriggerEvent("MusicVolumeChange");
     }
     public void showMainMenu() {
-        mainPanel.SetActive (true);
-		readyPanel.SetActive (false);
-		optionsPanel.SetActive (false);
+        if (readyPanel.activeSelf)
+        {
+            StartCoroutine(FadeOutPanel(readyPanel));
+            //readyPanel.SetActive(false);
+        }
+		if(optionsPanel.activeSelf)
+        {
+            StartCoroutine(FadeOutPanel(optionsPanel));
+            //optionsPanel.SetActive(false);
+        }
+        mainPanel.SetActive(true);
+        mainPanel.GetComponent<CanvasGroup>().alpha = 0f;
+        StartCoroutine(FadeInPanel(mainPanel));
     }
 
-	public void showReadyMenu() {
-		mainPanel.SetActive (false);
-		readyPanel.SetActive (true);
-		optionsPanel.SetActive (false);
-	}
+	public void showReadyMenu() {	
+        if(mainPanel.activeSelf)
+        {
+            StartCoroutine(FadeOutPanel(mainPanel));
+            //mainPanel.SetActive(false);
+        }
+        if (optionsPanel.activeSelf)
+        {
+            StartCoroutine(FadeOutPanel(optionsPanel));
+            //optionsPanel.SetActive(false);
+        }
+        readyPanel.SetActive(true);
+        readyPanel.GetComponent<CanvasGroup>().alpha = 0f;
+        StartCoroutine(FadeInPanel(readyPanel));
+        readyPlayerCount = 0;
+    }
 
 	public void showOptionsMenu() {
-		mainPanel.SetActive (false);
-		readyPanel.SetActive (false);
-		optionsPanel.SetActive (true);
+        if (mainPanel.activeSelf)
+        {
+            StartCoroutine(FadeOutPanel(mainPanel));
+            //mainPanel.SetActive(false);
+        }
+        if (readyPanel.activeSelf)
+        {
+            StartCoroutine(FadeOutPanel(readyPanel));
+            //readyPanel.SetActive(false);
+        }
+        optionsPanel.SetActive (true);
+        optionsPanel.GetComponent<CanvasGroup>().alpha = 0f;
+        StartCoroutine(FadeInPanel(optionsPanel));
+    }
+
+    IEnumerator FadeInPanel(GameObject myPanel)
+    {
+        yield return null;
+        float time = 0f;
+        CanvasGroup cg = myPanel.GetComponent<CanvasGroup>();
+        cg.alpha = 0f;
+        while (time < .5f)
+        {
+            time += Time.unscaledDeltaTime;
+            cg.alpha = time * 2;
+            yield return null;
+        }
+        cg.alpha = 1f;
+        cg.interactable = true;
+    }
+
+    IEnumerator FadeOutPanel(GameObject myPanel)
+    {
+        yield return null;
+        float time = .5f;
+        CanvasGroup cg = myPanel.GetComponent<CanvasGroup>();
+        cg.alpha = 0f;
+        cg.interactable = false;
+        while (time >= 0f)
+        {
+            time -= Time.unscaledDeltaTime;
+            cg.alpha = time * 2;
+            yield return null;
+        }
+        cg.alpha = 0f;
+        myPanel.SetActive(false);
     }
 }
 
