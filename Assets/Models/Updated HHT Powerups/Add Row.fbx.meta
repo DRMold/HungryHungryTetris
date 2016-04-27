@@ -1,33 +1,31 @@
 fileFormatVersion: 2
-guid: 4456c1ad47ee04636aee95fea2644d61
-timeCreated: 1461012471
+guid: 05862a1b0eeed49b295bf3646f03750f
+timeCreated: 1461619477
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: polySurface1
-    100004: polySurface1 1
-    100006: polySurface2
+    100002: polySurface5
+    100004: polySurface5 1
+    100006: polySurface6
     100008: pSphere4
-    100010: transform3
-    100012: transform4
-    100014: transform5
+    100010: transform8
+    100012: transform9
     400000: //RootNode
-    400002: polySurface1
-    400004: polySurface1 1
-    400006: polySurface2
+    400002: polySurface5
+    400004: polySurface5 1
+    400006: polySurface6
     400008: pSphere4
-    400010: transform3
-    400012: transform4
-    400014: transform5
-    2300000: polySurface1
-    3300000: polySurface1
-    4300000: polySurface1
+    400010: transform8
+    400012: transform9
+    2300000: polySurface5
+    3300000: polySurface5
+    4300000: polySurface5
     9500000: //RootNode
   materials:
     importMaterials: 1
-    materialName: 1
+    materialName: 0
     materialSearch: 1
   animations:
     legacyGenerateAnimations: 4
@@ -49,7 +47,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 125
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1

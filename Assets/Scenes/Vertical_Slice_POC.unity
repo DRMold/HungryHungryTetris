@@ -456,6 +456,7 @@ MonoBehaviour:
   spawning: 0
   nxtBlkSpawnTime: 0.5
   MAX_ALLOWED_CYCLES_EMPTY: 8
+  PowerBar: 0
   blkFallSpeed: 0.5
   gameOverHeight: 22
   rot: 273
@@ -1520,6 +1521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerQueue: {fileID: 1103355961}
+  opponentQueue: {fileID: 159384405}
 --- !u!1 &601232470
 GameObject:
   m_ObjectHideFlags: 0
@@ -1574,6 +1576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerQueue: {fileID: 159384405}
+  opponentQueue: {fileID: 1103355961}
 --- !u!1 &654368687
 GameObject:
   m_ObjectHideFlags: 0
@@ -1784,11 +1787,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 142.89308
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 106.666664
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_AnchorMin.x
@@ -1913,7 +1916,6 @@ Canvas:
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -3959,6 +3961,7 @@ MonoBehaviour:
   spawning: 0
   nxtBlkSpawnTime: 0.5
   MAX_ALLOWED_CYCLES_EMPTY: 8
+  PowerBar: 0
   blkFallSpeed: 0.5
   gameOverHeight: 22
   rot: 119
@@ -4337,6 +4340,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efb7dbeb6fdd8e045bd8b4c27951a7a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  headerText: {fileID: 0}
+  leftPanel: {fileID: 0}
+  rightPanel: {fileID: 0}
+  gameScoreLeft: {fileID: 0}
+  gameScoreRight: {fileID: 0}
+  leftPanelScore: {fileID: 0}
+  rightPanelScore: {fileID: 0}
 --- !u!114 &1154270732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4552,11 +4562,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 142.89308
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 106.666664
       objectReference: {fileID: 0}
     - target: {fileID: 22420756, guid: d48cc4ca1e1764d449c6c73496f25e3a, type: 2}
       propertyPath: m_AnchorMin.x
