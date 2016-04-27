@@ -5,6 +5,8 @@ using System.Collections;
 [AddComponentMenu("Scripts/UI/InGame GameOver Panel")]
 public class InGameOverPanel : MonoBehaviour {
 
+    public PrevTetris playerOne;
+    public PrevTetris playerTwo;
     private CanvasGroup myCanvasGroup;
     public Text headerText;
     public Image leftPanel;
@@ -26,17 +28,19 @@ public class InGameOverPanel : MonoBehaviour {
         myCanvasGroup.alpha = 0;
         myCanvasGroup.interactable = false;
         winnerColor = Color.green;
-        loserColor = Color.red;
+        loserColor = Color.gray;
         leftLost = false;
         rightLost = false;
-        Debug.Log("GOP gameScoreLeft: " + gameScoreLeft.name);
-        Debug.Log("GOP gameScoreRight: " + gameScoreRight.name);
     }
 
     void OnEnable()
     {
         //TODO: obtain and display final scores, show winner
         Debug.Log("Show game over panel!");
+        leftLost = playerOne.myGameOver;
+        Debug.Log("Left loss:" + playerOne.myGameOver);
+        rightLost = playerTwo.myGameOver;
+        Debug.Log("Right loss:" + playerTwo.myGameOver);
         DetermineWinner();
         StartCoroutine(fadePanel());  
     }
@@ -66,7 +70,7 @@ public class InGameOverPanel : MonoBehaviour {
         int leftScore, rightScore;
         if (int.TryParse(gameScoreLeft.text, out leftScore) && int.TryParse(gameScoreRight.text, out rightScore))
         { 
-            if (GameMaster.instance.GetTime() <= 0)
+            if (GameMaster.instance.GetTime() == 0)
             {
                 Debug.Log("Time's up! Left: " + leftScore + ", Right: " + rightScore);
             
@@ -102,7 +106,8 @@ public class InGameOverPanel : MonoBehaviour {
                     headerText.color = Color.red;
                     ShowRightWin();
                     rightPanelScore.text = rightScore.ToString();
-                    leftPanelScore.text = "-";
+                    leftPanelScore.text = rightScore.ToString();
+                    leftPanelScore.CrossFadeAlpha(.25f, .1f, true);
                 }
                 else if (rightLost)
                 {
@@ -111,7 +116,8 @@ public class InGameOverPanel : MonoBehaviour {
                     headerText.color = Color.blue;
                     ShowLeftWin();
                     leftPanelScore.text = leftScore.ToString();
-                    rightPanelScore.text = "-";
+                    rightPanelScore.text = rightScore.ToString(); ;
+                    rightPanelScore.CrossFadeAlpha(.25f, .1f, true);
                 }
                 else
                 {

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,6 +44,9 @@ public class PrevTetris : MonoBehaviour
     private bool notDragged;
 
     private static bool gameOver;
+    public bool myGameOver;
+    public static bool overTriggered;
+
     //Current shape rotation
     private int currentRot = 0;
     //Current pivot of shape
@@ -77,6 +80,8 @@ public class PrevTetris : MonoBehaviour
 
     void Start()
     {
+        myGameOver = false;
+        overTriggered = false;
         IMat = (Material)Resources.Load("ICube");
         JMat = (Material)Resources.Load("JCube");
         LMat = (Material)Resources.Load("LCube");
@@ -145,8 +150,8 @@ public class PrevTetris : MonoBehaviour
         }
         if (curBottom == gameOverHeight)
         {
-            Debug.LogWarning("Game over");
             gameOver = true;
+            myGameOver = true;
         }
         // If nothing spawned and game isn't over, then spawn
         if (!spawning && !spawn && !gameOver && !curWaiting)
@@ -165,6 +170,12 @@ public class PrevTetris : MonoBehaviour
         if (gameOver)
         {
             Time.timeScale = 0;
+            
+            if (!overTriggered)
+            {
+                GameMaster.TriggerEvent("ShowGameOver");
+                overTriggered = true;
+            }
         }
         //////////////////////////////////////////////////////
         // Begin Player Input Checks
@@ -729,6 +740,7 @@ public class PrevTetris : MonoBehaviour
         {//If the current height is game over height, and there is more than 0 block, then game over
             Debug.LogWarning("Game over");
             gameOver = true;
+            myGameOver = true;
         }
         if (count == 10)
         {//The row is full

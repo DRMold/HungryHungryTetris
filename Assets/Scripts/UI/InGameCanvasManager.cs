@@ -5,7 +5,9 @@ public class InGameCanvasManager : MonoBehaviour {
     public GameObject gameOverPanel;
 	public GameMaster gameMasterScript;
 
-	void Awake()
+
+
+    void Awake()
     {
         gameOverPanel.SetActive(false);
     }
@@ -40,6 +42,7 @@ public class InGameCanvasManager : MonoBehaviour {
 
     private void showGameOver()
     {
+
         gameOverPanel.SetActive(true);
 		Time.timeScale = 0f;
     }
